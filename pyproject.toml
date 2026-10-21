@@ -1,7 +1,7 @@
 [project]
 name = "flood-predictor"
 version = "0.1.0"
-description = "Add your description here"
+description = "Ward-level urban flood predictor for Chennai"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
@@ -16,4 +16,47 @@ dependencies = [
     "rasterio>=1.4.4",
     "shapely>=2.2.0",
     "uvicorn>=0.54.0",
+    "livekit-api>=1.2.0",
+    "twilio>=9.0.0",
+    "python-multipart>=0.0.6",
+    "httpx-sse>=0.4.0",
+    "pydantic-settings>=2.3.0",
+    "tenacity>=8.4.0",
+    "structlog>=24.1.0",
 ]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.2.0",
+    "pytest-asyncio>=0.23.0",
+    "pytest-cov>=5.0.0",
+    "ruff>=0.5.0",
+    "mypy>=1.10.0",
+    "pre-commit>=3.7.0",
+]
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=8.2.0",
+    "pytest-asyncio>=0.23.0",
+    "pytest-cov>=5.0.0",
+    "ruff>=0.5.0",
+    "mypy>=1.10.0",
+    "pre-commit>=3.7.0",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+select = ["E", "F", "I", "UP", "W"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
