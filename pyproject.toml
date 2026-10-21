@@ -1,0 +1,19 @@
+[project]
+name = "flood-predictor"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.157.0",
+    "geopandas>=1.2.0",
+    "httpx>=0.28.1",
+    "pandas>=3.0.6",
+    "pyarrow>=26.0.0",
+    "pydantic>=2.14.1",
+    "python-dotenv>=1.2.4",
+    "pyyaml>=6.0.3",
+    "rasterio>=1.4.4",
+    "shapely>=2.2.0",
+    "uvicorn>=0.54.0",
+]

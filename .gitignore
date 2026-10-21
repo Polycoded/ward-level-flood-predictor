@@ -1,0 +1,24 @@
+# Python & uv virtual environments
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.uv/
+
+# Data binaries & large GIS files
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*.tif
+data/processed/*.parquet
+
+# Frontend
+node_modules/
+dist/
+.vite/
+
+# System & IDE
+.DS_Store
+.vscode/
+.idea/
+.env
