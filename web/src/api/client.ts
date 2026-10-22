@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, InternalAxiosRequestConfig } from 'axios';
+import axios, { AxiosInstance, InternalAxiosRequestConfig, type AxiosAdapter } from 'axios';
 import type {
   Ward,
   WardFeature,
@@ -18,13 +18,23 @@ import { useFloodStore, type DataSource } from '../lib/store';
 const API_BASE_URL = import.meta.env.VITE_API_URL || '/api/v1';
 const FORCE_MOCK = import.meta.env.VITE_USE_MOCK === 'true';
 
-class ApiClient {
+interface ApiClientOptions {
+  baseURL?: string;
+  forceMock?: boolean;
+  /** lets tests stand in for the network */
+  adapter?: AxiosAdapter;
+}
+
+export class ApiClient {
   private client: AxiosInstance;
   private source: Promise<Exclude<DataSource, 'unknown'>> | null = null;
+  private forceMock: boolean;
 
-  constructor() {
+  constructor({ baseURL = API_BASE_URL, forceMock = FORCE_MOCK, adapter }: ApiClientOptions = {}) {
+    this.forceMock = forceMock;
     this.client = axios.create({
-      baseURL: API_BASE_URL,
+      baseURL,
+      adapter,
       timeout: 30000,
       headers: {
         'Content-Type': 'application/json',
@@ -49,13 +59,13 @@ class ApiClient {
   // so live and mock data never get mixed (e.g. live wards with mock risk scores).
   private resolveSource() {
     this.source ??= (async () => {
-      if (FORCE_MOCK) return 'mock' as const;
+      if (this.forceMock) return 'mock' as const;
       try {
         const { data } = await this.client.get<ReadyResponse>('/readyz', { timeout: 3000 });
         if (data.checks?.features && data.checks?.wards) return 'live' as const;
         console.warn('API is up but not ready (missing features/wards) - using mock data', data.checks);
       } catch {
-        console.warn(`API unreachable at ${API_BASE_URL} - using mock data`);
+        console.warn(`API unreachable at ${this.client.defaults.baseURL} - using mock data`);
       }
       return 'mock' as const;
     })().then((source) => {

@@ -22,6 +22,8 @@ import type {
   HealthResponse,
   ReadyResponse,
 } from '../types';
+import { baseSusceptibility, rainfallFactor, toFactorInputs } from '../lib/explain';
+import { whatsAppShareUrl } from '../lib/safe';
 
 function mulberry32(seed: number) {
   return () => {
@@ -117,22 +119,8 @@ function buildWards(): WardFeature[] {
 
 // --- port of model/risk_engine.py -------------------------------------------
 
-const normalize = (v: number, lo: number, hi: number, invert = false) => {
-  const n = clamp((v - lo) / (hi - lo), 0, 1);
-  return invert ? 1 - n : n;
-};
-
-function baseScore(w: WardFeature, builtupIncrease: number): number {
-  const impervious = Math.min(w.impervious_frac * (1 + builtupIncrease / 100), 1);
-  return (
-    0.25 * normalize(w.elevation_mean, 0, 50, true) +
-    0.15 * normalize(w.slope_mean, 0, 15, true) +
-    0.25 * normalize(impervious, 0, 1) +
-    0.15 * normalize(w.dist_to_water_m, 0, 5000, true) +
-    0.1 * normalize(w.road_density_km_per_sqkm, 0, 20) +
-    0.1 * (w.underpass_count > 0 ? 1 : 0)
-  );
-}
+const baseScore = (w: WardFeature, builtupIncrease: number) =>
+  baseSusceptibility(toFactorInputs(w as unknown as Record<string, number>), builtupIncrease);
 
 const RISK_THRESHOLDS: [RiskLevel, number][] = [
   ['very_low', 0.2], ['low', 0.35], ['moderate', 0.55], ['high', 0.75], ['very_high', Infinity],
@@ -155,11 +143,11 @@ function reasonsFor(w: WardFeature, rainfallMm: number): string[] {
   return reasons;
 }
 
-function scoreWard(w: WardFeature, rainfallMm: number, builtupIncrease = 0): WardRisk {
-  const rainfallFactor = Math.min(rainfallMm / 200, 1.5);
-  const risk_score = Math.min(baseScore(w, builtupIncrease) * rainfallFactor, 1);
+export function scoreWard(w: WardFeature, rainfallMm: number, builtupIncrease = 0): WardRisk {
+  const rf = rainfallFactor(rainfallMm);
+  const risk_score = Math.min(baseScore(w, builtupIncrease) * rf, 1);
   const risk_level = RISK_THRESHOLDS.find(([, hi]) => risk_score < hi)![0];
-  const depthM = (risk_score * 150 * rainfallFactor) / 100;
+  const depthM = (risk_score * 150 * rf) / 100;
   const depth_band = DEPTH_THRESHOLDS.find(([, hi]) => depthM < hi)![0];
 
   return {
@@ -231,6 +219,51 @@ function haversineKm(lat1: number, lng1: number, lat2: number, lng2: number): nu
   const dLng = toRad(lng2 - lng1);
   const a = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2;
   return 6371 * 2 * Math.asin(Math.sqrt(a));
+}
+
+// --- roads & underpasses -----------------------------------------------------
+
+// One east-west arterial segment through every third ward plus one short segment
+// per underpass, scored from the ward they sit in.
+function mockRoads(rainfallMm: number): RoadRisk[] {
+  const roads: RoadRisk[] = [];
+  for (const w of allWards()) {
+    const ring = (w.geometry as GeoJSON.Polygon).coordinates[0];
+    const [west, south] = ring[0];
+    const [east, north] = ring[2];
+    const midLat = (south + north) / 2;
+    const midLng = (west + east) / 2;
+    const wardRisk = scoreWard(w, rainfallMm);
+    const depthM = (wardRisk.risk_score * 150 * rainfallFactor(rainfallMm)) / 100;
+
+    const push = (id: string, name: string, coords: number[][], isUnderpass: boolean) => {
+      const risk_score = Math.min(wardRisk.risk_score * (isUnderpass ? 1.3 : 1), 1);
+      roads.push({
+        road_id: id,
+        name,
+        highway_type: isUnderpass ? 'primary' : 'secondary',
+        risk_score,
+        risk_level: RISK_THRESHOLDS.find(([, hi]) => risk_score < hi)![0],
+        is_underpass: isUnderpass,
+        flood_depth_estimate_m: Number((depthM * (isUnderpass ? 1.5 : 1)).toFixed(2)),
+        geometry: { type: 'LineString', coordinates: coords },
+      });
+    };
+
+    if (w.ward_id % 3 === 0) {
+      push(`road-${w.ward_id}`, `Arterial road, ${w.ward_name}`, [[west, midLat], [east, midLat]], false);
+    }
+    for (let u = 0; u < w.underpass_count; u++) {
+      const dLng = (east - west) * (0.15 + 0.3 * u);
+      push(
+        `underpass-${w.ward_id}-${u}`,
+        `Underpass ${u + 1}, ${w.ward_name}`,
+        [[midLng - dLng / 4, midLat + (north - south) * 0.2], [midLng + dLng / 4, midLat + (north - south) * 0.2]],
+        true
+      );
+    }
+  }
+  return roads.sort((a, b) => b.risk_score - a.risk_score);
 }
 
 // --- public mock API (same shape as ApiClient) -------------------------------
@@ -317,7 +350,7 @@ export const mockApi = {
           channel,
           language,
           message,
-          whatsapp_deeplink: channel === 'whatsapp' ? `https://wa.me/?text=${encodeURIComponent(message)}` : undefined,
+          whatsapp_deeplink: channel === 'whatsapp' ? whatsAppShareUrl(message) : undefined,
         });
       }
     }
@@ -343,5 +376,5 @@ export const mockApi = {
       .sort((a, b) => a.distance_km - b.distance_km)
       .slice(0, maxResults),
 
-  getRoadRisk: (_rainfallMm: number): RoadRisk[] => [],
+  getRoadRisk: (rainfallMm: number): RoadRisk[] => mockRoads(rainfallMm),
 };
