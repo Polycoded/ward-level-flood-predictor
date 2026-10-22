@@ -11,7 +11,7 @@ A prototype system predicting ward-level flood susceptibility and dynamic risk f
 - **Road & Underpass Risk**: Road-level flood risk with underpass identification
 - **Shelter Navigation**: Nearest shelter finder with walking routes (OSRM)
 - **Future Scenario Modeling**: Toggle for +15%/+30% built-up area impact
-- **Historical Validation**: Validated against Dec 2023 Chennai floods
+- **Historical Validation**: Pending evidence-backed evaluation; see `docs/validation.md`
 
 ## Architecture
 
@@ -128,31 +128,31 @@ cp .env.example .env
 - **LULC**: ESA WorldCover 10m / Synthetic fallback
 - **Roads/Water/Underpasses**: OpenStreetMap
 - **Shelters**: Chennai Corporation data / Defaults
-- **Validation Labels**: Sentinel-1 SAR + News reports (Dec 2023)
+- **Validation Labels**: Independent event labels still need provenance and coverage review
 
 ## Model
 
-The risk engine uses a weighted hydrological index:
+The risk engine uses an **uncalibrated risk index**, not flood probability:
 
 | Factor | Weight | Description |
 |--------|--------|-------------|
 | Elevation | 25% | Low elevation increases risk |
-| Slope | 15% | Flat terrain limits drainage |
+| Slope | 15% | Flatter terrain increases the slope component |
 | Impervious Surface | 25% | Reduces infiltration |
-| Water Proximity | 15% | Backflow risk |
+| Water Proximity | 15% | Proximity proxy; backflow is not modelled |
 | Road Density | 10% | Urbanization proxy |
 | Underpasses | 10% | Critical flood points |
 
-Risk score is scaled by rainfall intensity (mm/200, capped at 1.5x).
+The index is scaled by rainfall accumulation and a bounded duration heuristic.
+Callers must supply original features; the model applies the built-up increase once.
+See `docs/model_logic.md` for the formula, units, validation rules, compatibility and
+API/pipeline handoffs. Legacy depth/timing outputs are unsupported display proxies,
+not physical predictions.
 
 ## Validation
 
-Validated against December 2023 Chennai floods:
-- **Precision@20**: ~0.65
-- **Recall**: ~0.70
-- **False Positive Rate**: ~0.15
-
-See `data/processed/validation_metrics.json` for details.
+Historical validation is pending; no accuracy metrics are established here.
+See `docs/validation.md` for evidence requirements and known evaluation limitations.
 
 ## Deployment
 
