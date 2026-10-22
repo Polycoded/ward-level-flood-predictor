@@ -81,7 +81,21 @@ npm install
 npm run dev
 ```
 
-Visit `http://localhost:5173` for the dashboard.
+Visit `http://localhost:5173` for the dashboard. It talks to the API on port 8000. If the API is not running, it switches to a clearly labelled offline mock so the UI can still be demoed.
+
+```bash
+npm test -- --run   # 85 tests: user flows, security cases, parity with model/risk_engine.py
+npm run lint && npm run typecheck && npm run build
+npm run preview     # production build with the same security headers as Vercel
+```
+
+See [docs/frontend.md](docs/frontend.md) for architecture, environment variables, security notes and the test map.
+
+### Critical assets and shelters
+
+```bash
+python pipeline/extract_assets.py   # writes data/processed/assets.parquet and shelters.parquet
+```
 
 ### Environment Variables
 

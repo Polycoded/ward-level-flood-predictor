@@ -3,15 +3,14 @@ interface LoadingOverlayProps {
   message?: string;
 }
 
+/** Non-blocking status pill: the rest of the dashboard stays usable while data loads. */
 export function LoadingOverlay({ visible, message = 'Loading...' }: LoadingOverlayProps) {
   if (!visible) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-white/80 backdrop-blur-sm flex items-center justify-center">
-      <div className="text-center">
-        <div className="w-12 h-12 border-4 border-flood-200 border-t-flood-600 rounded-full animate-spin mx-auto mb-4" />
-        <p className="text-gray-700 font-medium">{message}</p>
-      </div>
+    <div role="status" className="absolute top-3 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-2 shadow">
+      <span className="w-4 h-4 border-2 border-flood-200 border-t-flood-700 rounded-full animate-spin" aria-hidden="true" />
+      <span className="text-sm text-gray-800">{message}</span>
     </div>
   );
 }
