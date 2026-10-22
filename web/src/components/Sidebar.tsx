@@ -1,10 +1,10 @@
 import { useFloodStore } from '../lib/store';
-import { cn, getRiskColor, getRiskLabel, formatNumber } from '../lib/utils';
+import { cn, getRiskColor, getDepthColor } from '../lib/utils';
 import type { WardRisk } from '../types';
 import { RiskBadge } from './RiskBadge';
 
 export function Sidebar() {
-  const { wards, riskData, ui, setDetailWard, setMapView } = useFloodStore();
+  const { wards, riskData, ui, setDetailWard, setMapView, setSidebarOpen } = useFloodStore();
 
   const sortedWards = riskData
     ? [...riskData.wards].sort((a, b) => b.risk_score - a.risk_score)
@@ -42,6 +42,7 @@ export function Sidebar() {
             onClick={() => {
               setDetailWard(ward.ward_id);
               setMapView('risk');
+              if (window.innerWidth < 1024) setSidebarOpen(false);
             }}
           />
         ))}
@@ -59,7 +60,7 @@ export function Sidebar() {
             Road Risk
           </button>
           <button
-            onClick={() => setMapView('shelters')}
+            onClick={() => setMapView(ui.mapView === 'shelters' ? 'risk' : 'shelters')}
             className={cn(
               'flex-1 btn text-sm',
               ui.mapView === 'shelters' ? 'btn-primary' : 'btn-secondary'
@@ -95,10 +96,10 @@ function WardListItem({
       )}
     >
       <div className="flex items-start gap-3">
-        <span className={cn(
-          'w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0',
-          `bg-${getRiskColor(ward.risk_level)}`
-        )}>
+        <span
+          className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0"
+          style={{ backgroundColor: getRiskColor(ward.risk_level) }}
+        >
           {rank}
         </span>
         

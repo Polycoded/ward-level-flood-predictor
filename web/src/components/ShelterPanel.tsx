@@ -5,7 +5,7 @@ import { cn, formatDistance, formatTime } from '../lib/utils';
 import type { Shelter } from '../types';
 
 export function ShelterPanel() {
-  const { ui, setDetailWard, setMapView } = useFloodStore();
+  const { setMapView } = useFloodStore();
   const [shelters, setShelters] = useState<Shelter[]>([]);
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [loading, setLoading] = useState(false);
@@ -39,7 +39,7 @@ export function ShelterPanel() {
   }, [userLocation]);
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-gray-200 rounded-t-2xl shadow-xl max-h-[60vh] flex flex-col lg:fixed lg:bottom-4 lg:right-4 lg:top-4 lg:rounded-xl lg:max-w-sm lg:max-h-[calc(100vh-2rem)] lg:shadow-2xl">
+    <div className="fixed bottom-0 left-0 right-0 z-[45] bg-white border-t border-gray-200 rounded-t-2xl shadow-xl max-h-[60vh] flex flex-col lg:fixed lg:bottom-4 lg:left-auto lg:right-4 lg:top-4 lg:w-96 lg:rounded-xl lg:max-h-[calc(100vh-2rem)] lg:shadow-2xl">
       <div className="p-4 border-b border-gray-200 flex items-center justify-between">
         <h2 className="font-semibold text-gray-900 flex items-center gap-2">
           <svg className="w-5 h-5 text-flood-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">

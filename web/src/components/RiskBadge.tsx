@@ -23,9 +23,9 @@ export function RiskBadge({ level, size = 'md', showIcon = false }: RiskBadgePro
       className={cn(
         'inline-flex items-center gap-1 rounded-full font-medium',
         sizeClasses[size],
-        `bg-${color}/10 text-${color} border border-${color}/20`
+        'border'
       )}
-      style={{ '--risk-color': color } as React.CSSProperties}
+      style={{ backgroundColor: `${color}1a`, color, borderColor: `${color}33` }}
     >
       {showIcon && <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: color }} />}
       {label}

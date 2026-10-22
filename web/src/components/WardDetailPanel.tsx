@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useFloodStore } from '../lib/store';
 import { api } from '../api/client';
-import { cn, getRiskColor, getRiskLabel, getDepthLabel, getDepthColor, formatPercent, formatDistance } from '../lib/utils';
+import { getRiskColor, getDepthLabel, getDepthColor, formatPercent, formatDistance } from '../lib/utils';
 import { RiskBadge } from './RiskBadge';
 import type { WardFeature, WardRisk } from '../types';
 
@@ -20,6 +20,7 @@ export function WardDetailPanel({ wardId }: WardDetailPanelProps) {
   }, [wardId]);
 
   const loadWardDetail = async () => {
+    setLoading(true);
     try {
       const detail = await api.getWard(wardId);
       setWardDetail(detail);
@@ -31,20 +32,22 @@ export function WardDetailPanel({ wardId }: WardDetailPanelProps) {
     }
   };
 
-  const riskWard = riskData?.wards.find((w) => w.ward_id === wardId);
+  const riskWard = riskData?.wards.find((w) => w.ward_id === wardId) ?? null;
   const isOpen = ui.detailWardId === wardId;
 
   if (!isOpen || loading) {
     return null;
   }
 
+  // Mobile: modal drawer with backdrop. Desktop: side drawer that leaves the map
+  // clickable so you can hop between wards.
   const content = (
-    <div className="fixed inset-0 z-40 flex lg:hidden">
-      <div className="absolute inset-0 bg-black/50" onClick={() => setDetailWard(null)} />
-      <div className="relative w-full max-w-md ml-auto bg-white shadow-xl flex flex-col h-full animate-in">
+    <>
+      <div className="fixed inset-0 z-40 bg-black/50 lg:hidden" onClick={() => setDetailWard(null)} />
+      <div className="fixed inset-y-0 right-0 z-40 w-full max-w-md bg-white shadow-xl flex flex-col animate-in">
         <DetailContent wardDetail={wardDetail} riskWard={riskWard} onClose={() => setDetailWard(null)} />
       </div>
-    </div>
+    </>
   );
 
   return createPortal(content, document.body);
@@ -84,7 +87,7 @@ function DetailContent({
 
         <FeatureMetricsPanel ward={wardDetail} />
 
-        <AlertActionsPanel wardId={wardDetail.ward_id} wardName={wardDetail.ward_name} riskWard={riskWard} />
+        <AlertActionsPanel hasRisk={riskWard !== null} />
       </div>
     </div>
   );
@@ -171,8 +174,8 @@ function FeatureMetricsPanel({ ward }: { ward: WardFeature }) {
   );
 }
 
-function AlertActionsPanel({ wardId, wardName, riskWard }: { wardId: number; wardName: string; riskWard: WardRisk | null }) {
-  const { ui, setAlertsOpen } = useFloodStore();
+function AlertActionsPanel({ hasRisk }: { hasRisk: boolean }) {
+  const { setAlertsOpen, setMapView } = useFloodStore();
 
   return (
     <div className="card p-4 border-t border-gray-100">
@@ -180,14 +183,16 @@ function AlertActionsPanel({ wardId, wardName, riskWard }: { wardId: number; war
       <div className="space-y-2">
         <button
           onClick={() => setAlertsOpen(true)}
-          className="w-full btn-primary justify-center"
+          disabled={!hasRisk}
+          title={hasRisk ? undefined : 'Run a rainfall analysis first'}
+          className="w-full btn-primary justify-center gap-2"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
           </svg>
           Send Alerts
         </button>
-        <button className="w-full btn-secondary justify-center">
+        <button onClick={() => setMapView('shelters')} className="w-full btn-secondary justify-center gap-2">
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.761 19.239a2 2 0 002.476 0l6-6a2 2 0 00-2.476-2.476L8 15.527V5a2 2 0 00-2-2H6a2 2 0 00-2 2v10.527L2.476 10.761A2 2 0 000 13.243l6 6a2 2 0 002.476 0z" />
           </svg>

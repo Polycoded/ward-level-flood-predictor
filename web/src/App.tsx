@@ -1,20 +1,20 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useFloodStore } from './lib/store';
 import { api } from './api/client';
+import { cn } from './lib/utils';
 import { Header } from './components/Header';
 import { MapView } from './components/MapView';
 import { Sidebar } from './components/Sidebar';
 import { AlertPanel } from './components/AlertPanel';
 import { ShelterPanel } from './components/ShelterPanel';
 import { ValidationPanel } from './components/ValidationPanel';
-import { ScenarioToggle } from './components/ScenarioToggle';
+import { WardDetailPanel } from './components/WardDetailPanel';
 import { LoadingOverlay } from './components/LoadingOverlay';
 
 function App() {
   const {
-    wards,
+    scenario,
     riskData,
-    validationData,
     ui,
     setWards,
     setRiskData,
@@ -22,6 +22,7 @@ function App() {
     setScenario,
     clearRiskData,
   } = useFloodStore();
+  const [loading, setLoading] = useState<string | null>('Loading wards...');
 
   useEffect(() => {
     loadInitialData();
@@ -37,10 +38,13 @@ function App() {
       if (validation) setValidationData(validation);
     } catch (error) {
       console.error('Failed to load initial data:', error);
+    } finally {
+      setLoading(null);
     }
   };
 
   const handleRiskAnalysis = async (rainfallMm: number, builtupIncrease: number = 0) => {
+    setLoading(`Scoring wards for ${rainfallMm} mm rainfall...`);
     try {
       let response;
       if (builtupIncrease > 0) {
@@ -56,6 +60,8 @@ function App() {
       setScenario({ rainfall_mm: rainfallMm, builtup_increase_pct: builtupIncrease });
     } catch (error) {
       console.error('Risk analysis failed:', error);
+    } finally {
+      setLoading(null);
     }
   };
 
@@ -64,17 +70,17 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="h-screen bg-gray-50 flex flex-col overflow-hidden">
       <Header
         onAnalyze={handleRiskAnalysis}
         onClear={handleClearRisk}
         hasRiskData={!!riskData}
-        scenario={ui.scenario}
+        scenario={scenario}
       />
-      
-      <div className="flex-1 flex overflow-hidden">
+
+      <div className="flex-1 flex overflow-hidden relative">
         <aside className={cn(
-          'w-80 lg:w-96 flex-shrink-0 bg-white border-r border-gray-200 transition-all duration-300',
+          'absolute inset-y-0 left-0 z-30 lg:static w-80 lg:w-96 flex-shrink-0 bg-white border-r border-gray-200 transition-transform duration-300',
           ui.sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         )}>
           <Sidebar />
@@ -82,15 +88,15 @@ function App() {
 
         <main className="flex-1 flex flex-col min-w-0 relative">
           <MapView />
-          
-          {ui.detailWardId && (
+
+          {ui.detailWardId !== null && (
             <WardDetailPanel wardId={ui.detailWardId} />
           )}
         </main>
 
         {!ui.sidebarOpen && (
           <button
-            className="fixed left-4 top-20 z-30 btn-primary rounded-full p-3 shadow-lg lg:hidden"
+            className="absolute left-4 top-4 z-30 btn-primary rounded-full p-3 shadow-lg lg:hidden"
             onClick={() => useFloodStore.getState().setSidebarOpen(true)}
             aria-label="Open sidebar"
           >
@@ -102,10 +108,11 @@ function App() {
       </div>
 
       {ui.alertsOpen && <AlertPanel onClose={() => useFloodStore.getState().setAlertsOpen(false)} />}
-      {ui.ui.mapView === 'shelters' && <ShelterPanel />}
-      {validationData && <ValidationPanel />}
+      {ui.mapView === 'shelters' && <ShelterPanel />}
+      {ui.validationOpen && <ValidationPanel />}
+      <LoadingOverlay visible={loading !== null} message={loading ?? undefined} />
     </div>
   );
 }
 
-import { cn } from './lib/utils';
+export default App;

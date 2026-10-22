@@ -1,12 +1,12 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { MapContainer, TileLayer, GeoJSON, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useFloodStore } from '../lib/store';
-import { getRiskColor, getDepthColor } from '../lib/utils';
-import type { WardRisk, WardFeature } from '../types';
+import { cn, getRiskColor } from '../lib/utils';
+import type { RiskResponse } from '../types';
 import L from 'leaflet';
 
-delete (L.Icon.Default.prototype as any)._getIconUrl;
+delete (L.Icon.Default.prototype as unknown as { _getIconUrl?: unknown })._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
   iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
@@ -18,13 +18,13 @@ interface MapViewProps {
 }
 
 export function MapView({ className }: MapViewProps) {
-  const { wards, riskData, ui, setSelectedWard, setDetailWard } = useFloodStore();
-  const [wardsGeoJSON, setWardsGeoJSON] = useState<GeoJSON.FeatureCollection | null>(null);
-  const mapRef = useRef<L.Map | null>(null);
+  const { wards, riskData, setDetailWard } = useFloodStore();
+  const geoJsonRef = useRef<L.GeoJSON | null>(null);
 
-  useEffect(() => {
-    if (wards.length > 0 && !wardsGeoJSON) {
-      const features = wards.map((ward) => ({
+  const wardsGeoJSON = useMemo<GeoJSON.FeatureCollection | null>(() => {
+    const features = wards
+      .filter((ward) => ward.geometry)
+      .map((ward) => ({
         type: 'Feature' as const,
         properties: {
           ward_id: ward.ward_id,
@@ -32,16 +32,19 @@ export function MapView({ className }: MapViewProps) {
           ward_name: ward.ward_name,
           area_sqkm: ward.area_sqkm,
         },
-        geometry: ward.geometry,
+        geometry: ward.geometry!,
       }));
-      setWardsGeoJSON({ type: 'FeatureCollection', features });
-    }
-  }, [wards, wardsGeoJSON]);
+    return features.length > 0 ? { type: 'FeatureCollection', features } : null;
+  }, [wards]);
 
-  const getWardStyle = (feature: GeoJSON.Feature) => {
-    const wardId = feature.properties.ward_id;
-    const riskWard = riskData?.wards.find((w) => w.ward_id === wardId);
-    
+  const riskByWard = useMemo(
+    () => new Map(riskData?.wards.map((w) => [w.ward_id, w]) ?? []),
+    [riskData]
+  );
+
+  const getWardStyle = (feature?: GeoJSON.Feature): L.PathOptions => {
+    const riskWard = riskByWard.get(feature?.properties?.ward_id);
+
     if (riskWard) {
       return {
         fillColor: getRiskColor(riskWard.risk_level),
@@ -51,7 +54,7 @@ export function MapView({ className }: MapViewProps) {
         fillOpacity: 0.7,
       };
     }
-    
+
     return {
       fillColor: '#e5e7eb',
       weight: 1,
@@ -61,88 +64,52 @@ export function MapView({ className }: MapViewProps) {
     };
   };
 
-  const handleClick = (e: L.LeafletMouseEvent) => {
-    const layer = e.layer as L.GeoJSON;
-    if (layer.feature) {
-      const wardId = layer.feature.properties.ward_id;
-      setDetailWard(wardId);
-    }
-  };
+  const onEachFeature = (feature: GeoJSON.Feature, layer: L.Layer) => {
+    const props = feature.properties!;
+    const path = layer as L.Path;
 
-  const handleHighlight = (e: L.LeafletEvent) => {
-    const layer = e.target as L.Path;
-    layer.setStyle({
-      weight: 3,
-      color: '#1f2937',
-      fillOpacity: 0.9,
+    path.on({
+      click: () => setDetailWard(props.ward_id),
+      mouseover: () => {
+        path.setStyle({ weight: 3, color: '#1f2937', fillOpacity: 0.9 });
+        path.bringToFront();
+      },
+      mouseout: () => geoJsonRef.current?.resetStyle(path),
     });
-    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-      layer.bringToFront();
-    }
-  };
 
-  const handleResetHighlight = (e: L.LeafletEvent) => {
-    const layer = e.target as L.Path;
-    const feature = (layer as L.GeoJSON).feature;
-    if (feature) {
-      layer.setStyle(getWardStyle(feature));
+    const riskWard = riskByWard.get(props.ward_id);
+    let tooltip = `<strong>${props.ward_name}</strong><br/>Ward ${props.ward_number} • ${props.area_sqkm.toFixed(2)} km²`;
+    if (riskWard) {
+      tooltip += `<br/><span style="color:${getRiskColor(riskWard.risk_level)};font-weight:600">${riskWard.risk_level.replace('_', ' ').toUpperCase()}</span>`
+        + ` • ${(riskWard.risk_score * 100).toFixed(0)}% • ${riskWard.depth_band}`;
     }
+    path.bindTooltip(tooltip, { sticky: true });
   };
 
   return (
     <div className={cn('flex-1 relative', className)}>
       <MapContainer
-        ref={mapRef}
         center={[13.0827, 80.2707]}
         zoom={11}
         scrollWheelZoom={true}
-        className="h-full w-full"
-        whenCreated={(map) => {
-          mapRef.current = map;
-        }}
+        className="!absolute inset-0 !rounded-none"
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        
+
         {wardsGeoJSON && (
           <GeoJSON
+            // remount when risk changes so tooltips and handlers see fresh data
+            key={riskData?.generated_at ?? 'no-risk'}
+            ref={geoJsonRef}
             data={wardsGeoJSON}
             style={getWardStyle}
-            onEachFeature={(feature, layer) => {
-              layer.on({
-                click: handleClick,
-                mouseover: handleHighlight,
-                mouseout: handleResetHighlight,
-              });
-              
-              const wardId = feature.properties.ward_id;
-              const riskWard = riskData?.wards.find((w) => w.ward_id === wardId);
-              
-              let popupContent = `
-                <div class="p-2 min-w-[200px]">
-                  <h3 class="font-semibold text-gray-900">${feature.properties.ward_name}</h3>
-                  <p class="text-sm text-gray-500">Ward ${feature.properties.ward_number} • ${feature.properties.area_sqkm.toFixed(2)} km²</p>
-              `;
-              
-              if (riskWard) {
-                popupContent += `
-                  <hr class="my-1.5 border-gray-200" />
-                  <div class="flex items-center gap-2">
-                    <span class="w-3 h-3 rounded" style="background-color: ${getRiskColor(riskWard.risk_level)}"></span>
-                    <span class="font-medium">${riskWard.risk_level.replace('_', ' ').toUpperCase()}</span>
-                  </div>
-                  <p class="text-sm text-gray-600 mt-1">Depth: ${riskWard.depth_band}</p>
-                  <p class="text-sm text-gray-600">Score: ${(riskWard.risk_score * 100).toFixed(0)}%</p>
-                `;
-              }
-              
-              popupContent += '</div>';
-              layer.bindPopup(popupContent, { className: 'custom-popup' });
-            }}
+            onEachFeature={onEachFeature}
           />
         )}
+        {wardsGeoJSON && <FitToWards data={wardsGeoJSON} />}
       </MapContainer>
 
       <MapLegend riskData={riskData} />
@@ -150,9 +117,16 @@ export function MapView({ className }: MapViewProps) {
   );
 }
 
-import { cn } from '../lib/utils';
+function FitToWards({ data }: { data: GeoJSON.FeatureCollection }) {
+  const map = useMap();
+  useEffect(() => {
+    const bounds = L.geoJSON(data).getBounds();
+    if (bounds.isValid()) map.fitBounds(bounds, { padding: [16, 16] });
+  }, [data, map]);
+  return null;
+}
 
-function MapLegend({ riskData }: { riskData: import('../types').RiskResponse | null }) {
+function MapLegend({ riskData }: { riskData: RiskResponse | null }) {
   if (!riskData) return null;
 
   const { wards } = riskData;
@@ -173,7 +147,7 @@ function MapLegend({ riskData }: { riskData: import('../types').RiskResponse | n
   ];
 
   return (
-    <div className="absolute bottom-4 left-4 z-20 card p-3 shadow-lg min-w-[160px] animate-in">
+    <div className="absolute bottom-4 left-4 z-10 card p-3 shadow-lg min-w-[160px] animate-in">
       <h4 className="font-semibold text-gray-900 mb-2">Risk Legend</h4>
       <div className="space-y-1.5">
         {levels.map(({ key, label, color }) => (

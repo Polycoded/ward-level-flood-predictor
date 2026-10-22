@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useFloodStore } from '../lib/store';
 import { api } from '../api/client';
-import { cn, getRiskColor, getRiskLabel, getDepthLabel } from '../lib/utils';
-import type { AlertChannel, Language, WardRisk } from '../types';
+import { cn, getDepthLabel } from '../lib/utils';
+import type { AlertChannel, AlertMessage, Language } from '../types';
 import { RiskBadge } from './RiskBadge';
 
 interface AlertPanelProps {
@@ -11,15 +11,19 @@ interface AlertPanelProps {
 }
 
 export function AlertPanel({ onClose }: AlertPanelProps) {
-  const { riskData, ui, setAlertsOpen } = useFloodStore();
-  const [selectedWards, setSelectedWards] = useState<number[]>([]);
+  const { riskData, ui } = useFloodStore();
+  // pre-select the ward whose detail panel opened this dialog
+  const [selectedWards, setSelectedWards] = useState<number[]>(ui.detailWardId !== null ? [ui.detailWardId] : []);
   const [language, setLanguage] = useState<Language>(ui.language);
   const [channels, setChannels] = useState<AlertChannel[]>(['sms', 'whatsapp']);
-  const [alerts, setAlerts] = useState<any[]>([]);
+  const [alerts, setAlerts] = useState<AlertMessage[]>([]);
   const [sending, setSending] = useState(false);
   const [copied, setCopied] = useState<string | null>(null);
 
   const topWards = riskData?.wards.slice(0, 10) || [];
+  // keep a ward picked from the detail panel visible even if it is outside the top 10
+  const detailWard = riskData?.wards.find((w) => w.ward_id === ui.detailWardId);
+  const listedWards = detailWard && !topWards.includes(detailWard) ? [detailWard, ...topWards] : topWards;
 
   const handleSendAlerts = async () => {
     if (selectedWards.length === 0) return;
@@ -64,7 +68,7 @@ export function AlertPanel({ onClose }: AlertPanelProps) {
           <div>
             <h3 className="font-medium text-gray-900 mb-3">Select Wards</h3>
             <div className="space-y-2 max-h-48 overflow-y-auto">
-              {topWards.map((ward) => (
+              {listedWards.map((ward) => (
                 <label key={ward.ward_id} className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 hover:bg-gray-50 cursor-pointer">
                   <input
                     type="checkbox"
@@ -154,9 +158,8 @@ export function AlertPanel({ onClose }: AlertPanelProps) {
             disabled={sending || selectedWards.length === 0}
             className="w-full btn-primary py-3 disabled:opacity-50"
           >
-            {sending ? 'Sending...' : `Send Alerts to ${selectedWards.length} ward(s)`}
+            {sending ? 'Generating...' : `Generate Alerts for ${selectedWards.length} ward(s)`}
           </button>
-        </div>
 
         {alerts.length > 0 && (
           <div className="border-t border-gray-100 pt-4">
@@ -181,7 +184,7 @@ export function AlertPanel({ onClose }: AlertPanelProps) {
                     </button>
                     {alert.whatsapp_deeplink && (
                       <button
-                        onClick={() => openWhatsApp(alert.whatsapp_deeplink)}
+                        onClick={() => openWhatsApp(alert.whatsapp_deeplink!)}
                         className="text-xs text-green-600 hover:text-green-700 flex items-center gap-1"
                       >
                         <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
@@ -196,6 +199,7 @@ export function AlertPanel({ onClose }: AlertPanelProps) {
             </div>
           </div>
         )}
+        </div>
       </div>
     </div>
   );
