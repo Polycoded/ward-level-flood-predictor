@@ -1,44 +1,48 @@
-from typing import List
+"""Shared explanations of the uncalibrated index, not physical flood predictions."""
+
 import pandas as pd
 
 
-def generate_reasons(row: pd.Series, rainfall_mm: float, risk_score: float) -> List[str]:
+def _reasons_for_features(features: dict[str, float], rainfall_mm: float,
+                          duration_hours: float, risk_score: float) -> list[str]:
     reasons = []
-    
-    elevation_mean = row.get("elevation_mean", 10.0)
-    if elevation_mean < 5.0:
-        reasons.append(f"Low mean elevation ({elevation_mean:.1f}m) increases flood susceptibility")
-    
-    slope_mean = row.get("slope_mean", 2.0)
-    if slope_mean < 1.5:
-        reasons.append(f"Very flat terrain (mean slope {slope_mean:.1f}°) limits natural drainage")
-    
-    impervious_frac = row.get("impervious_frac", 0.5)
-    if impervious_frac > 0.6:
-        reasons.append(f"High impervious surface fraction ({impervious_frac:.0%}) reduces infiltration capacity")
-    
-    dist_to_water = row.get("dist_to_water_m", 1000.0)
-    if dist_to_water < 500:
-        reasons.append(f"Proximity to water body ({dist_to_water:.0f}m) creates backflow risk")
-    
-    underpass_count = row.get("underpass_count", 0)
-    if underpass_count > 0:
-        reasons.append(f"Contains {underpass_count} underpass(es) - critical flood risk points")
-    
-    road_density = row.get("road_density_km_per_sqkm", 5.0)
-    if road_density > 15:
-        reasons.append(f"High road density ({road_density:.1f} km/km²) indicates dense urbanization")
-    
-    vegetation_frac = row.get("vegetation_frac", 0.2)
-    if vegetation_frac < 0.1:
-        reasons.append(f"Low vegetation cover ({vegetation_frac:.0%}) reduces natural absorption")
-    
-    if rainfall_mm > 150:
-        reasons.append(f"High rainfall forecast ({rainfall_mm:.0f}mm) likely exceeds drainage design capacity")
-    elif rainfall_mm > 75:
-        reasons.append(f"Moderate rainfall forecast ({rainfall_mm:.0f}mm) may overwhelm low-lying areas")
-    
-    if not reasons:
-        reasons.append("No single dominant risk factor; composite score drives assessment")
-    
-    return reasons[:5]
+    elevation = features["elevation_mean"]
+    if elevation < 5:
+        reasons.append(f"Low mean elevation ({elevation:.1f} m) raises the elevation component")
+    slope = features["slope_mean"]
+    if slope < 1.5:
+        reasons.append(f"Flat terrain (mean slope {slope:.1f}°) raises the slope component")
+    impervious = features["impervious_frac"]
+    if impervious > 0.6:
+        reasons.append(f"High effective impervious fraction ({impervious:.1%}) raises the impervious component")
+    distance = features["dist_to_water_m"]
+    if distance < 500:
+        reasons.append(f"Water proximity ({distance:.0f} m) raises the proximity component; backflow is not modelled")
+    count = features["underpass_count"]
+    if count > 0:
+        reasons.append(f"Mapped underpass count ({count:.0f}) activates the underpass component")
+    roads = features["road_density_km_per_sqkm"]
+    if roads > 15:
+        reasons.append(f"High road density ({roads:.1f} km/km²) raises the road-density component")
+    reasons.append(
+        f"Rainfall input: {rainfall_mm:g} mm over {duration_hours:g} h "
+        f"(mean intensity {rainfall_mm / duration_hours:.1f} mm/h); "
+        "a bounded duration heuristic scales the index"
+    )
+    reasons.append(f"Uncalibrated risk index: {risk_score:.3f}; not a flood probability, depth or peak-time prediction")
+    return reasons
+
+
+def generate_reasons(row: pd.Series, rainfall_mm: float, risk_score: float, *,
+                     builtup_increase: float = 0.0, duration_hours: float = 3.0) -> list[str]:
+    """Explain original features with the same scenario arguments as score_ward.
+
+    risk_score is the caller's computed index, retained for compatibility.
+    """
+    from model.risk_engine import _number, effective_inputs
+
+    features, rain, duration = effective_inputs(
+        row, rainfall_mm, builtup_increase, duration_hours=duration_hours
+    )
+    score = _number("risk_score", risk_score, 0, 1)
+    return _reasons_for_features(features, rain, duration, score)

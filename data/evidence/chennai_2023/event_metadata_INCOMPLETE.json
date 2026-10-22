@@ -1,0 +1,17 @@
+{
+  "is_template": true,
+  "draft_status": "incomplete_not_evaluator_ready",
+  "event_id": "chennai-december-2023-research-draft",
+  "event_name": "Chennai December 2023 floods associated with Michaung (research draft)",
+  "event_date": null,
+  "boundary_version": null,
+  "boundary_source_ref": null,
+  "observation_protocol": "Pending review: evidence of flooding somewhere within a verified ward; not entire ward submerged. See docs/historical_evidence.md.",
+  "sampling_notes": "News convenience sample with unresolved locations; no confirmed non-flooded observations; no labels promoted.",
+  "model_id": null,
+  "model_version": null,
+  "rainfall_mm": null,
+  "duration_hours": null,
+  "research_source_ids": ["GCC01", "IMD01", "RAIN01", "FLOOD01", "SAT01"],
+  "scenario_assumption": "No uniform ward rainfall scenario selected; station totals must not be assigned city-wide without explicit review."
+}
