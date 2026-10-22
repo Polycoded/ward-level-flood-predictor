@@ -146,9 +146,9 @@ async def get_ward(ward_id: int):
     )
 
 
-def compute_risk_score(row: pd.Series, rainfall_mm: float, builtup_increase: float = 0.0) -> tuple:
+def compute_risk_score(row: pd.Series, rainfall_mm: float, builtup_increase: float = 0.0, duration_hours: float = 3.0) -> tuple:
     from model.risk_engine import score_ward
-    return score_ward(row, rainfall_mm, builtup_increase)
+    return score_ward(row, rainfall_mm, builtup_increase, duration_hours=duration_hours)
 
 
 @router.post("/risk", response_model=RiskResponse)
@@ -200,15 +200,10 @@ async def get_risk(input_data: RainfallInput):
 async def get_scenario_risk(input_data: ScenarioInput):
     features = load_features()
     
-    adjusted_features = features.copy()
-    if input_data.builtup_increase_pct > 0:
-        increase_factor = 1 + (input_data.builtup_increase_pct / 100)
-        adjusted_features["impervious_frac"] = (adjusted_features["impervious_frac"] * increase_factor).clip(0, 1)
-    
     results = []
-    for _, row in adjusted_features.iterrows():
+    for _, row in features.iterrows():
         risk_score, risk_level, depth_band, peak_window, reasons = compute_risk_score(
-            row, input_data.rainfall_mm, input_data.builtup_increase_pct
+            row, input_data.rainfall_mm, input_data.builtup_increase_pct, duration_hours=input_data.duration_hours
         )
         
         feature_dict = {
