@@ -1,9 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { useFloodStore } from '../lib/store';
 import { api } from '../api/client';
-import { cn, getRiskColor, getRiskLabel, getDepthLabel, getDepthColor, formatPercent, formatDistance } from '../lib/utils';
+import { getRiskColor, getDepthLabel, getDepthColor, formatPercent, formatDistance } from '../lib/utils';
+import { geometryCenter } from '../lib/geo';
 import { RiskBadge } from './RiskBadge';
+import { ExplainabilityPanel } from './ExplainabilityPanel';
 import type { WardFeature, WardRisk } from '../types';
 
 interface WardDetailPanelProps {
@@ -11,193 +13,213 @@ interface WardDetailPanelProps {
 }
 
 export function WardDetailPanel({ wardId }: WardDetailPanelProps) {
-  const { riskData, setSelectedWard, setDetailWard, ui } = useFloodStore();
+  const { riskData, scenario, setSelectedWard, setDetailWard } = useFloodStore();
   const [wardDetail, setWardDetail] = useState<WardFeature | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading');
 
   useEffect(() => {
-    loadWardDetail();
-  }, [wardId]);
+    let cancelled = false;
+    setStatus('loading');
+    api
+      .getWard(wardId)
+      .then((detail) => {
+        if (cancelled) return;
+        setWardDetail(detail);
+        setSelectedWard(detail);
+        setStatus('ready');
+      })
+      .catch(() => !cancelled && setStatus('error'));
+    return () => {
+      cancelled = true;
+    };
+  }, [wardId, setSelectedWard]);
 
-  const loadWardDetail = async () => {
-    try {
-      const detail = await api.getWard(wardId);
-      setWardDetail(detail);
-      setSelectedWard(detail);
-    } catch (error) {
-      console.error('Failed to load ward detail:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  useEffect(() => {
+    // an open dialog on top owns Escape; only close the drawer when it is the top layer
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && !document.querySelector('[aria-modal="true"]')) setDetailWard(null);
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [setDetailWard]);
 
-  const riskWard = riskData?.wards.find((w) => w.ward_id === wardId);
-  const isOpen = ui.detailWardId === wardId;
+  const riskWard = riskData?.wards.find((w) => w.ward_id === wardId) ?? null;
+  const close = () => setDetailWard(null);
 
-  if (!isOpen || loading) {
-    return null;
-  }
+  // Mobile: modal drawer with backdrop. Desktop: side drawer that leaves the map
+  // clickable so you can hop between wards.
+  return createPortal(
+    <>
+      <div className="fixed inset-0 z-40 bg-black/50 lg:hidden" onClick={close} aria-hidden="true" />
+      <aside
+        aria-label="Ward details"
+        className="fixed inset-y-0 right-0 z-40 w-full max-w-md bg-white shadow-xl flex flex-col animate-in"
+      >
+        {status === 'loading' && <PanelMessage onClose={close}>Loading ward…</PanelMessage>}
+        {status === 'error' && <PanelMessage onClose={close}>Could not load this ward. Try again in a moment.</PanelMessage>}
+        {status === 'ready' && wardDetail && (
+          <DetailContent
+            wardDetail={wardDetail}
+            riskWard={riskWard}
+            rainfallMm={riskData?.scenario.rainfall_mm ?? null}
+            builtupIncreasePct={scenario.builtup_increase_pct}
+            onClose={close}
+          />
+        )}
+      </aside>
+    </>,
+    document.body
+  );
+}
 
-  const content = (
-    <div className="fixed inset-0 z-40 flex lg:hidden">
-      <div className="absolute inset-0 bg-black/50" onClick={() => setDetailWard(null)} />
-      <div className="relative w-full max-w-md ml-auto bg-white shadow-xl flex flex-col h-full animate-in">
-        <DetailContent wardDetail={wardDetail} riskWard={riskWard} onClose={() => setDetailWard(null)} />
-      </div>
+function CloseButton({ onClose }: { onClose: () => void }) {
+  return (
+    <button onClick={onClose} className="p-2 rounded-lg hover:bg-gray-100 text-gray-600" aria-label="Close ward details">
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  );
+}
+
+function PanelMessage({ children, onClose }: { children: ReactNode; onClose: () => void }) {
+  return (
+    <div className="p-4 flex items-start justify-between gap-2">
+      <p className="text-gray-700" role="status">{children}</p>
+      <CloseButton onClose={onClose} />
     </div>
   );
-
-  return createPortal(content, document.body);
 }
 
 function DetailContent({
   wardDetail,
   riskWard,
+  rainfallMm,
+  builtupIncreasePct,
   onClose,
 }: {
-  wardDetail: WardFeature | null;
+  wardDetail: WardFeature;
   riskWard: WardRisk | null;
+  rainfallMm: number | null;
+  builtupIncreasePct: number;
   onClose: () => void;
 }) {
-  if (!wardDetail) return null;
-
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full min-h-0">
       <div className="p-4 border-b border-gray-200 flex items-center justify-between">
         <div>
           <h2 className="text-lg font-semibold text-gray-900">{wardDetail.ward_name}</h2>
-          <p className="text-sm text-gray-500">Ward {wardDetail.ward_number} • {wardDetail.area_sqkm.toFixed(2)} km²</p>
+          <p className="text-sm text-gray-600">Ward {wardDetail.ward_number} • {wardDetail.area_sqkm.toFixed(2)} km²</p>
         </div>
-        <button onClick={onClose} className="p-2 rounded-lg hover:bg-gray-100 text-gray-500">
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
+        <CloseButton onClose={onClose} />
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4 space-y-6">
-        {riskWard && (
-          <RiskSummaryCard ward={riskWard} />
+      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        {riskWard ? (
+          <RiskSummaryCard ward={riskWard} rainfallMm={rainfallMm} />
+        ) : (
+          <p className="text-sm text-gray-700 bg-gray-50 border border-gray-200 rounded-lg p-3">
+            Run a rainfall analysis to see this ward's flood risk. Its terrain profile is below.
+          </p>
         )}
 
-        <ReasonsPanel reasons={riskWard?.reasons || []} />
+        <ExplainabilityPanel ward={wardDetail} riskWard={riskWard} rainfallMm={rainfallMm} builtupIncreasePct={builtupIncreasePct} />
 
-        <FeatureMetricsPanel ward={wardDetail} />
+        <OtherFeatures ward={wardDetail} />
 
-        <AlertActionsPanel wardId={wardDetail.ward_id} wardName={wardDetail.ward_name} riskWard={riskWard} />
+        <ActionsPanel ward={wardDetail} hasRisk={riskWard !== null} />
       </div>
     </div>
   );
 }
 
-function RiskSummaryCard({ ward }: { ward: WardRisk }) {
-  const color = getRiskColor(ward.risk_level);
-  const depthColor = getDepthColor(ward.depth_band);
-
+function RiskSummaryCard({ ward, rainfallMm }: { ward: WardRisk; rainfallMm: number | null }) {
   return (
-    <div className="card p-4 border-l-4" style={{ borderLeftColor: color }}>
+    <div className="card p-4 border-l-4" style={{ borderLeftColor: getRiskColor(ward.risk_level) }}>
       <div className="flex items-center justify-between mb-3">
         <RiskBadge level={ward.risk_level} size="lg" showIcon />
         <div className="text-right">
-          <p className="text-3xl font-bold text-gray-900">{(ward.risk_score * 100).toFixed(0)}%</p>
-          <p className="text-xs text-gray-500">Risk Score</p>
+          <p className="text-3xl font-bold text-gray-900">{Math.round(ward.risk_score * 100)}</p>
+          <p className="text-xs text-gray-600">risk score / 100</p>
         </div>
       </div>
-      
-      <div className="grid grid-cols-2 gap-4">
+      <dl className="grid grid-cols-2 gap-3 text-sm">
         <div>
-          <p className="text-xs text-gray-500">Flood Depth</p>
-          <p className="font-medium text-gray-900 flex items-center gap-1">
-            <span className="w-2 h-2 rounded" style={{ backgroundColor: depthColor }}></span>
+          <dt className="text-xs text-gray-600">Likely water depth</dt>
+          <dd className="font-medium text-gray-900 flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded" style={{ backgroundColor: getDepthColor(ward.depth_band) }} aria-hidden="true" />
             {getDepthLabel(ward.depth_band)}
-          </p>
+          </dd>
         </div>
         <div>
-          <p className="text-xs text-gray-500">Peak Window</p>
-          <p className="font-medium text-gray-900">{ward.peak_window_hours} hours</p>
+          <dt className="text-xs text-gray-600">Expected peak</dt>
+          <dd className="font-medium text-gray-900">~{ward.peak_window_hours} h from now</dd>
         </div>
-      </div>
+        {rainfallMm !== null && (
+          <div className="col-span-2">
+            <dt className="text-xs text-gray-600">Scenario</dt>
+            <dd className="font-medium text-gray-900">{rainfallMm} mm rainfall</dd>
+          </div>
+        )}
+      </dl>
     </div>
   );
 }
 
-function ReasonsPanel({ reasons }: { reasons: string[] }) {
-  if (reasons.length === 0) return null;
-
-  return (
-    <div className="card p-4">
-      <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
-        <svg className="w-5 h-5 text-flood-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-        Key Risk Factors
-      </h3>
-      <ul className="space-y-2">
-        {reasons.map((reason, i) => (
-          <li key={i} className="flex items-start gap-2 text-sm text-gray-700">
-            <span className="w-1.5 h-1.5 rounded-full bg-flood-500 mt-1.5 flex-shrink-0" />
-            {reason}
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-function FeatureMetricsPanel({ ward }: { ward: WardFeature }) {
-  const metrics = [
-    { label: 'Elevation', value: `${ward.elevation_mean.toFixed(1)} m`, icon: '⛰️' },
-    { label: 'Slope', value: `${ward.slope_mean.toFixed(1)}°`, icon: '📐' },
-    { label: 'Impervious', value: formatPercent(ward.impervious_frac), icon: '🏢' },
-    { label: 'Water Bodies', value: formatPercent(ward.water_frac), icon: '💧' },
-    { label: 'Vegetation', value: formatPercent(ward.vegetation_frac), icon: '🌳' },
-    { label: 'Dist. to Water', value: formatDistance(ward.dist_to_water_m), icon: '📏' },
-    { label: 'Road Density', value: `${ward.road_density_km_per_sqkm.toFixed(1)} km/km²`, icon: '🛣️' },
-    { label: 'Underpasses', value: ward.underpass_count.toString(), icon: '🚇' },
+function OtherFeatures({ ward }: { ward: WardFeature }) {
+  const rows = [
+    { label: 'Water bodies', value: formatPercent(ward.water_frac) },
+    { label: 'Vegetation', value: formatPercent(ward.vegetation_frac) },
+    { label: 'Nearest water', value: formatDistance(ward.dist_to_water_m) },
+    { label: 'Static flood-prone index', value: `${Math.round(ward.flood_prone_index * 100)} / 100` },
   ];
-
   return (
-    <div className="card p-4">
-      <h3 className="font-semibold text-gray-900 mb-3">Ward Characteristics</h3>
-      <div className="grid grid-cols-2 gap-3">
-        {metrics.map((m, i) => (
-          <div key={i} className="p-3 bg-gray-50 rounded-lg">
-            <p className="text-xs text-gray-500 flex items-center gap-1">{m.icon} {m.label}</p>
-            <p className="font-mono text-lg font-semibold text-gray-900">{m.value}</p>
+    <details className="card p-4">
+      <summary className="font-semibold text-gray-900 cursor-pointer">More ward data</summary>
+      <dl className="grid grid-cols-2 gap-3 mt-3">
+        {rows.map((r) => (
+          <div key={r.label} className="p-2.5 bg-gray-50 rounded-lg">
+            <dt className="text-xs text-gray-600">{r.label}</dt>
+            <dd className="font-mono font-semibold text-gray-900">{r.value}</dd>
           </div>
         ))}
-      </div>
-    </div>
+      </dl>
+    </details>
   );
 }
 
-function AlertActionsPanel({ wardId, wardName, riskWard }: { wardId: number; wardName: string; riskWard: WardRisk | null }) {
-  const { ui, setAlertsOpen } = useFloodStore();
+function ActionsPanel({ ward, hasRisk }: { ward: WardFeature; hasRisk: boolean }) {
+  const { setAlertsOpen, setMapView, setShelterOrigin, setDetailWard } = useFloodStore();
+
+  const showShelters = () => {
+    const centre = geometryCenter(ward.geometry);
+    if (centre) setShelterOrigin({ ...centre, label: `Centre of ${ward.ward_name}` });
+    setMapView('shelters');
+    setDetailWard(null);
+  };
 
   return (
-    <div className="card p-4 border-t border-gray-100">
+    <div className="card p-4">
       <h3 className="font-semibold text-gray-900 mb-3">Actions</h3>
       <div className="space-y-2">
         <button
           onClick={() => setAlertsOpen(true)}
-          className="w-full btn-primary justify-center"
+          disabled={!hasRisk}
+          title={hasRisk ? undefined : 'Run a rainfall analysis first'}
+          className="w-full btn-primary"
         >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-          </svg>
-          Send Alerts
+          Draft alerts for this ward
         </button>
-        <button className="w-full btn-secondary justify-center">
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.761 19.239a2 2 0 002.476 0l6-6a2 2 0 00-2.476-2.476L8 15.527V5a2 2 0 00-2-2H6a2 2 0 00-2 2v10.527L2.476 10.761A2 2 0 000 13.243l6 6a2 2 0 002.476 0z" />
-          </svg>
-          Navigate to Shelter
-        </button>
-        <button className="w-full btn-ghost justify-center text-flood-600">
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-          </svg>
-          View Road Risk
+        <button onClick={showShelters} className="w-full btn-secondary">Nearest shelters</button>
+        <button
+          onClick={() => {
+            setMapView('roads');
+            setDetailWard(null);
+          }}
+          disabled={!hasRisk}
+          className="w-full btn-ghost text-flood-700"
+        >
+          Roads &amp; underpasses
         </button>
       </div>
     </div>

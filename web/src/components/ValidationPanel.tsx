@@ -1,5 +1,5 @@
 import { useFloodStore } from '../lib/store';
-import { cn, getRiskColor } from '../lib/utils';
+import { cn } from '../lib/utils';
 import type { ValidationMetrics } from '../types';
 
 interface ValidationPanelProps {
@@ -7,14 +7,15 @@ interface ValidationPanelProps {
 }
 
 export function ValidationPanel({ data }: ValidationPanelProps) {
-  const validation = data || useFloodStore.getState().validationData;
+  const { validationData, setValidationOpen } = useFloodStore();
+  const validation = data || validationData;
   
   if (!validation) return null;
 
   const { precision_at_20, recall, false_positive_rate, true_positives, false_positives, false_negatives, total_flooded_wards, total_wards, notes } = validation;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-20 bg-white border-t border-gray-200 rounded-t-2xl shadow-xl max-h-[70vh] flex flex-col lg:fixed lg:bottom-4 lg:left-4 lg:top-4 lg:rounded-xl lg:max-w-md lg:max-h-[calc(100vh-2rem)] lg:shadow-2xl">
+    <div className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-200 rounded-t-2xl shadow-xl max-h-[70vh] flex flex-col lg:bottom-4 lg:left-4 lg:top-20 lg:right-auto lg:w-[26rem] lg:rounded-xl lg:max-h-none lg:shadow-2xl">
       <div className="p-4 border-b border-gray-200 flex items-center justify-between">
         <h2 className="font-semibold text-gray-900 flex items-center gap-2">
           <svg className="w-5 h-5 text-flood-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -22,7 +23,7 @@ export function ValidationPanel({ data }: ValidationPanelProps) {
           </svg>
           Dec 2023 Validation
         </h2>
-        <button className="p-2 rounded-lg hover:bg-gray-100 text-gray-500">
+        <button onClick={() => setValidationOpen(false)} className="p-2 rounded-lg hover:bg-gray-100 text-gray-500" aria-label="Close validation">
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
@@ -33,19 +34,19 @@ export function ValidationPanel({ data }: ValidationPanelProps) {
         <div className="grid grid-cols-3 gap-3">
           <MetricCard
             label="Precision@20"
-            value={(precision_at_20 * 100).toFixed(1)} + '%'
+            value={`${(precision_at_20 * 100).toFixed(1)}%`}
             color="flood"
             description={`TP: ${true_positives} / 20`}
           />
           <MetricCard
             label="Recall"
-            value={(recall * 100).toFixed(1)} + '%'
+            value={`${(recall * 100).toFixed(1)}%`}
             color="green"
             description={`TP: ${true_positives} / ${total_flooded_wards}`}
           />
           <MetricCard
             label="False Positive Rate"
-            value={(false_positive_rate * 100).toFixed(1)} + '%'
+            value={`${(false_positive_rate * 100).toFixed(1)}%`}
             color="red"
             description={`FP: ${false_positives}`}
           />
