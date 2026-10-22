@@ -28,7 +28,8 @@ def score_roads(
     roads_gdf: gpd.GeoDataFrame,
     underpasses_gdf: gpd.GeoDataFrame,
     wards_gdf: gpd.GeoDataFrame,
-    rainfall_mm: float
+    rainfall_mm: float,
+    max_results: int = 100
 ) -> List[Dict[str, Any]]:
     if len(roads_gdf) == 0:
         return []
@@ -41,10 +42,45 @@ def score_roads(
         underpasses_utm = underpasses_gdf.to_crs("EPSG:32644") if underpasses_gdf.crs != "EPSG:32644" else underpasses_gdf
         underpass_geoms = underpasses_utm.geometry.tolist()
     
-    results = []
+    # Build spatial index for wards for fast intersection queries
+    ward_sindex = wards_utm.sindex
+    
     rainfall_factor = min(rainfall_mm / 150.0, 2.0)
     
-    for idx, road in roads_utm.iterrows():
+    # Highway weights
+    highway_weights = {
+        "motorway": 1.0, "trunk": 0.9, "primary": 0.8,
+        "secondary": 0.6, "tertiary": 0.5, "residential": 0.4, "service": 0.3
+    }
+    
+    # Pre-compute ward risk factors
+    ward_data = []
+    for _, ward in wards_utm.iterrows():
+        ward_data.append({
+            "geometry": ward.geometry,
+            "elevation_mean": ward.get("elevation_mean", 10.0),
+            "slope_mean": ward.get("slope_mean", 2.0),
+            "impervious_frac": ward.get("impervious_frac", 0.5),
+            "dist_to_water": ward.get("dist_to_water_m", 1000.0),
+        })
+    
+    results = []
+    
+    # Limit processing to major roads first for performance
+    # Sort by highway importance to process most critical first
+    highway_priority = {
+        "motorway": 0, "trunk": 1, "primary": 2, 
+        "secondary": 3, "tertiary": 4, "residential": 5, "service": 6, "unclassified": 7
+    }
+    roads_utm = roads_utm.copy()
+    roads_utm["_priority"] = roads_utm["highway_type"].map(highway_priority).fillna(8)
+    roads_utm = roads_utm.sort_values("_priority")
+    
+    # Only process up to 5000 roads for performance (covers all major + sample of minor)
+    MAX_ROADS_PROCESS = 5000
+    roads_to_process = roads_utm.head(MAX_ROADS_PROCESS)
+    
+    for idx, road in roads_to_process.iterrows():
         road_geom = road.geometry
         if road_geom.is_empty:
             continue
@@ -53,20 +89,23 @@ def score_roads(
         is_tunnel = road.get("is_tunnel", False)
         layer = road.get("layer", 0)
         
-        ward_matches = wards_utm[wards_utm.intersects(road_geom)]
-        if len(ward_matches) == 0:
+        # Fast spatial query using sindex
+        possible_wards = list(ward_sindex.intersection(road_geom.bounds))
+        if not possible_wards:
             continue
         
-        ward = ward_matches.iloc[0]
-        elevation_mean = ward.get("elevation_mean", 10.0)
-        slope_mean = ward.get("slope_mean", 2.0)
-        impervious_frac = ward.get("impervious_frac", 0.5)
-        dist_to_water = ward.get("dist_to_water_m", 1000.0)
+        # Find actual intersecting ward
+        ward_idx = None
+        for wi in possible_wards:
+            if wards_utm.iloc[wi].geometry.intersects(road_geom):
+                ward_idx = wi
+                break
         
-        highway_weights = {
-            "motorway": 1.0, "trunk": 0.9, "primary": 0.8,
-            "secondary": 0.6, "tertiary": 0.5, "residential": 0.4, "service": 0.3
-        }
+        if ward_idx is None:
+            continue
+        
+        ward_info = ward_data[ward_idx]
+        
         highway_weight = highway_weights.get(highway_type, 0.5)
         
         is_underpass = is_tunnel or layer < 0
@@ -80,10 +119,10 @@ def score_roads(
             else:
                 underpass_proximity = 0.0
         
-        elevation_risk = max(0, 1 - elevation_mean / 20)
-        slope_risk = max(0, 1 - slope_mean / 10)
-        impervious_risk = impervious_frac
-        water_risk = max(0, 1 - dist_to_water / 3000)
+        elevation_risk = max(0, 1 - ward_info["elevation_mean"] / 20)
+        slope_risk = max(0, 1 - ward_info["slope_mean"] / 10)
+        impervious_risk = ward_info["impervious_frac"]
+        water_risk = max(0, 1 - ward_info["dist_to_water"] / 3000)
         
         base_score = (
             0.25 * elevation_risk +
@@ -105,11 +144,16 @@ def score_roads(
         if is_underpass:
             depth_estimate = min(depth_estimate * 2, 300)
         
+        # Only convert geometry for results we'll actually return
         road_wgs84 = gpd.GeoSeries([road_geom], crs="EPSG:32644").to_crs("EPSG:4326").iloc[0]
+        
+        road_name = road.get("name")
+        if pd.isna(road_name):
+            road_name = f"Road {idx}"
         
         results.append({
             "road_id": str(idx),
-            "name": road.get("name", f"Road {idx}"),
+            "name": road_name,
             "highway_type": highway_type,
             "risk_score": float(risk_score),
             "risk_level": risk_level,
@@ -119,4 +163,4 @@ def score_roads(
         })
     
     results.sort(key=lambda x: x["risk_score"], reverse=True)
-    return results[:100]
+    return results[:max_results]

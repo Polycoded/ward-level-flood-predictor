@@ -23,6 +23,8 @@ dependencies = [
     "pydantic-settings>=2.3.0",
     "tenacity>=8.4.0",
     "structlog>=24.1.0",
+    "pyogrio>=0.13.0",
+    "fiona>=1.10.1",
 ]
 
 [project.optional-dependencies]

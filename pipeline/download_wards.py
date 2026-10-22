@@ -19,10 +19,12 @@ out body;
 out skel qt;
 """
 
+HEADERS = {"User-Agent": "ward-flood-predictor/0.1 (hackathon prototype; github.com/Polycoded/ward-level-flood-predictor)"}
+
 def fetch_wards_from_overpass() -> dict:
     url = "https://overpass-api.de/api/interpreter"
     logger.info("Fetching Chennai wards from Overpass API")
-    response = httpx.post(url, data={"data": OVERPASS_QUERY}, timeout=180.0)
+    response = httpx.post(url, data={"data": OVERPASS_QUERY}, headers=HEADERS, timeout=180.0)
     response.raise_for_status()
     return response.json()
 
