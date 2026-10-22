@@ -1,0 +1,201 @@
+ward_id,ward_number,ward_name,zone_number,zone_name,source
+1,168,Ward 168,XIII,ADYAR,chennai_gcc_kml_2022
+2,169,Ward 169,XIII,ADYAR,chennai_gcc_kml_2022
+3,170,Ward 170,XIII,ADYAR,chennai_gcc_kml_2022
+4,171,Ward 171,XIII,ADYAR,chennai_gcc_kml_2022
+5,174,Ward 174,XIII,ADYAR,chennai_gcc_kml_2022
+6,173,Ward 173,XIII,ADYAR,chennai_gcc_kml_2022
+7,179,Ward 179,XIII,ADYAR,chennai_gcc_kml_2022
+8,178,Ward 178,XIII,ADYAR,chennai_gcc_kml_2022
+9,172,Ward 172,XIII,ADYAR,chennai_gcc_kml_2022
+10,177,Ward 177,XIII,ADYAR,chennai_gcc_kml_2022
+11,176,Ward 176,XIII,ADYAR,chennai_gcc_kml_2022
+12,175,Ward 175,XIII,ADYAR,chennai_gcc_kml_2022
+13,180,Ward 180,XIII,ADYAR,chennai_gcc_kml_2022
+14,193,Ward 193,XV,SHOZHANGANALLUR,chennai_gcc_kml_2022
+15,198,Ward 198,XV,SHOZHANGANALLUR,chennai_gcc_kml_2022
+16,199,Ward 199,XV,SHOZHANGANALLUR,chennai_gcc_kml_2022
+17,192,Ward 192,XV,SHOZHANGANALLUR,chennai_gcc_kml_2022
+18,200,Ward 200,XV,SHOZHANGANALLUR,chennai_gcc_kml_2022
+19,194,Ward 194,XV,SHOZHANGANALLUR,chennai_gcc_kml_2022
+20,197,Ward 197,XV,SHOZHANGANALLUR,chennai_gcc_kml_2022
+21,185,Ward 185,XIV,PERUNKUDI,chennai_gcc_kml_2022
+22,186,Ward 186,XIV,PERUNKUDI,chennai_gcc_kml_2022
+23,184,Ward 184,XIV,PERUNKUDI,chennai_gcc_kml_2022
+24,181,Ward 181,XIV,PERUNKUDI,chennai_gcc_kml_2022
+25,183,Ward 183,XIV,PERUNKUDI,chennai_gcc_kml_2022
+26,189,Ward 189,XIV,PERUNKUDI,chennai_gcc_kml_2022
+27,190,Ward 190,XIV,PERUNKUDI,chennai_gcc_kml_2022
+28,191,Ward 191,XIV,PERUNKUDI,chennai_gcc_kml_2022
+29,182,Ward 182,XIV,PERUNKUDI,chennai_gcc_kml_2022
+30,126,Ward 126,IX,TEYNAMPET,chennai_gcc_kml_2022
+31,125,Ward 125,IX,TEYNAMPET,chennai_gcc_kml_2022
+32,115,Ward 115,IX,TEYNAMPET,chennai_gcc_kml_2022
+33,116,Ward 116,IX,TEYNAMPET,chennai_gcc_kml_2022
+34,114,Ward 114,IX,TEYNAMPET,chennai_gcc_kml_2022
+35,124,Ward 124,IX,TEYNAMPET,chennai_gcc_kml_2022
+36,113,Ward 113,IX,TEYNAMPET,chennai_gcc_kml_2022
+37,123,Ward 123,IX,TEYNAMPET,chennai_gcc_kml_2022
+38,112,Ward 112,IX,TEYNAMPET,chennai_gcc_kml_2022
+39,122,Ward 122,IX,TEYNAMPET,chennai_gcc_kml_2022
+40,121,Ward 121,IX,TEYNAMPET,chennai_gcc_kml_2022
+41,120,Ward 120,IX,TEYNAMPET,chennai_gcc_kml_2022
+42,109,Ward 109,IX,TEYNAMPET,chennai_gcc_kml_2022
+43,119,Ward 119,IX,TEYNAMPET,chennai_gcc_kml_2022
+44,118,Ward 118,IX,TEYNAMPET,chennai_gcc_kml_2022
+45,117,Ward 117,IX,TEYNAMPET,chennai_gcc_kml_2022
+46,108,Ward 108,VIII,ANNA NAGAR,chennai_gcc_kml_2022
+47,106,Ward 106,VIII,ANNA NAGAR,chennai_gcc_kml_2022
+48,107,Ward 107,VIII,ANNA NAGAR,chennai_gcc_kml_2022
+49,105,Ward 105,VIII,ANNA NAGAR,chennai_gcc_kml_2022
+50,104,Ward 104,VIII,ANNA NAGAR,chennai_gcc_kml_2022
+51,99,Ward 99,VIII,ANNA NAGAR,chennai_gcc_kml_2022
+52,98,Ward 98,VIII,ANNA NAGAR,chennai_gcc_kml_2022
+53,100,Ward 100,VIII,ANNA NAGAR,chennai_gcc_kml_2022
+54,97,Ward 97,VIII,ANNA NAGAR,chennai_gcc_kml_2022
+55,101,Ward 101,VIII,ANNA NAGAR,chennai_gcc_kml_2022
+56,96,Ward 96,VIII,ANNA NAGAR,chennai_gcc_kml_2022
+57,102,Ward 102,VIII,ANNA NAGAR,chennai_gcc_kml_2022
+58,95,Ward 95,VIII,ANNA NAGAR,chennai_gcc_kml_2022
+59,103,Ward 103,VIII,ANNA NAGAR,chennai_gcc_kml_2022
+60,94,Ward 94,VIII,ANNA NAGAR,chennai_gcc_kml_2022
+61,15,Ward 15,II,MANALI,chennai_gcc_kml_2022
+62,16,Ward 16,II,MANALI,chennai_gcc_kml_2022
+63,17,Ward 17,II,MANALI,chennai_gcc_kml_2022
+64,18,Ward 18,II,MANALI,chennai_gcc_kml_2022
+65,19,Ward 19,II,MANALI,chennai_gcc_kml_2022
+66,20,Ward 20,II,MANALI,chennai_gcc_kml_2022
+67,21,Ward 21,II,MANALI,chennai_gcc_kml_2022
+68,79,Ward 79,VII,AMBATTUR,chennai_gcc_kml_2022
+69,80,Ward 80,VII,AMBATTUR,chennai_gcc_kml_2022
+70,81,Ward 81,VII,AMBATTUR,chennai_gcc_kml_2022
+71,82,Ward 82,VII,AMBATTUR,chennai_gcc_kml_2022
+72,83,Ward 83,VII,AMBATTUR,chennai_gcc_kml_2022
+73,84,Ward 84,VII,AMBATTUR,chennai_gcc_kml_2022
+74,85,Ward 85,VII,AMBATTUR,chennai_gcc_kml_2022
+75,86,Ward 86,VII,AMBATTUR,chennai_gcc_kml_2022
+76,87,Ward 87,VII,AMBATTUR,chennai_gcc_kml_2022
+77,88,Ward 88,VII,AMBATTUR,chennai_gcc_kml_2022
+78,90,Ward 90,VII,AMBATTUR,chennai_gcc_kml_2022
+79,92,Ward 92,VII,AMBATTUR,chennai_gcc_kml_2022
+80,93,Ward 93,VII,AMBATTUR,chennai_gcc_kml_2022
+81,89,Ward 89,VII,AMBATTUR,chennai_gcc_kml_2022
+82,162,Ward 162,XII,ALANDUR,chennai_gcc_kml_2022
+83,163,Ward 163,XII,ALANDUR,chennai_gcc_kml_2022
+84,164,Ward 164,XII,ALANDUR,chennai_gcc_kml_2022
+85,158,Ward 158,XII,ALANDUR,chennai_gcc_kml_2022
+86,159,Ward 159,XII,ALANDUR,chennai_gcc_kml_2022
+87,167,Ward 167,XII,ALANDUR,chennai_gcc_kml_2022
+88,157,Ward 157,XII,ALANDUR,chennai_gcc_kml_2022
+89,166,Ward 166,XII,ALANDUR,chennai_gcc_kml_2022
+90,165,Ward 165,XII,ALANDUR,chennai_gcc_kml_2022
+91,156,Ward 156,XII,ALANDUR,chennai_gcc_kml_2022
+92,67,Ward 67,VI,THIRU-VIKA-NAGAR,chennai_gcc_kml_2022
+93,70,Ward 70,VI,THIRU-VIKA-NAGAR,chennai_gcc_kml_2022
+94,71,Ward 71,VI,THIRU-VIKA-NAGAR,chennai_gcc_kml_2022
+95,74,Ward 74,VI,THIRU-VIKA-NAGAR,chennai_gcc_kml_2022
+96,77,Ward 77,VI,THIRU-VIKA-NAGAR,chennai_gcc_kml_2022
+97,69,Ward 69,VI,THIRU-VIKA-NAGAR,chennai_gcc_kml_2022
+98,78,Ward 78,VI,THIRU-VIKA-NAGAR,chennai_gcc_kml_2022
+99,76,Ward 76,VI,THIRU-VIKA-NAGAR,chennai_gcc_kml_2022
+100,64,Ward 64,VI,THIRU-VIKA-NAGAR,chennai_gcc_kml_2022
+101,75,Ward 75,VI,THIRU-VIKA-NAGAR,chennai_gcc_kml_2022
+102,66,Ward 66,VI,THIRU-VIKA-NAGAR,chennai_gcc_kml_2022
+103,73,Ward 73,VI,THIRU-VIKA-NAGAR,chennai_gcc_kml_2022
+104,72,Ward 72,VI,THIRU-VIKA-NAGAR,chennai_gcc_kml_2022
+105,147,Ward 147,XI,VALASARVAKKAM,chennai_gcc_kml_2022
+106,148,Ward 148,XI,VALASARVAKKAM,chennai_gcc_kml_2022
+107,149,Ward 149,XI,VALASARVAKKAM,chennai_gcc_kml_2022
+108,150,Ward 150,XI,VALASARVAKKAM,chennai_gcc_kml_2022
+109,151,Ward 151,XI,VALASARVAKKAM,chennai_gcc_kml_2022
+110,146,Ward 146,XI,VALASARVAKKAM,chennai_gcc_kml_2022
+111,155,Ward 155,XI,VALASARVAKKAM,chennai_gcc_kml_2022
+112,145,Ward 145,XI,VALASARVAKKAM,chennai_gcc_kml_2022
+113,154,Ward 154,XI,VALASARVAKKAM,chennai_gcc_kml_2022
+114,144,Ward 144,XI,VALASARVAKKAM,chennai_gcc_kml_2022
+115,153,Ward 153,XI,VALASARVAKKAM,chennai_gcc_kml_2022
+116,152,Ward 152,XI,VALASARVAKKAM,chennai_gcc_kml_2022
+117,49,Ward 49,V,ROYAPURAM,chennai_gcc_kml_2022
+118,50,Ward 50,V,ROYAPURAM,chennai_gcc_kml_2022
+119,52,Ward 52,V,ROYAPURAM,chennai_gcc_kml_2022
+120,54,Ward 54,V,ROYAPURAM,chennai_gcc_kml_2022
+121,55,Ward 55,V,ROYAPURAM,chennai_gcc_kml_2022
+122,56,Ward 56,V,ROYAPURAM,chennai_gcc_kml_2022
+123,57,Ward 57,V,ROYAPURAM,chennai_gcc_kml_2022
+124,58,Ward 58,V,ROYAPURAM,chennai_gcc_kml_2022
+125,59,Ward 59,V,ROYAPURAM,chennai_gcc_kml_2022
+126,60,Ward 60,V,ROYAPURAM,chennai_gcc_kml_2022
+127,61,Ward 61,V,ROYAPURAM,chennai_gcc_kml_2022
+128,62,Ward 62,V,ROYAPURAM,chennai_gcc_kml_2022
+129,63,Ward 63,V,ROYAPURAM,chennai_gcc_kml_2022
+130,51,Ward 51,V,ROYAPURAM,chennai_gcc_kml_2022
+131,53,Ward 53,V,ROYAPURAM,chennai_gcc_kml_2022
+132,130,Ward 130,X,KODAMBAKKAM,chennai_gcc_kml_2022
+133,136,Ward 136,X,KODAMBAKKAM,chennai_gcc_kml_2022
+134,131,Ward 131,X,KODAMBAKKAM,chennai_gcc_kml_2022
+135,132,Ward 132,X,KODAMBAKKAM,chennai_gcc_kml_2022
+136,129,Ward 129,X,KODAMBAKKAM,chennai_gcc_kml_2022
+137,138,Ward 138,X,KODAMBAKKAM,chennai_gcc_kml_2022
+138,128,Ward 128,X,KODAMBAKKAM,chennai_gcc_kml_2022
+139,137,Ward 137,X,KODAMBAKKAM,chennai_gcc_kml_2022
+140,127,Ward 127,X,KODAMBAKKAM,chennai_gcc_kml_2022
+141,133,Ward 133,X,KODAMBAKKAM,chennai_gcc_kml_2022
+142,141,Ward 141,X,KODAMBAKKAM,chennai_gcc_kml_2022
+143,134,Ward 134,X,KODAMBAKKAM,chennai_gcc_kml_2022
+144,41,Ward 41,ZONE - IV,TONDIARPET,chennai_gcc_kml_2022
+145,40,Ward 40,ZONE - IV,TONDIARPET,chennai_gcc_kml_2022
+146,38,Ward 38,ZONE - IV,TONDIARPET,chennai_gcc_kml_2022
+147,37,Ward 37,ZONE - IV,TONDIARPET,chennai_gcc_kml_2022
+148,44,Ward 44,ZONE - IV,TONDIARPET,chennai_gcc_kml_2022
+149,48,Ward 48,ZONE - IV,TONDIARPET,chennai_gcc_kml_2022
+150,42,Ward 42,ZONE - IV,TONDIARPET,chennai_gcc_kml_2022
+151,47,Ward 47,ZONE - IV,TONDIARPET,chennai_gcc_kml_2022
+152,45,Ward 45,ZONE - IV,TONDIARPET,chennai_gcc_kml_2022
+153,46,Ward 46,ZONE - IV,TONDIARPET,chennai_gcc_kml_2022
+154,34,Ward 34,ZONE - IV,TONDIARPET,chennai_gcc_kml_2022
+155,35,Ward 35,ZONE - IV,TONDIARPET,chennai_gcc_kml_2022
+156,36,Ward 36,ZONE - IV,TONDIARPET,chennai_gcc_kml_2022
+157,1,Ward 1,I,THIRUVOTTRIYUR,chennai_gcc_kml_2022
+158,10,Ward 10,I,THIRUVOTTRIYUR,chennai_gcc_kml_2022
+159,11,Ward 11,I,THIRUVOTTRIYUR,chennai_gcc_kml_2022
+160,2,Ward 2,I,THIRUVOTTRIYUR,chennai_gcc_kml_2022
+161,3,Ward 3,I,THIRUVOTTRIYUR,chennai_gcc_kml_2022
+162,5,Ward 5,I,THIRUVOTTRIYUR,chennai_gcc_kml_2022
+163,7,Ward 7,I,THIRUVOTTRIYUR,chennai_gcc_kml_2022
+164,8,Ward 8,I,THIRUVOTTRIYUR,chennai_gcc_kml_2022
+165,9,Ward 9,I,THIRUVOTTRIYUR,chennai_gcc_kml_2022
+166,12,Ward 12,I,THIRUVOTTRIYUR,chennai_gcc_kml_2022
+167,13,Ward 13,I,THIRUVOTTRIYUR,chennai_gcc_kml_2022
+168,14,Ward 14,I,THIRUVOTTRIYUR,chennai_gcc_kml_2022
+169,27,Ward 27,III,MADHAVARAM,chennai_gcc_kml_2022
+170,22,Ward 22,III,MADHAVARAM,chennai_gcc_kml_2022
+171,28,Ward 28,III,MADHAVARAM,chennai_gcc_kml_2022
+172,29,Ward 29,III,MADHAVARAM,chennai_gcc_kml_2022
+173,30,Ward 30,III,MADHAVARAM,chennai_gcc_kml_2022
+174,26,Ward 26,III,MADHAVARAM,chennai_gcc_kml_2022
+175,25,Ward 25,III,MADHAVARAM,chennai_gcc_kml_2022
+176,33,Ward 33,III,MADHAVARAM,chennai_gcc_kml_2022
+177,24,Ward 24,III,MADHAVARAM,chennai_gcc_kml_2022
+178,32,Ward 32,III,MADHAVARAM,chennai_gcc_kml_2022
+179,23,Ward 23,III,MADHAVARAM,chennai_gcc_kml_2022
+180,31,Ward 31,III,MADHAVARAM,chennai_gcc_kml_2022
+181,142,Ward 142,X,KODAMBAKKAM,chennai_gcc_kml_2022
+182,139,Ward 139,X,KODAMBAKKAM,chennai_gcc_kml_2022
+183,140,Ward 140,X,KODAMBAKKAM,chennai_gcc_kml_2022
+184,135,Ward 135,X,KODAMBAKKAM,chennai_gcc_kml_2022
+185,188,Ward 188,XIV,PERUNKUDI,chennai_gcc_kml_2022
+186,187,Ward 187,XIV,PERUNKUDI,chennai_gcc_kml_2022
+187,4,Ward 4,I,THIRUVOTTRIYUR,chennai_gcc_kml_2022
+188,68,Ward 68,VI,THIRU-VIKA-NAGAR,chennai_gcc_kml_2022
+189,65,Ward 65,VI,THIRU-VIKA-NAGAR,chennai_gcc_kml_2022
+190,143,Ward 143,XI,VALASARVAKKAM,chennai_gcc_kml_2022
+191,91,Ward 91,VII,AMBATTUR,chennai_gcc_kml_2022
+192,6,Ward 6,I,THIRUVOTTRIYUR,chennai_gcc_kml_2022
+193,39,Ward 39,ZONE - IV,TONDIARPET,chennai_gcc_kml_2022
+194,43,Ward 43,ZONE - IV,TONDIARPET,chennai_gcc_kml_2022
+195,111,Ward 111,IX,TEYNAMPET,chennai_gcc_kml_2022
+196,110,Ward 110,IX,TEYNAMPET,chennai_gcc_kml_2022
+197,161,Ward 161,XII,ALANDUR,chennai_gcc_kml_2022
+198,160,Ward 160,XII,ALANDUR,chennai_gcc_kml_2022
+199,195,Ward 195,XV,SHOZHANGANALLUR,chennai_gcc_kml_2022
+200,196,Ward 196,XV,SHOZHANGANALLUR,chennai_gcc_kml_2022
