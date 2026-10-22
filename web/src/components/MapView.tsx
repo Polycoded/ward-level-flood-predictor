@@ -86,11 +86,10 @@ export function MapView({ className }: MapViewProps) {
         scrollWheelZoom={true}
         className="!absolute inset-0 !rounded-none"
       >
-        {/* Light basemap keeps the risk colours readable and its tiles are a fraction of the size of OSM's. */}
+        {/* Standard OSM tiles: no API key needed (CARTO's basemaps now return "API key required" tiles). */}
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-          url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"
-          subdomains="abcd"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
           maxZoom={19}
         />
 

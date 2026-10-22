@@ -99,5 +99,5 @@ python web/scripts/python_parity_fixture.py   # from the repo root, with the bac
 
 - `/validation` returns 500 until `data/processed/validation_metrics.json` exists, so the Validation button stays hidden.
 - `model/alerts.py` "Tamil" templates are Chinese text. The mock's Tamil is correct but still needs a native-speaker review.
-- `/wards` is ~650 KB uncompressed. Adding `GZipMiddleware` to `api/main.py` cuts it to ~77 KB and lifts mobile Lighthouse performance from ~82 to ~92.
+- `/wards` is ~650 KB uncompressed; adding `GZipMiddleware` to `api/main.py` cuts it to ~77 KB. Lighthouse on the production build (offline mode): mobile 91–94 performance / 100 accessibility, desktop 99–100. The uncompressed payload is the main thing slowing the live version on mobile.
 - `risk_engine.py` labels a score of exactly 1.0 (any extreme storm) as `very_low`.
