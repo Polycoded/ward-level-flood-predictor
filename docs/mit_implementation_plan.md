@@ -1,5 +1,31 @@
 # Mit implementation plan
 
+## Chennai input-readiness check (scope before edits, 2026-10-23)
+
+Confirmed mit-dev, clean initial status (prior work is present in this branch); do not
+change branches or commit. Read handoff/runner contracts, scorer validation, pipeline
+zero-fill logic and API call sites. Add only input_readiness.py, focused tests and updated
+handoff. Inspect GeoJSON and optional CSV/Parquet, report structural identity/geometry/
+measurement issues without mutations, require version/crosswalk attestations, distinguish
+structural scoring from historical readiness, flag explicit mock metrics. New explicit
+JSON output only, never canonical data. Run actual local check and model regressions.
+No pipeline/API/UI fixes, network access, evidence generation or evaluator replacement.
+
+Implemented input_readiness.py, 13 focused artificial tests and refreshed Chennai handoff.
+Actual CLI run exited 1: 15 explicit zone names, 15 blank official numbers, declared
+EPSG:32644, no detected geometry/ID defects, absent features.parquet, no version/crosswalk
+attestations and explicit MOCK metrics. Historical readiness remains unassessed/pending
+reviewed observations/rainfall. Output only at temporary chennai-readiness-20261023-v3.json.
+Initial actual check exposed that pandas checks its Parquet engine before path existence;
+added an existence check so absent artifacts now receive the correct blocker diagnostic.
+Focused tests: 13 passed. Combined first run: 329 passed, 1 failed (11 focused cases at
+that point plus existing regressions). The existing validation test assumes an empty
+canonical metrics artifact; the actual mock payload now causes KeyError(status).
+Existing regressions therefore total 318 passed/1 failed; do not change the mock artifact
+or hide that stale fixture dependency. Scoped Ruff and git diff --check passed; existing
+dependency warnings remain. No teammate implementation or canonical input edited; no git
+branch operations, commits, pushes or network operations performed. Branch stays mit-dev.
+
 ## Chennai provenance correction (before edits)
 
 Require per-feature source/version/units/evidence type/coverage/notes/processing attestations

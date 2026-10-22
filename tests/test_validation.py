@@ -242,17 +242,34 @@ def test_reproducibility_and_input_immutability(metadata):
 
 def test_loading_missing_empty_and_round_trip(tmp_path, metadata, monkeypatch):
     path = tmp_path / "metrics.json"
-    assert load_validation_metrics(path)["status"] == "unavailable"
+    assert load_validation_metrics(path) == {
+        "status": "unavailable", "status_reason": f"Metrics file missing: {path}"}
     path.write_text(" \n")
-    assert load_validation_metrics(path)["status"] == "unavailable"
+    assert load_validation_metrics(path) == {
+        "status": "unavailable", "status_reason": f"Metrics file empty: {path}"}
     path.write_text("{}")
-    assert load_validation_metrics(path)["status"] == "unavailable"
+    assert load_validation_metrics(path) == {
+        "status": "unavailable", "status_reason": f"Metrics object empty: {path}"}
     result = evaluate_predictions(predictions(metadata), labels(metadata), metadata)
     save_validation_metrics(result, path)
     assert load_validation_metrics(path) == result
-    monkeypatch.chdir(tmp_path)
+    other_cwd = tmp_path / "other"
+    other_cwd.mkdir()
+    (other_cwd / "metrics.json").write_text('{"notes":"MOCK NUMBERS: artificial decoy"}')
+    monkeypatch.chdir(other_cwd)
     assert VALIDATION_PATH.is_absolute()
-    assert load_validation_metrics()["status"] == "unavailable"  # Canonical file left empty.
+    assert load_validation_metrics(path) == result  # Explicit absolute path ignores cwd decoy.
+
+
+def test_loader_preserves_explicit_mock_without_certifying_it(tmp_path):
+    path = tmp_path / "mock.json"
+    payload = {"precision_at_20": 0.5, "notes": "MOCK NUMBERS: artificial test only"}
+    path.write_text(json.dumps(payload))
+    before = path.read_bytes()
+    assert load_validation_metrics(path) == payload
+    assert path.read_bytes() == before
+    # Loader parses, but does not certify evidence or synthesize schema-2.0 status.
+    assert "status" not in load_validation_metrics(path)
 
 
 @pytest.mark.parametrize("payload", ["{bad", "[]", '{"a": NaN}', '{"a": Infinity}', '{"a": 1e999}', '{"a": 1, "a": 2}'])
