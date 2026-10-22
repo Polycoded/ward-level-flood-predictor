@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 import structlog
-import pandas as pd
+from datetime import datetime
 
 from api.routes.main import router as api_router
 from api.schemas import ErrorResponse
@@ -63,7 +63,7 @@ async def global_exception_handler(request, exc):
         content=ErrorResponse(
             error="Internal server error",
             detail=str(exc),
-            timestamp=pd.Timestamp.now()
+            timestamp=datetime.now().isoformat()
         ).model_dump()
     )
 
@@ -81,5 +81,4 @@ async def root():
 
 if __name__ == "__main__":
     import uvicorn
-    import pandas as pd
     uvicorn.run(app, host="0.0.0.0", port=8000)

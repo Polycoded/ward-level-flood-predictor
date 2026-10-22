@@ -1,0 +1,127 @@
+crs: EPSG:32644
+derived_features:
+  elevation_range:
+    description: Elevation max - min
+    type: float64
+  flood_prone_index:
+    description: Composite flood susceptibility index [0,1]
+    type: float64
+  low_lying_area_frac:
+    description: Fraction of area with elevation <5m and slope <2deg
+    type: float64
+  slope_range:
+    description: Slope max - min
+    type: float64
+features:
+  area_sqkm:
+    description: ''
+    type: float64
+  dist_to_water_m:
+    description: ''
+    type: float64
+  elevation_max:
+    description: ''
+    type: float64
+  elevation_mean:
+    description: ''
+    type: float64
+  elevation_min:
+    description: ''
+    type: float64
+  elevation_p10:
+    description: ''
+    type: float64
+  elevation_p50:
+    description: ''
+    type: float64
+  elevation_p90:
+    description: ''
+    type: float64
+  elevation_std:
+    description: ''
+    type: float64
+  impervious_frac:
+    description: ''
+    type: float64
+  lulc_frac_10:
+    description: ''
+    type: float64
+  lulc_frac_20:
+    description: ''
+    type: float64
+  lulc_frac_30:
+    description: ''
+    type: float64
+  lulc_frac_40:
+    description: ''
+    type: float64
+  lulc_frac_50:
+    description: ''
+    type: float64
+  lulc_frac_60:
+    description: ''
+    type: float64
+  lulc_frac_80:
+    description: ''
+    type: float64
+  lulc_frac_90:
+    description: ''
+    type: float64
+  lulc_frac_95:
+    description: ''
+    type: float64
+  road_count:
+    description: ''
+    type: int64
+  road_density_km_per_sqkm:
+    description: ''
+    type: float64
+  road_length_km:
+    description: ''
+    type: float64
+  slope_max:
+    description: ''
+    type: float64
+  slope_mean:
+    description: ''
+    type: float64
+  slope_min:
+    description: ''
+    type: float64
+  slope_p10:
+    description: ''
+    type: float64
+  slope_p50:
+    description: ''
+    type: float64
+  slope_p90:
+    description: ''
+    type: float64
+  slope_std:
+    description: ''
+    type: float64
+  underpass_count:
+    description: ''
+    type: int64
+  vegetation_frac:
+    description: ''
+    type: float64
+  ward_id:
+    description: ''
+    type: int64
+  ward_name:
+    description: ''
+    type: string
+  ward_number:
+    description: ''
+    type: string
+  water_frac:
+    description: ''
+    type: float64
+  waterbody_area_sqkm:
+    description: ''
+    type: float64
+  waterbody_count:
+    description: ''
+    type: int64
+ward_count: 15

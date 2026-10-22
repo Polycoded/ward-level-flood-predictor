@@ -1,0 +1,12 @@
+{
+  "precision_at_20": 0.65,
+  "recall": 0.7222222222222222,
+  "false_positive_rate": 0.038461538461538464,
+  "true_positives": 13,
+  "false_positives": 7,
+  "false_negatives": 5,
+  "total_flooded_wards": 18,
+  "total_wards": 200,
+  "event_date": "2023-12-04",
+  "notes": "MOCK NUMBERS: placeholder until validation_metrics.json from the real Dec 2023 run is committed."
+}

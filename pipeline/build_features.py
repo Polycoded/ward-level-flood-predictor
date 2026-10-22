@@ -55,6 +55,8 @@ def validate_features(df: pd.DataFrame) -> pd.DataFrame:
             dtype = FEATURE_SCHEMA[col]
             if "int" in dtype:
                 df[col] = 0
+            elif dtype == "string":
+                df[col] = ""
             else:
                 df[col] = 0.0
     
@@ -66,6 +68,8 @@ def validate_features(df: pd.DataFrame) -> pd.DataFrame:
         if col in df.columns:
             if "int" in dtype:
                 df[col] = pd.to_numeric(df[col], errors="coerce").fillna(0).astype("int64")
+            elif dtype == "string":
+                df[col] = df[col].astype("string").fillna("")
             else:
                 df[col] = pd.to_numeric(df[col], errors="coerce").fillna(0.0).astype("float64")
     

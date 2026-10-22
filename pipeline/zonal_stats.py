@@ -6,6 +6,7 @@ import pandas as pd
 from pathlib import Path
 import structlog
 from shapely.geometry import mapping
+from shapely.ops import unary_union
 
 logger = structlog.get_logger()
 
