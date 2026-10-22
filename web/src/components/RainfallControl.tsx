@@ -40,7 +40,8 @@ interface RainfallControlProps {
 /** Rainfall input in the three forms the problem statement asks for: manual, CSV, live forecast. */
 export function RainfallControl({ onAnalyze, busy }: RainfallControlProps) {
   const [mode, setMode] = useState<Mode>('manual');
-  const [mm, setMm] = useState(100);
+  // kept as text so the box can be emptied and retyped; clamped as you type and on blur
+  const [mmText, setMmText] = useState('100');
   const [hours, setHours] = useState(3);
   const [csvReading, setCsvReading] = useState<RainfallReading | null>(null);
   const [liveHours, setLiveHours] = useState(24);
@@ -48,15 +49,30 @@ export function RainfallControl({ onAnalyze, busy }: RainfallControlProps) {
   const [liveLoading, setLiveLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const abortRef = useRef<AbortController | null>(null);
+  const fetchingRef = useRef(false);
 
   useEffect(() => () => abortRef.current?.abort(), []);
 
-  const manualReading: RainfallReading = {
-    rainfall_mm: clampRainfall(mm),
-    duration_hours: clampDuration(hours),
-    source: 'manual',
-    label: `${clampRainfall(mm)} mm in ${clampDuration(hours)} h (manual)`,
+  const mm = clampRainfall(Number(mmText));
+  const manualReading: RainfallReading | null =
+    mmText.trim() === ''
+      ? null
+      : {
+          rainfall_mm: mm,
+          duration_hours: clampDuration(hours),
+          source: 'manual',
+          label: `${mm} mm in ${clampDuration(hours)} h (manual)`,
+        };
+
+  const handleAmount = (raw: string) => {
+    if (raw.trim() === '') return setMmText('');
+    const n = Number(raw);
+    if (!Number.isFinite(n)) return;
+    if (n > MAX_RAINFALL_MM) return setMmText(String(MAX_RAINFALL_MM));
+    if (n < 0) return setMmText('0');
+    setMmText(raw);
   };
+  const setMm = (n: number) => setMmText(String(n));
 
   const current = mode === 'manual' ? manualReading : mode === 'csv' ? csvReading : liveReading;
 
@@ -81,6 +97,9 @@ export function RainfallControl({ onAnalyze, busy }: RainfallControlProps) {
   };
 
   const loadForecast = async () => {
+    // ignore repeat clicks (auto-clickers) instead of firing one request each
+    if (fetchingRef.current) return;
+    fetchingRef.current = true;
     abortRef.current?.abort();
     const controller = new AbortController();
     abortRef.current = controller;
@@ -93,6 +112,7 @@ export function RainfallControl({ onAnalyze, busy }: RainfallControlProps) {
       setError(e instanceof RainfallInputError ? e.message : 'Weather service unreachable. Use manual input instead.');
     } finally {
       if (abortRef.current === controller) setLiveLoading(false);
+      fetchingRef.current = false;
     }
   };
 
@@ -132,8 +152,10 @@ export function RainfallControl({ onAnalyze, busy }: RainfallControlProps) {
                 min={0}
                 max={MAX_RAINFALL_MM}
                 step={5}
-                value={mm}
-                onChange={(e) => setMm(clampRainfall(Number(e.target.value)))}
+                value={mmText}
+                onChange={(e) => handleAmount(e.target.value)}
+                onBlur={() => mmText.trim() !== '' && setMmText(String(mm))}
+                aria-invalid={mmText.trim() === ''}
                 className="input"
               />
             </div>
@@ -207,6 +229,10 @@ export function RainfallControl({ onAnalyze, busy }: RainfallControlProps) {
             {liveLoading ? 'Loading…' : 'Fetch'}
           </button>
         </div>
+      )}
+
+      {mode === 'manual' && !manualReading && (
+        <p className="text-xs text-gray-700">Enter a rainfall amount between 0 and {MAX_RAINFALL_MM} mm.</p>
       )}
 
       {error && (

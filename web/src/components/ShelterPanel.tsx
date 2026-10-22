@@ -92,7 +92,10 @@ export function ShelterPanel() {
         {loading ? (
           [1, 2, 3].map((i) => <div key={i} className="h-20 bg-gray-100 rounded-lg animate-pulse" />)
         ) : shelters.length === 0 ? (
-          <p className="text-center py-8 text-sm text-gray-600">No shelters within {SEARCH_RADIUS_KM} km.</p>
+          <p className="text-center py-8 text-sm text-gray-700">
+            No shelters within {SEARCH_RADIUS_KM} km.
+            {shelterOrigin?.label === 'Your location' && ' You may be outside Chennai; open a ward and use “Nearest shelters” instead.'}
+          </p>
         ) : (
           <ul className="space-y-2.5">
             {shelters.map((shelter) => (

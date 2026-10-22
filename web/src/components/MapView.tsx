@@ -66,10 +66,9 @@ export function MapView({ className }: MapViewProps) {
     const path = layer as L.Path;
     path.on({
       click: () => setDetailWard(props.ward_id),
-      mouseover: () => {
-        path.setStyle({ weight: 3, color: '#1f2937' });
-        path.bringToFront();
-      },
+      // No bringToFront() here: re-ordering the SVG node between pointerdown and mousedown
+      // (fast clicks, every touch tap) makes the browser drop the click.
+      mouseover: () => path.setStyle({ weight: 3, color: '#1f2937' }),
       mouseout: () => geoJsonRef.current?.resetStyle(path),
     });
     path.bindTooltip(wardTooltipHtml(props as Parameters<typeof wardTooltipHtml>[0], riskByWard.get(props.ward_id)), { sticky: true });
@@ -193,8 +192,9 @@ function MapLegend({ riskData }: { riskData: RiskResponse | null }) {
   if (!riskData) return null;
   const counts = Object.fromEntries(LEVELS.map(({ key }) => [key, riskData.wards.filter((w) => w.risk_level === key).length]));
 
+  // counts are in the header summary, so phones get the map instead of the legend
   return (
-    <div className="absolute bottom-4 left-4 z-10 card p-3 shadow-lg min-w-[160px] animate-in">
+    <div className="hidden sm:block absolute bottom-4 left-4 z-10 card p-3 shadow-lg min-w-[160px] animate-in">
       <h2 className="text-sm font-semibold text-gray-900 mb-2">Wards by risk</h2>
       <ul className="space-y-1.5">
         {LEVELS.map(({ key, label }) => (

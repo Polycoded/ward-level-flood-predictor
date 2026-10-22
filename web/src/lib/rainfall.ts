@@ -60,7 +60,9 @@ export function parseRainfallCsv(text: string, fileName = 'upload.csv'): Rainfal
     const cell = lastCell(line);
     const value = Number(cell);
     if (cell === '' || !Number.isFinite(value)) {
-      throw new RainfallInputError(`Row ${i + 1}: "${cell.slice(0, 20)}" is not a number.`);
+      // eslint-disable-next-line no-control-regex
+      const shown = cell.slice(0, 20).replace(/[\u0000-\u001F\u007F-\u009F]/g, '?');
+      throw new RainfallInputError(`Row ${i + 1}: "${shown}" is not a number.`);
     }
     if (value < 0) throw new RainfallInputError(`Row ${i + 1}: rainfall cannot be negative.`);
     if (value > MAX_RAINFALL_MM) throw new RainfallInputError(`Row ${i + 1}: ${value} mm in one hour is not plausible.`);

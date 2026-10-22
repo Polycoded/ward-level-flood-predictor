@@ -33,6 +33,11 @@ describe('parseRainfallCsv', () => {
     expect(() => parseRainfallCsv(csv)).toThrow(RainfallInputError);
   });
 
+  it('does not echo control characters from a binary file into the error', () => {
+    // eslint-disable-next-line no-control-regex
+    expect(() => parseRainfallCsv('\x89PNG\r\n\x1a\n\x00IHDR')).toThrow(/^Row 1: "[^\x00-\x1f]*" is not a number\.$/);
+  });
+
   it('rejects files over the size limit before parsing', () => {
     expect(() => parseRainfallCsv('1\n'.repeat(MAX_CSV_BYTES))).toThrow(/too large/);
   });

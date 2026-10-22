@@ -16,8 +16,8 @@ export function FutureScenarioToggle({ onChange, busy }: { onChange: (builtupPct
   const delta = baselineRisk && scenario.builtup_increase_pct > 0 ? scenarioDelta(riskData, baselineRisk) : null;
 
   return (
-    <div className="absolute top-3 right-3 z-10 card p-3 shadow-lg w-64 max-w-[calc(100%-1.5rem)]">
-      <p className="text-xs font-semibold text-gray-900 uppercase tracking-wide mb-2">Land-use scenario</p>
+    <div className="absolute top-3 right-3 z-10 card p-2 sm:p-3 shadow-lg w-56 sm:w-64 max-w-[calc(100%-1.5rem)]">
+      <p className="hidden sm:block text-xs font-semibold text-gray-900 uppercase tracking-wide mb-2">Land-use scenario</p>
       <div className="grid grid-cols-3 gap-1" role="group" aria-label="Future land-use scenario">
         {OPTIONS.map((o) => (
           <button
@@ -36,7 +36,7 @@ export function FutureScenarioToggle({ onChange, busy }: { onChange: (builtupPct
           </button>
         ))}
       </div>
-      <p className="text-xs text-gray-700 mt-2" aria-live="polite">
+      <p className={delta ? 'text-xs text-gray-700 mt-2' : 'hidden sm:block text-xs text-gray-700 mt-2'} aria-live="polite">
         {delta
           ? `${delta.worse} ward${delta.worse === 1 ? '' : 's'} move up a risk level; average score +${(delta.avgScoreChange * 100).toFixed(1)} vs today.`
           : 'Compare the same rainfall with more paved surface.'}

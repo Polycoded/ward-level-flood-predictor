@@ -3,6 +3,7 @@ import { useFloodStore } from '../lib/store';
 import { api } from '../api/client';
 import { cn, getDepthLabel } from '../lib/utils';
 import { safeWhatsAppUrl, whatsAppShareUrl } from '../lib/safe';
+import { smsInfo } from '../lib/sms';
 import type { AlertChannel, AlertMessage, Language } from '../types';
 import { RiskBadge } from './RiskBadge';
 import { ChannelStatus } from './ChannelStatus';
@@ -14,7 +15,6 @@ interface AlertPanelProps {
 
 const ALL_CHANNELS: AlertChannel[] = ['sms', 'whatsapp', 'voice', 'livekit'];
 const CHANNEL_LABELS: Record<AlertChannel, string> = { sms: 'SMS', whatsapp: 'WhatsApp', voice: 'Voice', livekit: 'LiveKit' };
-const SMS_LIMIT = 160;
 
 export function AlertPanel({ onClose }: AlertPanelProps) {
   const { riskData, ui } = useFloodStore();
@@ -163,16 +163,19 @@ export function AlertPanel({ onClose }: AlertPanelProps) {
                   alert.channel === 'whatsapp'
                     ? safeWhatsAppUrl(alert.whatsapp_deeplink) ?? whatsAppShareUrl(alert.message)
                     : null;
-                const overSms = alert.channel === 'sms' && alert.message.length > SMS_LIMIT;
+                const sms = alert.channel === 'sms' ? smsInfo(alert.message) : null;
                 return (
                   <li key={i} className="p-3 bg-gray-50 rounded-lg border border-gray-200">
                     <div className="flex items-center justify-between mb-1.5 text-xs">
                       <span className="font-medium text-gray-900 text-sm">{alert.ward_name}</span>
                       <span className="text-gray-700">
                         {CHANNEL_LABELS[alert.channel]} • {alert.language === 'ta' ? 'Tamil' : 'English'}
-                        {alert.channel === 'sms' && (
-                          <span className={cn('ml-1.5 font-mono', overSms ? 'text-red-700' : 'text-gray-600')}>
-                            {alert.message.length}/{SMS_LIMIT}
+                        {sms && (
+                          <span
+                            className={cn('ml-1.5 font-mono', sms.segments > 1 ? 'text-amber-800' : 'text-gray-600')}
+                            title={sms.encoding === 'UCS-2' ? 'Tamil and other non-Latin text: 70 characters per SMS' : 'Standard SMS: 160 characters'}
+                          >
+                            {sms.units}/{sms.singleLimit} · {sms.segments} SMS{sms.segments > 1 ? ' parts' : ''}
                           </span>
                         )}
                       </span>

@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { useFloodStore } from './lib/store';
 import { api } from './api/client';
 import { cn } from './lib/utils';
@@ -37,6 +37,8 @@ function App() {
   const [initialLoading, setInitialLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [reportsOpen, setReportsOpen] = useState(false);
+  // one analysis at a time, even if an auto-clicker beats the disabled button's re-render
+  const runningRef = useRef(false);
 
   useEffect(() => {
     const loadInitialData = async () => {
@@ -58,6 +60,8 @@ function App() {
   }, [setWards, setValidationData, setError]);
 
   const runAnalysis = async (reading: RainfallReading, builtupIncrease: number) => {
+    if (runningRef.current) return;
+    runningRef.current = true;
     setBusy(true);
     setError(null);
     const base = { rainfall_mm: reading.rainfall_mm, duration_hours: reading.duration_hours };
@@ -76,6 +80,7 @@ function App() {
       reportError(e, { stage: 'risk', ...base, builtupIncrease });
       setError('Risk analysis failed. The previous result is still shown.');
     } finally {
+      runningRef.current = false;
       setBusy(false);
     }
   };

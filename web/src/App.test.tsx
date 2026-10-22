@@ -66,6 +66,29 @@ describe('official runs a rainfall scenario', () => {
     expect(amount).toHaveValue(0);
   });
 
+  it('lets you empty the amount box and type a new value without a stray leading zero', async () => {
+    const user = await renderLoaded();
+    const amount = screen.getByLabelText('Amount (mm)');
+    await user.clear(amount);
+    expect(amount).toHaveValue(null);
+    expect(screen.getByRole('button', { name: 'Analyze' })).toBeDisabled();
+    expect(screen.getByText(/Enter a rainfall amount/)).toBeInTheDocument();
+    await user.type(amount, '150');
+    expect((amount as HTMLInputElement).value).toBe('150');
+    await user.click(screen.getByRole('button', { name: 'Analyze' }));
+    await screen.findByText(/200 wards, highest risk first/);
+    expect(useFloodStore.getState().riskData!.scenario.rainfall_mm).toBe(150);
+  });
+
+  it('runs one analysis when Analyze is hammered by an auto-clicker', async () => {
+    await renderLoaded();
+    const spy = vi.spyOn(api, 'getRisk');
+    const button = screen.getByRole('button', { name: 'Analyze' });
+    for (let i = 0; i < 20; i++) fireEvent.click(button);
+    await screen.findByText(/200 wards, highest risk first/);
+    expect(spy).toHaveBeenCalledTimes(1);
+  });
+
   it('filters the ranking by search text and risk level, and copes with hostile input', async () => {
     const user = await renderLoaded();
     await analyze(user);
@@ -145,6 +168,22 @@ describe('alerts', () => {
 
     await user.keyboard('{Escape}');
     await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull());
+    // one Escape closes only the top layer; the ward drawer underneath stays open
+    expect(screen.getByRole('complementary', { name: 'Ward details' })).toBeInTheDocument();
+    await user.keyboard('{Escape}');
+    await waitFor(() => expect(screen.queryByRole('complementary', { name: 'Ward details' })).toBeNull());
+  });
+
+  it('counts Tamil SMS in 70-character parts', async () => {
+    const user = await renderLoaded();
+    await analyze(user);
+    await user.click(screen.getByRole('button', { name: 'Alerts' }));
+    const dialog = await screen.findByRole('dialog');
+    await user.click(within(dialog).getByRole('button', { name: 'Select top 10' }));
+    await user.click(within(dialog).getByRole('button', { name: /Tamil/ }));
+    await user.click(within(dialog).getByRole('button', { name: /Generate alerts/ }));
+    const generated = await within(dialog).findByRole('region', { name: 'Generated alerts' });
+    expect(within(generated).getAllByText(/\/70 · \d SMS parts/).length).toBeGreaterThan(0);
   });
 
   it('refuses dangerous or pre-addressed links from the API and renders hostile names as text', async () => {
@@ -227,6 +266,18 @@ describe('live forecast', () => {
     await user.click(screen.getByRole('button', { name: 'Analyze' }));
     await screen.findByText(/200 wards, highest risk first/);
     expect(await screen.findByText('Open-Meteo forecast')).toBeInTheDocument();
+  });
+
+  it('sends one forecast request when Fetch is hammered', async () => {
+    const fetchMock = vi.spyOn(globalThis, 'fetch').mockImplementation(
+      () => new Promise((resolve) => setTimeout(() => resolve(new Response('{}', { status: 200 })), 50))
+    );
+    const user = await renderLoaded();
+    await user.click(screen.getByRole('tab', { name: 'Forecast' }));
+    const fetchButton = screen.getByRole('button', { name: 'Fetch' });
+    for (let i = 0; i < 10; i++) fireEvent.click(fetchButton);
+    await screen.findByRole('alert');
+    expect(fetchMock).toHaveBeenCalledTimes(1);
   });
 
   it('explains when the weather service is down', async () => {

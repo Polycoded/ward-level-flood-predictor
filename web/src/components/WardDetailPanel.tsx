@@ -35,7 +35,10 @@ export function WardDetailPanel({ wardId }: WardDetailPanelProps) {
   }, [wardId, setSelectedWard]);
 
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setDetailWard(null);
+    // an open dialog on top owns Escape; only close the drawer when it is the top layer
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && !document.querySelector('[aria-modal="true"]')) setDetailWard(null);
+    };
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
   }, [setDetailWard]);

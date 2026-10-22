@@ -4,7 +4,7 @@ import type { AlertChannel } from '../types';
 type Readiness = 'ready' | 'manual' | 'not_connected';
 
 const CHANNELS: Record<AlertChannel, { label: string; readiness: Readiness; detail: string }> = {
-  sms: { label: 'SMS', readiness: 'manual', detail: 'Copy text (≤160 chars) into the SMS gateway' },
+  sms: { label: 'SMS', readiness: 'manual', detail: 'Copy text into the SMS gateway; part count shown per message' },
   whatsapp: { label: 'WhatsApp', readiness: 'ready', detail: 'Opens WhatsApp with the alert pre-filled' },
   voice: { label: 'Voice call', readiness: 'not_connected', detail: 'Twilio voice fallback is configured server-side' },
   livekit: { label: 'LiveKit agent', readiness: 'not_connected', detail: 'Household voice room, server-side' },
