@@ -1,6 +1,9 @@
 from contextlib import asynccontextmanager
+import os
 from fastapi import FastAPI
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.responses import JSONResponse
 import structlog
 from datetime import datetime
@@ -43,28 +46,43 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+# The API uses no cookies or auth headers, so credentials are never allowed; with
+# allow_credentials=True and "*" Starlette reflects any Origin with credentials enabled.
+# Set CORS_ORIGINS (comma-separated) in production to the Vercel URL.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=[o.strip() for o in os.getenv("CORS_ORIGINS", "*").split(",") if o.strip()],
+    allow_credentials=False,
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["Content-Type"],
 )
+# /wards is ~2.9 MB of GeoJSON; gzip takes it to a few hundred KB.
+app.add_middleware(GZipMiddleware, minimum_size=1000)
 
 app.include_router(api_router)
+
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request, exc: RequestValidationError):
+    # Don't echo the rejected input back: it may be huge, and values like 1e999/Infinity
+    # can't be encoded as JSON, which turned a 422 into a 500.
+    errors = [{"loc": list(e.get("loc", ())), "msg": str(e.get("msg", "")), "type": str(e.get("type", ""))}
+              for e in exc.errors()]
+    return JSONResponse(status_code=422, content={"detail": errors})
 
 
 @app.exception_handler(Exception)
 async def global_exception_handler(request, exc):
     logger = structlog.get_logger()
+    # full detail goes to the server log only; clients get a generic message
     logger.error("Unhandled exception", path=request.url.path, error=str(exc))
     return JSONResponse(
         status_code=500,
         content=ErrorResponse(
             error="Internal server error",
-            detail=str(exc),
-            timestamp=datetime.now().isoformat()
-        ).model_dump()
+            detail=None,
+            timestamp=datetime.now()
+        ).model_dump(mode="json")
     )
 
 
