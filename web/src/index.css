@@ -17,7 +17,8 @@
     @apply inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none;
   }
   .btn-primary {
-    @apply btn bg-flood-600 text-white hover:bg-flood-700 focus:ring-flood-500;
+    /* flood-700 keeps white text above the 4.5:1 contrast minimum (flood-600 was 4.0:1) */
+    @apply btn bg-flood-700 text-white hover:bg-flood-800 focus:ring-flood-500;
   }
   .btn-secondary {
     @apply btn bg-gray-100 text-gray-900 hover:bg-gray-200 focus:ring-gray-500;
