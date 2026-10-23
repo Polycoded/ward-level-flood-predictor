@@ -13,6 +13,7 @@ import type {
   ReadyResponse,
 } from '../types';
 import { mockApi } from './mock';
+import { parseValidation, unavailableValidation } from '../lib/validation';
 import { useFloodStore, type DataSource } from '../lib/store';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || '/api/v1';
@@ -120,7 +121,11 @@ export class ApiClient {
   }
 
   async getValidation(): Promise<ValidationMetrics> {
-    return this.call(async () => (await this.client.get<ValidationMetrics>('/validation')).data, mockApi.getValidation);
+    try {
+      return parseValidation(await this.call(async () => (await this.client.get<unknown>('/validation')).data, mockApi.getValidation));
+    } catch {
+      return unavailableValidation('Validation evidence could not be loaded.');
+    }
   }
 
   async generateAlerts(

@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 from typing import Optional, List, Dict, Any, Literal
 from datetime import datetime
 from enum import Enum
@@ -64,7 +64,7 @@ class WardFeatureResponse(BaseModel):
 
 
 class RainfallInput(BaseModel):
-    rainfall_mm: float = Field(..., ge=0, le=500, description="Rainfall in mm over 3 hours")
+    rainfall_mm: float = Field(..., ge=0, le=500, description="Total rainfall accumulation in mm over duration_hours")
     duration_hours: float = Field(default=3.0, ge=1, le=24, description="Duration in hours")
     scenario_name: Optional[str] = None
 
@@ -115,17 +115,32 @@ class AlertResponse(BaseModel):
     sent_at: datetime
 
 
+class EvidenceMetric(BaseModel):
+    model_config = ConfigDict(strict=True, allow_inf_nan=False, extra="allow")
+    value: float | None = Field(ge=0, le=1)
+    numerator: int = Field(ge=0)
+    denominator: int = Field(ge=0)
+    unavailable_reason: str | None
+
+    @model_validator(mode="after")
+    def check_availability(self):
+        if self.value is None and not self.unavailable_reason:
+            raise ValueError("Null metrics require an unavailability reason")
+        if self.value is not None and (self.denominator == 0 or self.unavailable_reason):
+            raise ValueError("Available metrics require a denominator and no unavailable reason")
+        return self
+
+
 class ValidationMetrics(BaseModel):
-    precision_at_20: float
-    recall: float
-    false_positive_rate: float
-    true_positives: int
-    false_positives: int
-    false_negatives: int
-    total_flooded_wards: int
-    total_wards: int
-    event_date: str
-    notes: str
+    """Evidence-status envelope; no legacy accuracy defaults."""
+    model_config = ConfigDict(strict=True, allow_inf_nan=False, extra="allow")
+    schema_version: Literal["2.0"] = "2.0"
+    status: Literal["unavailable", "partial", "evaluated"]
+    status_reason: str | None = None
+    metrics: Dict[str, EvidenceMetric] | None = None
+    coverage: Dict[str, EvidenceMetric] | None = None
+    event_metadata: Dict[str, Any] | None = None
+    warnings: List[str] = Field(default_factory=list)
 
 
 class ShelterResponse(BaseModel):

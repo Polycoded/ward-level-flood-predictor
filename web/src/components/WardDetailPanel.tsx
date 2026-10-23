@@ -2,7 +2,7 @@ import { useEffect, useState, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { useFloodStore } from '../lib/store';
 import { api } from '../api/client';
-import { getRiskColor, getDepthLabel, getDepthColor, formatPercent, formatDistance } from '../lib/utils';
+import { getRiskColor, formatPercent, formatDistance } from '../lib/utils';
 import { geometryCenter } from '../lib/geo';
 import { RiskBadge } from './RiskBadge';
 import { ExplainabilityPanel } from './ExplainabilityPanel';
@@ -144,17 +144,7 @@ function RiskSummaryCard({ ward, rainfallMm }: { ward: WardRisk; rainfallMm: num
         </div>
       </div>
       <dl className="grid grid-cols-2 gap-3 text-sm">
-        <div>
-          <dt className="text-xs text-gray-600">Likely water depth</dt>
-          <dd className="font-medium text-gray-900 flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded" style={{ backgroundColor: getDepthColor(ward.depth_band) }} aria-hidden="true" />
-            {getDepthLabel(ward.depth_band)}
-          </dd>
-        </div>
-        <div>
-          <dt className="text-xs text-gray-600">Expected peak</dt>
-          <dd className="font-medium text-gray-900">~{ward.peak_window_hours} h from now</dd>
-        </div>
+        <p className="col-span-2 text-gray-600">Uncalibrated index, not a prediction of flood probability, depth or timing.</p>
         {rainfallMm !== null && (
           <div className="col-span-2">
             <dt className="text-xs text-gray-600">Scenario</dt>

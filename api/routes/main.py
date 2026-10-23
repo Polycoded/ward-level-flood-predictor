@@ -158,7 +158,7 @@ async def get_risk(input_data: RainfallInput):
     results = []
     for _, row in features.iterrows():
         risk_score, risk_level, depth_band, peak_window, reasons = compute_risk_score(
-            row, input_data.rainfall_mm
+            row, input_data.rainfall_mm, duration_hours=input_data.duration_hours
         )
         
         ward_wgs84 = features[features.ward_id == row.ward_id].to_crs("EPSG:4326")
@@ -246,14 +246,8 @@ async def get_scenario_risk(input_data: ScenarioInput):
 
 @router.get("/validation", response_model=ValidationMetrics)
 async def get_validation():
-    if not VALIDATION_PATH.exists():
-        raise HTTPException(status_code=404, detail="Validation metrics not found")
-    
-    import json
-    with open(VALIDATION_PATH) as f:
-        data = json.load(f)
-    
-    return ValidationMetrics(**data)
+    from api.validation_status import validation_status
+    return validation_status(VALIDATION_PATH)
 
 
 @router.post("/alerts", response_model=AlertResponse)

@@ -118,3 +118,30 @@ def test_official_number_alignment(artifacts):
     frame["official_number"] = "100"
     frame.to_csv(artifacts[1], index=False)
     assert check(artifacts)["features"]["official_number_mismatches"] == [1]
+
+
+@pytest.mark.parametrize("second_box, expected", [
+    ((80.005, 13, 80.015, 13.01), 1),
+    ((80.01, 13, 80.02, 13.01), 0),
+    ((80.02, 13, 80.03, 13.01), 0),
+])
+def test_overlap_diagnostic(artifacts, second_box, expected):
+    raw = json.loads(artifacts[0].read_text())
+    raw["features"].append({"type": "Feature", "properties": {
+        "ward_id": 2, "ward_number": "100", "ward_name": "Artificial ward"},
+        "geometry": mapping(box(*second_box))})
+    artifacts[0].write_text(json.dumps(raw))
+    before = artifacts[0].read_bytes()
+    report = check(artifacts)
+    overlap = report["boundary"]["overlap_review"]
+    assert overlap["pair_count"] == expected
+    assert overlap["pairs"] == ([{"rows": [0, 1], "ward_ids": ["1", "2"]}] if expected else [])
+    assert report["identity_ready"]  # Diagnostic does not silently redefine identity gates.
+    assert artifacts[0].read_bytes() == before
+
+
+def test_overlap_skips_invalid_geometry(artifacts):
+    raw = json.loads(artifacts[0].read_text())
+    raw["features"][0]["geometry"] = None
+    artifacts[0].write_text(json.dumps(raw))
+    assert check(artifacts)["boundary"]["overlap_review"]["status"] == "not_assessed"

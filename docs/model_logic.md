@@ -111,12 +111,14 @@ return types, API schemas or consumer types were changed in this task.
 - DEM, slope, distance and density must use consistent units and defensible source
   coverage. Ward means lose local detail; proximity does not establish backflow.
   No tides, sewer/drain capacity, rainfall time series or hydraulic routing are modelled.
-- API owner: forward duration through compute_risk_score into model calls using
-  `duration_hours=input_data.duration_hours`; currently request duration is ignored.
-  Update the rainfall field description (currently hardcoded to three hours).
-- API scenario owner: remove adjusted_features impervious multiplication in
-  api/routes/main.py; pass original features plus the percentage. The model cannot
-  infer whether a supplied fraction has already been adjusted.
+- API integration inspected 2026-10-23: compute_risk_score now accepts and forwards
+  duration_hours. /scenario passes original feature rows, the built-up percentage once,
+  and explicit requested duration; the previous pre-adjustment is gone. /risk now
+  explicitly forwards input_data.duration_hours; omitted duration retains the schema's
+  3-hour default. /alerts still passes only row/rainfall and AlertRequest has no duration
+  field. These routes need separate contract/call-site attention; not every route is fixed.
+  RainfallInput describes total accumulation over duration_hours. The model cannot detect
+  externally pre-adjusted fractions; all callers must continue supplying original values.
 - API owner: handle ValueError as an explicit input/data-quality error. Distinguish
   invalid requests from missing source measurements; never substitute zero.
   Describe risk_score as an uncalibrated index and version the changed model behavior.
@@ -126,9 +128,21 @@ return types, API schemas or consumer types were changed in this task.
 - Frontend/integration owners: suppress physical depth/peak claims and use the returned
   reasons rather than independent explanation logic. Agree deprecation before changing
   nullable types. Feature displays should distinguish original vs effective scenario values.
-- Validation API currently loads an empty validation_metrics.json and raises JSONDecodeError;
-  its global exception handler also fails to serialize a pandas Timestamp. Return honest
-  unavailable status and repair exception serialization; do not fill with invented metrics.
+- Validation API still reads JSON directly into the legacy numeric ValidationMetrics
+  response. Current validation_metrics.json is nonempty and explicitly marked MOCK NUMBERS,
+  not evidence of accuracy; the old empty-file JSONDecodeError is not the current artifact
+  condition. Migrate unavailable/nullable schema-2.0 handling and suppress mock claims.
+  The isolated canonical-file regression dependency has been fixed in tests; no current
+  failure is asserted here, and API/runtime tests were not rerun in this documentation task.
+
+Current boundary inputs contain 200 individually valid polygons and a 200-row matching
+internal-ID/official-number crosswalk (ID 1 → official ward 168), not the old 15-zone layer.
+Individual validity does not certify coverage or a nonoverlapping partition. The pending
+readiness diagnostic counts all positive-area overlap pairs (448 in this snapshot);
+[chennai_boundary_review.md](chennai_boundary_review.md) counts 291 pairs over 1 m².
+Neither predicate is a geographic acceptance standard. Source/vintage/topology review,
+missing features.parquet, upstream zero-fill provenance and reviewed historical observations/
+rainfall remain blockers. See [chennai_handoff.md](chennai_handoff.md) for current requests.
 
 See [validation.md](validation.md) for evidence requirements. Unit tests demonstrate
 mechanical consistency only; they do not validate flood accuracy.

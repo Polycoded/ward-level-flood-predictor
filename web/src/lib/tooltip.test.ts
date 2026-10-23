@@ -17,7 +17,9 @@ describe('wardTooltipHtml', () => {
       { ward_id: 1, ward_number: '177', ward_name: 'Velachery', risk_score: 0.81, risk_level: 'very_high', depth_band: '1.0m+', peak_window_hours: 5, reasons: [], features: {} }
     );
     expect(html).toContain('Very High');
-    expect(html).toContain('score 81');
+    expect(html).toContain('Uncalibrated index 81');
+    expect(html).not.toContain('1.0m+');
+    expect(html).not.toContain('peak');
     expect(html).toContain('3.14 km²');
   });
 });

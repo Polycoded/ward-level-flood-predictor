@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useFloodStore } from '../lib/store';
 import { api } from '../api/client';
-import { cn, getDepthLabel } from '../lib/utils';
+import { cn } from '../lib/utils';
 import { safeWhatsAppUrl, whatsAppShareUrl } from '../lib/safe';
 import { smsInfo } from '../lib/sms';
 import type { AlertChannel, AlertMessage, Language } from '../types';
@@ -63,6 +63,7 @@ export function AlertPanel({ onClose }: AlertPanelProps) {
   return (
     <Modal title="Generate alerts" onClose={onClose}>
       <div className="flex-1 overflow-y-auto p-4 space-y-5">
+        <p className="text-sm text-gray-600">Uncalibrated index; these messages are not flood forecasts. Follow official advice.</p>
         <fieldset>
           <legend className="font-medium text-gray-900 mb-2">Wards</legend>
           <div className="space-y-2 max-h-48 overflow-y-auto">
@@ -83,7 +84,7 @@ export function AlertPanel({ onClose }: AlertPanelProps) {
                     <RiskBadge level={ward.risk_level} size="sm" />
                   </span>
                   <span className="block text-xs text-gray-600">
-                    Ward {ward.ward_number} • {getDepthLabel(ward.depth_band)}
+                    Ward {ward.ward_number} • Index {Math.round(ward.risk_score * 100)} / 100
                   </span>
                 </span>
               </label>
