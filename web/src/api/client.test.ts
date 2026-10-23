@@ -59,7 +59,11 @@ describe('ApiClient live/mock decision', () => {
   });
 
   it('probes /readyz once even when the first calls run in parallel', async () => {
-    const { fn, calls } = adapter((c) => (c.url === '/readyz' ? { status: 200, data: READY } : { status: 200, data: [] }));
+    const risk = { scenario: { rainfall_mm: 100, duration_hours: 3 }, generated_at: '2026-10-23T00:00:00Z', model_version: '1',
+      wards: [{ ward_id: 7, ward_number: '7', ward_name: 'W', risk_score: 0.5, risk_level: 'moderate', depth_band: 'none', peak_window_hours: 4, reasons: [], features: {} }] };
+    const { fn, calls } = adapter((c) =>
+      c.url === '/readyz' ? { status: 200, data: READY } : c.url === '/wards' ? { status: 200, data: LIVE_WARD } : { status: 200, data: risk }
+    );
     const client = new ApiClient({ forceMock: false, adapter: fn });
     await Promise.all([client.getWards(), client.getWards(), client.getRisk({ rainfall_mm: 100, duration_hours: 3 })]);
     expect(calls.filter((c) => c === 'GET /readyz')).toHaveLength(1);

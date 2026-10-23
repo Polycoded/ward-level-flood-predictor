@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import App from './App';
 import { api } from './api/client';
 import { useFloodStore } from './lib/store';
+import { validateRiskResponse } from './api/validate';
 
 // Leaflet needs a real layout engine; the map is covered by the browser test pass instead.
 vi.mock('./components/MapView', () => ({ MapView: () => <div data-testid="map" /> }));
@@ -324,6 +325,38 @@ describe('validation panel', () => {
     const alert = await screen.findByRole('alert');
     expect(alert).toHaveTextContent(/Placeholder numbers, not a validation result/);
     expect(alert).toHaveTextContent(/Do not quote them/);
+  });
+});
+
+describe('hostile or broken backend', () => {
+  it.each([
+    ['an HTML page with status 200', '<!doctype html><html><body>index</body></html>'],
+    ['wards: null', { scenario: { rainfall_mm: 100, duration_hours: 3 }, wards: null, generated_at: 'x', model_version: '1' }],
+  ])('shows an error instead of crashing when /scenario returns %s', async (_, body) => {
+    const user = await renderLoaded();
+    await analyze(user);
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    vi.spyOn(api, 'getScenarioRisk').mockImplementation(async () => validateRiskResponse(body));
+    await user.click(screen.getByRole('button', { name: 'Analyze' }));
+    expect(await screen.findByText(/server returned invalid risk data/)).toBeInTheDocument();
+    expect(rankedItems()).toHaveLength(200); // previous result still on screen
+  });
+
+  it('opens a ward whose reasons and features are corrupt without crashing', async () => {
+    const user = await renderLoaded();
+    vi.spyOn(api, 'getScenarioRisk').mockImplementation(async () =>
+      validateRiskResponse({
+        scenario: { rainfall_mm: 100, duration_hours: 3 }, generated_at: 'not a date', model_version: '1',
+        wards: [{ ward_id: 2, ward_number: '2', ward_name: 'B', risk_score: 57, risk_level: 'catastrophic', depth_band: '9m', peak_window_hours: -3, reasons: null, features: null }],
+      })
+    );
+    await user.click(screen.getByRole('button', { name: 'Analyze' }));
+    await screen.findByText(/1 wards, highest risk first/);
+    expect(rankedItems()[0]).toHaveTextContent('Very High');
+    expect(rankedItems()[0]).toHaveTextContent(/100$/);
+    await user.click(within(rankedItems()[0]).getByRole('button'));
+    expect(await screen.findByText('Why this ward?')).toBeInTheDocument();
+    expect(screen.queryByText(/Something went wrong/)).toBeNull();
   });
 });
 

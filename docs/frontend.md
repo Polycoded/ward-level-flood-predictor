@@ -71,6 +71,8 @@ The **Validation** panel labels metrics as placeholders, with a warning, when th
 
 The frontend treats everything from the API and the user as untrusted:
 
+- **Every API response is validated** (`api/validate.ts`) before the UI uses it. A wrong shape (an HTML page from a misconfigured proxy, `wards: null`) becomes a clear error banner and the previous result stays on screen. Out-of-range values are clamped, unknown risk levels are re-derived from the score, undrawable geometry is dropped, and text is length-limited. Before this, any of these crashed the whole dashboard.
+
 - **Ward names** come from OpenStreetMap. React escapes text automatically. Leaflet tooltips take raw HTML, so they go through `escapeHtml` (`lib/tooltip.ts`).
 - **WhatsApp links** from the API are only used if they are `https://wa.me/?text=…` or `https://api.whatsapp.com/send?text=…` with **no recipient number**. Anything else (a `javascript:` URL, a look-alike host, or a pre-filled phone number) is replaced by a share link built from the message text. The official chooses who receives an alert. All outbound links use `rel="noopener noreferrer"`.
 - **CSV upload** is limited to 64 KB and 24 rows. Each value must be a finite, non-negative number of plausible size, and the total must be ≤ 500 mm (the API limit). Errors name the bad row.

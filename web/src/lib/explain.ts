@@ -117,6 +117,15 @@ export function durationFactor(durationHours = 3): number {
 }
 
 /** Rainfall scaling applied to the susceptibility score: (mm / 200) × duration factor, capped at 1.5. */
+/** Same bands as RISK_THRESHOLDS in model/risk_engine.py; a score of exactly 1 is very_high. */
+export function classifyRisk(score: number): 'very_low' | 'low' | 'moderate' | 'high' | 'very_high' {
+  if (score < 0.2) return 'very_low';
+  if (score < 0.35) return 'low';
+  if (score < 0.55) return 'moderate';
+  if (score < 0.75) return 'high';
+  return 'very_high';
+}
+
 export function rainfallFactor(rainfallMm: number, durationHours = 3): number {
   return Math.min((rainfallMm / 200) * durationFactor(durationHours), 1.5);
 }

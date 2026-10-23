@@ -3,6 +3,7 @@ import { useFloodStore } from './lib/store';
 import { api } from './api/client';
 import { cn } from './lib/utils';
 import { reportError } from './lib/monitoring';
+import { ApiDataError } from './api/validate';
 import type { RainfallReading } from './lib/rainfall';
 import { Header } from './components/Header';
 import { Sidebar } from './components/Sidebar';
@@ -51,7 +52,11 @@ function App() {
         if (validation) setValidationData(validation);
       } catch (e) {
         reportError(e, { stage: 'initial-load' });
-        setError('Could not load ward boundaries. Check that the API is running, then reload.');
+        setError(
+          e instanceof ApiDataError
+            ? 'The server sent ward data the dashboard could not use. Reload, or report this to the backend team.'
+            : 'Could not load ward boundaries. Check that the API is running, then reload.'
+        );
       } finally {
         setInitialLoading(false);
       }
@@ -81,7 +86,11 @@ function App() {
       if (window.innerWidth < 1024) useFloodStore.getState().setSidebarOpen(false);
     } catch (e) {
       reportError(e, { stage: 'risk', ...base, builtupIncrease });
-      setError('Risk analysis failed. The previous result is still shown.');
+      setError(
+        e instanceof ApiDataError
+          ? 'The server returned invalid risk data, so it was not shown. The previous result is still on screen.'
+          : 'Risk analysis failed. The previous result is still shown.'
+      );
     } finally {
       runningRef.current = false;
       setBusy(false);

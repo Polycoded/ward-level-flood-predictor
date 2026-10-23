@@ -13,6 +13,15 @@ import type {
   ReadyResponse,
 } from '../types';
 import { mockApi } from './mock';
+import {
+  validateAlerts,
+  validateRiskResponse,
+  validateRoads,
+  validateShelters,
+  validateValidation,
+  validateWardFeature,
+  validateWards,
+} from './validate';
 import { useFloodStore, type DataSource } from '../lib/store';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || '/api/v1';
@@ -88,12 +97,12 @@ export class ApiClient {
   }
 
   async getWards(): Promise<Ward[]> {
-    return this.call(async () => (await this.client.get<Ward[]>('/wards')).data, mockApi.getWards);
+    return this.call(async () => validateWards((await this.client.get('/wards')).data), mockApi.getWards);
   }
 
   async getWard(wardId: number): Promise<WardFeature> {
     return this.call(
-      async () => (await this.client.get<WardFeature>(`/wards/${wardId}`)).data,
+      async () => validateWardFeature((await this.client.get(`/wards/${wardId}`)).data),
       () => mockApi.getWard(wardId)
     );
   }
@@ -107,20 +116,20 @@ export class ApiClient {
 
   async getRisk(input: RainfallInput): Promise<RiskResponse> {
     return this.call(
-      async () => (await this.client.post<RiskResponse>('/risk', input)).data,
+      async () => validateRiskResponse((await this.client.post('/risk', input)).data),
       () => mockApi.getRisk(input)
     );
   }
 
   async getScenarioRisk(input: ScenarioInput): Promise<RiskResponse> {
     return this.call(
-      async () => (await this.client.post<RiskResponse>('/scenario', input)).data,
+      async () => validateRiskResponse((await this.client.post('/scenario', input)).data),
       () => mockApi.getScenarioRisk(input)
     );
   }
 
   async getValidation(): Promise<ValidationMetrics> {
-    return this.call(async () => (await this.client.get<ValidationMetrics>('/validation')).data, mockApi.getValidation);
+    return this.call(async () => validateValidation((await this.client.get('/validation')).data), mockApi.getValidation);
   }
 
   async generateAlerts(
@@ -131,14 +140,16 @@ export class ApiClient {
   ): Promise<AlertResponse> {
     return this.call(
       async () =>
-        (
-          await this.client.post<AlertResponse>('/alerts', {
-            ward_ids: wardIds,
-            rainfall_mm: rainfallMm,
-            language,
-            channels,
-          })
-        ).data,
+        validateAlerts(
+          (
+            await this.client.post('/alerts', {
+              ward_ids: wardIds,
+              rainfall_mm: rainfallMm,
+              language,
+              channels,
+            })
+          ).data
+        ),
       () => mockApi.generateAlerts(wardIds, rainfallMm, language, channels)
     );
   }
@@ -151,21 +162,23 @@ export class ApiClient {
   ): Promise<Shelter[]> {
     return this.call(
       async () =>
-        (
-          await this.client.post<Shelter[]>('/shelters', {
-            latitude,
-            longitude,
-            max_distance_km: maxDistanceKm,
-            max_results: maxResults,
-          })
-        ).data,
+        validateShelters(
+          (
+            await this.client.post('/shelters', {
+              latitude,
+              longitude,
+              max_distance_km: maxDistanceKm,
+              max_results: maxResults,
+            })
+          ).data
+        ),
       () => mockApi.findShelters(latitude, longitude, maxDistanceKm, maxResults)
     );
   }
 
   async getRoadRisk(rainfallMm: number): Promise<RoadRisk[]> {
     return this.call(
-      async () => (await this.client.get<RoadRisk[]>('/roads/risk', { params: { rainfall_mm: rainfallMm } })).data,
+      async () => validateRoads((await this.client.get('/roads/risk', { params: { rainfall_mm: rainfallMm } })).data),
       () => mockApi.getRoadRisk(rainfallMm)
     );
   }
