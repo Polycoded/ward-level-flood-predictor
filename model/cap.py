@@ -34,7 +34,8 @@ def validate_cap_xml(xml: str, *, schema: Path = SCHEMA) -> dict:
     if executable is None:
         return {"status": "unavailable", "reason": "xmllint required for official XSD validation"}
     completed = subprocess.run([executable, "--nonet", "--noout", "--schema", str(schema), "-"],
-                               input=xml, text=True, capture_output=True, timeout=15, check=False)
+                               input=xml, text=True, encoding="utf-8", errors="replace",
+                               capture_output=True, timeout=15, check=False)
     return {"status": "valid" if completed.returncode == 0 else "invalid",
             "validator": "xmllint", "schema": str(schema), "diagnostic": completed.stderr.strip()}
 
