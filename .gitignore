@@ -11,6 +11,12 @@ data/raw/*
 !data/raw/.gitkeep
 data/processed/*.tif
 data/processed/*.parquet
+!data/processed/features.parquet
+!data/processed/zonal_stats.parquet
+
+# Explicitly tracked deliverables
+!data/raw/Chennai GCC Ward Map - 2022.kml
+!data/raw/Chennai GCC Zones Map - 2022.kml
 
 # Frontend
 node_modules/
@@ -22,3 +28,6 @@ dist/
 .vscode/
 .idea/
 .env
+
+# Local documentation
+learn.md

@@ -1,0 +1,48 @@
+# Python & uv virtual environments
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.uv/
+
+# Data binaries & large GIS files (tracked deliverables are explicitly allowed)
+data/raw/*
+!data/raw/.gitkeep
+!data/raw/Chennai GCC Ward Map - 2022.kml
+!data/raw/Chennai GCC Zones Map - 2022.kml
+data/processed/*.tif
+data/processed/*.parquet
+!data/processed/features.parquet
+!data/processed/zonal_stats.parquet
+!data/processed/validation_metrics.json
+!data/processed/validation_labels.csv
+!data/processed/validation_labels_template.csv
+!data/processed/ward_crosswalk.csv
+!data/processed/wards.geojson
+!data/processed/features_export.csv
+!data/processed/features.parquet
+
+# Frontend
+node_modules/
+dist/
+.vite/
+
+# System & IDE
+.DS_Store
+.vscode/
+.idea/
+.env
+
+# Local documentation
+learn.md
+
+# Test/coverage artifacts
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Build artifacts
+*.egg-info/
+build/
+dist/

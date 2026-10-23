@@ -105,3 +105,53 @@ and internal ward IDs. It applies no area tolerance and reports no area units. B
 touching is allowed. Invalid/missing/empty geometry skips overlap assessment. Findings
 are review warnings; existing readiness gates are unchanged. Use the original source
 to interpret slivers; this diagnostic cannot certify a ward partition or detect gaps.
+
+---
+
+## Addendum: Post-review deliveries (commit 40598b1)
+
+The following items requested in the "Next delivery needed from John" section have been
+delivered in commit `40598b1` (pushed to `origin/main`):
+
+1. **Original KML files tracked**: Both `Chennai GCC Ward Map - 2022.kml` (2.8 MB) and
+   `Chennai GCC Zones Map - 2022.kml` (758 KB) are now tracked in `data/raw/`.
+   Source: User-supplied official GCC 2022 delimitation maps (no public download URL;
+   files provided by team).
+
+2. **KML conversion script corrected**: `pipeline/extract_wards_from_kml.py` has been
+   fixed to reproduce the exact delivered artifacts (`wards.geojson`, `ward_crosswalk.csv`).
+   The script now:
+   - Assigns `ward_id` sequentially by KML feature order (1–200)
+   - Computes `area_sqkm` from geometry in EPSG:32644
+   - Produces crosswalk with exact column order: `ward_id,ward_number,ward_name,zone_number,zone_name,source`
+   - No longer has the column-renaming bug that would mislabel values if rerun
+
+3. **Feature artifacts tracked**: 
+   - `data/processed/features.parquet` (1.09 MB, 200 × 44)
+   - `data/processed/features_export.csv` (5.1 MB)
+   - `data/processed/zonal_stats.parquet` (73 KB, 200 × 39)
+   - `data/processed/wards.geojson` (4.1 MB, EPSG:32644)
+   - `data/processed/ward_crosswalk.csv` (10.5 KB)
+
+4. **Boundary overlaps verified**: The 291 overlap pairs >1 m² are confirmed to exist
+   in the raw KML (not introduced by conversion). Largest: Ward 32/31 = 7,894 m².
+
+5. **Water distance method clarified**: Projected centroid distance (EPSG:32644);
+   176 wards touch water, only 2 have distance=0.
+
+6. **OSM source corrected**: Local Geofabrik PBF (`southern-zone-261020.osm.pbf`,
+   snapshot 2026-10-20) via `extract_osm_local.py`, not Overpass API.
+
+7. **No synthetic fallbacks**: `download_dem.py` and `download_lulc.py` explicitly
+   state "No synthetic fallback: if the COGs are unavailable the script fails."
+
+**Remaining for this review:**
+- Item 4 (per-feature provenance with source/version/date, units, CRS, extraction
+  method, nodata/coverage audit) is partially addressed in `MIT_HANDOFF.md` and
+  `SEND_TO_MIT.md`; formal evaluation-runner config with `feature_provenance`
+  remains for Mit to complete.
+- Historical rainfall and ward-aligned observations remain pending (Mit's task).
+
+**Readiness CLI status**: Would now pass boundary checks (200 valid wards, crosswalk
+matches, area_sqkm verified). Historical evidence and mock metrics still block
+full readiness — no invented attestations added.

@@ -36,6 +36,9 @@ dev = [
     "mypy>=1.10.0",
     "pre-commit>=3.7.0",
 ]
+voice = [
+    "livekit-agents[openai,silero]>=1.0.0",
+]
 
 [tool.uv]
 dev-dependencies = [

@@ -1,12 +1,39 @@
 {
-  "precision_at_20": 0.65,
-  "recall": 0.7222222222222222,
-  "false_positive_rate": 0.038461538461538464,
-  "true_positives": 13,
-  "false_positives": 7,
-  "false_negatives": 5,
-  "total_flooded_wards": 18,
-  "total_wards": 200,
-  "event_date": "2023-12-04",
-  "notes": "MOCK NUMBERS: placeholder until validation_metrics.json from the real Dec 2023 run is committed."
+  "schema_version": "2.0",
+  "status": "unavailable",
+  "status_reason": "No reviewed schema-2 evaluator output exists. Mock metrics from earlier placeholder have been removed.",
+  "evaluation_type": "top_k_ranking",
+  "event_metadata": null,
+  "metrics": null,
+  "coverage": null,
+  "counts": {
+    "selected_flooded": 0,
+    "selected_non_flooded": 0,
+    "selected_unknown": 0,
+    "total_observed_flooded": 0,
+    "total_observed_non_flooded": 0,
+    "total_unknown": 0,
+    "missing_label_count": 0,
+    "explicit_unknown_count": 0,
+    "true_positives": 0,
+    "false_positives": 0,
+    "false_negatives": 0,
+    "true_negatives": 0
+  },
+  "warnings": [
+    "No validation labels have been provided for any event.",
+    "Mock metrics from earlier placeholder were removed; they were not accuracy evidence.",
+    "Evaluation requires completed event metadata, reviewed labels, and predictions from a frozen model version."
+  ],
+  "exclusions": [],
+  "reproducibility": {
+    "hash_algorithm": "sha256",
+    "canonical_predictions_sha256": "",
+    "canonical_labels_sha256": "",
+    "canonical_metadata_sha256": "",
+    "evaluator_source_sha256": "",
+    "python_version": "",
+    "pandas_version": "",
+    "selection_rule": "risk_score descending, numeric ward_id ascending; select before labels"
+  }
 }
