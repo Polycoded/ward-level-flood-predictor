@@ -82,7 +82,7 @@ describe('official runs a rainfall scenario', () => {
 
   it('runs one analysis when Analyze is hammered by an auto-clicker', async () => {
     await renderLoaded();
-    const spy = vi.spyOn(api, 'getRisk');
+    const spy = vi.spyOn(api, 'getScenarioRisk');
     const button = screen.getByRole('button', { name: 'Analyze' });
     for (let i = 0; i < 20; i++) fireEvent.click(button);
     await screen.findByText(/200 wards, highest risk first/);
@@ -112,6 +112,29 @@ describe('official runs a rainfall scenario', () => {
     expect(useFloodStore.getState().scenario.builtup_increase_pct).toBe(30);
   });
 
+  it('uses one duration-aware formula for today and the built-up scenarios', async () => {
+    const user = await renderLoaded();
+    const spy = vi.spyOn(api, 'getScenarioRisk');
+    const risk = vi.spyOn(api, 'getRisk');
+    await user.selectOptions(screen.getByLabelText('Over'), '12');
+    await user.click(screen.getByRole('button', { name: /^150$|^200 mm$/ }));
+    await user.click(screen.getByRole('button', { name: 'Analyze' }));
+    await screen.findByText(/200 wards, highest risk first/);
+    expect(spy).toHaveBeenLastCalledWith({ rainfall_mm: 200, duration_hours: 3, builtup_increase_pct: 0 });
+    expect(risk).not.toHaveBeenCalled();
+
+    // a long storm: more paving must never look safer than today
+    await user.selectOptions(screen.getByLabelText('Over'), '12');
+    await user.click(screen.getByRole('button', { name: 'Analyze' }));
+    await screen.findByText(/200 mm \/ 12 h/);
+    const today = new Map(useFloodStore.getState().riskData!.wards.map((w) => [w.ward_id, w.risk_score]));
+    await user.click(screen.getByRole('button', { name: '+15% built-up' }));
+    await screen.findByText(/move up a risk level/);
+    for (const w of useFloodStore.getState().riskData!.wards) expect(w.risk_score).toBeGreaterThanOrEqual(today.get(w.ward_id)!);
+    expect(spy).toHaveBeenCalledWith({ rainfall_mm: 200, duration_hours: 12, builtup_increase_pct: 15 });
+    expect(spy).toHaveBeenCalledWith({ rainfall_mm: 200, duration_hours: 12, builtup_increase_pct: 0 });
+  });
+
   it('clears the analysis', async () => {
     const user = await renderLoaded();
     await analyze(user);
@@ -129,6 +152,11 @@ describe('ward detail and explainability', () => {
     expect(within(panel).getByText('Why this ward?')).toBeInTheDocument();
     expect(within(panel).getAllByRole('row').length).toBeGreaterThanOrEqual(7);
     expect(within(panel).getByText('Model reasons')).toBeInTheDocument();
+    // depth and peak are presented as proxies, not predictions (docs/model_logic.md)
+    expect(within(panel).getByText('Indicative depth band')).toBeInTheDocument();
+    expect(within(panel).getByText('Indicative peak window')).toBeInTheDocument();
+    expect(within(panel).getByText(/not hydraulic predictions/)).toBeInTheDocument();
+    expect(within(panel).queryByText(/from now/)).toBeNull();
     await user.keyboard('{Escape}');
     await waitFor(() => expect(screen.queryByRole('complementary', { name: 'Ward details' })).toBeNull());
   });
@@ -289,11 +317,21 @@ describe('live forecast', () => {
   });
 });
 
+describe('validation panel', () => {
+  it('never presents placeholder metrics as a real result', async () => {
+    const user = await renderLoaded();
+    await user.click(screen.getByRole('button', { name: 'Validation (placeholder)' }));
+    const alert = await screen.findByRole('alert');
+    expect(alert).toHaveTextContent(/Placeholder numbers, not a validation result/);
+    expect(alert).toHaveTextContent(/Do not quote them/);
+  });
+});
+
 describe('failure handling', () => {
   it('keeps the previous result and shows an error when analysis fails', async () => {
     const user = await renderLoaded();
     await analyze(user);
-    vi.spyOn(api, 'getRisk').mockRejectedValueOnce(new Error('timeout'));
+    vi.spyOn(api, 'getScenarioRisk').mockRejectedValueOnce(new Error('timeout'));
     vi.spyOn(console, 'error').mockImplementation(() => {});
     await user.click(screen.getByRole('button', { name: 'Analyze' }));
     expect(await screen.findByText(/Risk analysis failed/)).toBeInTheDocument();

@@ -108,6 +108,15 @@ export function baseSusceptibility(f: FactorInputs, builtupIncreasePct = 0): num
   return factorContributions(f, builtupIncreasePct).reduce((sum, c) => sum + c.contribution, 0);
 }
 
-export function rainfallFactor(rainfallMm: number): number {
-  return Math.min(rainfallMm / 200, 1.5);
+/**
+ * Bounded duration heuristic from model/risk_engine.py: the same rain over a shorter
+ * window counts more, anchored to 3 h. sqrt(3 / h) clamped to [0.5, 1.5].
+ */
+export function durationFactor(durationHours = 3): number {
+  return Math.min(1.5, Math.max(0.5, Math.sqrt(3 / durationHours)));
+}
+
+/** Rainfall scaling applied to the susceptibility score: (mm / 200) × duration factor, capped at 1.5. */
+export function rainfallFactor(rainfallMm: number, durationHours = 3): number {
+  return Math.min((rainfallMm / 200) * durationFactor(durationHours), 1.5);
 }

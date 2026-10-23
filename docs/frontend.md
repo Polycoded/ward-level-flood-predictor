@@ -37,7 +37,7 @@ With the FastAPI backend running (`uvicorn api.main:app --port 8000` from the re
 | Rainfall input: manual amount + duration, CSV upload, Open-Meteo forecast | `RainfallControl` | 4, problem statement §5 "Rainfall input" |
 | Colour-graded ward map, tooltips | `MapView` | 4 |
 | Ranked list with search and High+ filter | `RankedList` | 4 |
-| Ward detail: risk, depth band, peak window | `WardDetailPanel` | 4 |
+| Ward detail: risk level and score; depth band and peak window labelled *indicative* (display proxies per `docs/model_logic.md`) | `WardDetailPanel` | 4 |
 | "Why this ward?": weighted factor bars beside the model's `reasons[]` | `ExplainabilityPanel` | 5 |
 | English/Tamil SMS and WhatsApp drafts, copy, share link, channel readiness | `AlertPanel`, `ChannelStatus` | 4 |
 | Today vs +15% / +30% built-up, with "N wards get worse" | `FutureScenarioToggle` | 6, stretch goal |
@@ -49,13 +49,19 @@ With the FastAPI backend running (`uvicorn api.main:app --port 8000` from the re
 ## Data flow
 
 ```
-RainfallControl ──reading──▶ App.runAnalysis ──▶ api.getRisk / api.getScenarioRisk
-                                                  │ (baseline fetched too for scenarios)
+RainfallControl ──reading──▶ App.runAnalysis ──▶ api.getScenarioRisk (0% = today)
+                                                  │ (0% baseline fetched too for +15/+30%)
                                                   ▼
                                      zustand store (lib/store.ts)
                        ┌───────────────┬───────────┴──────────┬──────────────┐
                     MapView        RankedList         WardDetailPanel    FutureScenarioToggle
 ```
+
+All analyses go through `/scenario`, with `builtup_increase_pct: 0` meaning today's land use. `/risk` currently drops `duration_hours` while `/scenario` applies it, so mixing the two made "+15% built-up" look safer than today for long storms. Using one endpoint keeps the comparison honest whichever way `/risk` is fixed.
+
+The rainfall factor follows `model/risk_engine.py`: `(mm / 200) × clamp(sqrt(3 / hours), 0.5, 1.5)`, capped at 1.5. The explainability panel shows it, and `lib/explain.test.ts` checks 27 cases (1–24 h, 0–30% built-up) against outputs recorded from the Python engine.
+
+The **Validation** panel labels metrics as placeholders, with a warning, when the app is in mock mode or the file's `notes` say mock/placeholder/template. The `validation_metrics.json` currently on `main` holds the frontend's mock numbers, so it is flagged.
 
 `api/client.ts` calls `/readyz` once per page load. If the backend answers with `features` and `wards` ready it uses the live API for the whole session; otherwise it uses `api/mock.ts`. The two sources are never mixed, so you never see live wards with mock scores.
 
@@ -97,7 +103,8 @@ python web/scripts/python_parity_fixture.py   # from the repo root, with the bac
 
 ## Known gaps (backend side, tracked in the PR)
 
-- `/validation` returns 500 until `data/processed/validation_metrics.json` exists, so the Validation button stays hidden.
+- `data/processed/validation_metrics.json` on `main` contains mock numbers; the UI flags them as placeholders until the real evaluation replaces the file.
+- `/risk` ignores `duration_hours` (the dashboard uses `/scenario` instead; see above).
 - `model/alerts.py` "Tamil" templates are Chinese text. The mock's Tamil is correct but still needs a native-speaker review.
 - `/wards` is ~650 KB uncompressed; adding `GZipMiddleware` to `api/main.py` cuts it to ~77 KB. Lighthouse on the production build (offline mode): mobile 91–94 performance / 100 accessibility, desktop 99–100. The uncompressed payload is the main thing slowing the live version on mobile.
 - `risk_engine.py` labels a score of exactly 1.0 (any extreme storm) as `very_low`.

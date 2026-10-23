@@ -66,9 +66,12 @@ function App() {
     setError(null);
     const base = { rainfall_mm: reading.rainfall_mm, duration_hours: reading.duration_hours };
     try {
+      // Everything goes through /scenario (0% = today's land use) so the current map and the
+      // built-up comparison use one formula. /risk currently ignores duration_hours while
+      // /scenario applies it, which made "+15% built-up" look safer than today for long storms.
       const [response, baseline] = await Promise.all([
-        builtupIncrease > 0 ? api.getScenarioRisk({ ...base, builtup_increase_pct: builtupIncrease }) : api.getRisk(base),
-        builtupIncrease > 0 ? api.getRisk(base) : Promise.resolve(null),
+        api.getScenarioRisk({ ...base, builtup_increase_pct: builtupIncrease }),
+        builtupIncrease > 0 ? api.getScenarioRisk({ ...base, builtup_increase_pct: 0 }) : Promise.resolve(null),
       ]);
       setRiskData(response);
       setBaselineRisk(baseline ?? response);

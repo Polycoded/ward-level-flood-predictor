@@ -6,7 +6,7 @@ Target length: 6 minutes plus Q&A. One idea per slide. Numbers in **[brackets]**
 
 ## 1. Title (10 s)
 
-**Which Chennai ward floods next, how deep, and when.**
+**Which Chennai wards are most at risk from the rain that's coming.**
 Ward-level flood risk from a rainfall forecast, in under two seconds.
 Team: John · Mit · Ronit
 
@@ -27,7 +27,7 @@ Team: John · Mit · Ronit
 Rainfall in, ward risk out:
 
 1. **Input**: forecast mm (manual, CSV, or live Open-Meteo)
-2. **Score**: every ward gets a risk level, a depth band and a peak window
+2. **Score**: every ward gets a risk level and a 0–100 index, plus indicative depth and timing bands
 3. **Act**: ranked list, English and Tamil alerts, underpass closures, nearest shelters
 
 > Visual: screenshot of the dashboard after a 100 mm run.
@@ -52,7 +52,8 @@ Rainfall in, ward risk out:
 
 - A weighted hydrological index, chosen over ML because labels are scarce and officials must be able to **audit** it.
 - Weights: elevation 25%, impervious 25%, slope 15%, water proximity 15%, road density 10%, underpasses 10%.
-- Rainfall scales the static susceptibility; this gives a depth band and a peak window.
+- Rainfall (scaled for storm duration) multiplies the static susceptibility into an uncalibrated 0–1 index.
+- Depth and peak bands are display proxies, not hydraulic predictions; say so if asked.
 - Every score comes with factual `reasons[]`.
 
 > Visual: the "Why this ward?" bar chart from the app.
@@ -65,7 +66,7 @@ Cyclone Michaung, 3–4 Dec 2023. Labels from Sentinel-1 SAR flood extent and ne
 
 | Metric | Value |
 | --- | --- |
-| Precision@20 | **[from validation_metrics.json]** |
+| Precision@20 | **[from Mit's evaluation run; the current validation_metrics.json is a placeholder]** |
 | Recall | **[ ]** |
 | False positives | **[ ]**: explain one |
 
@@ -107,7 +108,7 @@ Cyclone Michaung, 3–4 Dec 2023. Labels from Sentinel-1 SAR flood extent and ne
 
 ## 11. Close (10 s)
 
-**From "heavy rain over Chennai" to a ward-level instruction, e.g. "Ward N: knee-deep by 9 pm, close this underpass, open that school as a shelter."**
+**From "heavy rain over Chennai" to a ward-level priority list: which wards first, which underpasses to watch, which schools to open as shelters.**
 
 ---
 

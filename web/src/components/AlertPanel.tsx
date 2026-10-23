@@ -83,7 +83,7 @@ export function AlertPanel({ onClose }: AlertPanelProps) {
                     <RiskBadge level={ward.risk_level} size="sm" />
                   </span>
                   <span className="block text-xs text-gray-600">
-                    Ward {ward.ward_number} • {getDepthLabel(ward.depth_band)}
+                    Ward {ward.ward_number} • ≈ {getDepthLabel(ward.depth_band)}
                   </span>
                 </span>
               </label>

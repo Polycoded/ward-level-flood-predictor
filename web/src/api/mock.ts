@@ -143,8 +143,8 @@ function reasonsFor(w: WardFeature, rainfallMm: number): string[] {
   return reasons;
 }
 
-export function scoreWard(w: WardFeature, rainfallMm: number, builtupIncrease = 0): WardRisk {
-  const rf = rainfallFactor(rainfallMm);
+export function scoreWard(w: WardFeature, rainfallMm: number, builtupIncrease = 0, durationHours = 3): WardRisk {
+  const rf = rainfallFactor(rainfallMm, durationHours);
   const risk_score = Math.min(baseScore(w, builtupIncrease) * rf, 1);
   const risk_level = RISK_THRESHOLDS.find(([, hi]) => risk_score < hi)![0];
   const depthM = (risk_score * 150 * rf) / 100;
@@ -281,7 +281,7 @@ function riskResponse(input: RainfallInput, builtupIncrease = 0): RiskResponse {
   return {
     scenario: input,
     wards: allWards()
-      .map((w) => scoreWard(w, input.rainfall_mm, builtupIncrease))
+      .map((w) => scoreWard(w, input.rainfall_mm, builtupIncrease, input.duration_hours))
       .sort((a, b) => b.risk_score - a.risk_score),
     generated_at: new Date().toISOString(),
     model_version: '0.1.0-mock',

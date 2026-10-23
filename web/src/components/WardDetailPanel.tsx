@@ -62,6 +62,7 @@ export function WardDetailPanel({ wardId }: WardDetailPanelProps) {
             wardDetail={wardDetail}
             riskWard={riskWard}
             rainfallMm={riskData?.scenario.rainfall_mm ?? null}
+            durationHours={riskData?.scenario.duration_hours ?? 3}
             builtupIncreasePct={scenario.builtup_increase_pct}
             onClose={close}
           />
@@ -95,12 +96,14 @@ function DetailContent({
   wardDetail,
   riskWard,
   rainfallMm,
+  durationHours,
   builtupIncreasePct,
   onClose,
 }: {
   wardDetail: WardFeature;
   riskWard: WardRisk | null;
   rainfallMm: number | null;
+  durationHours: number;
   builtupIncreasePct: number;
   onClose: () => void;
 }) {
@@ -116,14 +119,20 @@ function DetailContent({
 
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {riskWard ? (
-          <RiskSummaryCard ward={riskWard} rainfallMm={rainfallMm} />
+          <RiskSummaryCard ward={riskWard} rainfallMm={rainfallMm} durationHours={durationHours} />
         ) : (
           <p className="text-sm text-gray-700 bg-gray-50 border border-gray-200 rounded-lg p-3">
             Run a rainfall analysis to see this ward's flood risk. Its terrain profile is below.
           </p>
         )}
 
-        <ExplainabilityPanel ward={wardDetail} riskWard={riskWard} rainfallMm={rainfallMm} builtupIncreasePct={builtupIncreasePct} />
+        <ExplainabilityPanel
+          ward={wardDetail}
+          riskWard={riskWard}
+          rainfallMm={rainfallMm}
+          durationHours={durationHours}
+          builtupIncreasePct={builtupIncreasePct}
+        />
 
         <OtherFeatures ward={wardDetail} />
 
@@ -133,7 +142,7 @@ function DetailContent({
   );
 }
 
-function RiskSummaryCard({ ward, rainfallMm }: { ward: WardRisk; rainfallMm: number | null }) {
+function RiskSummaryCard({ ward, rainfallMm, durationHours }: { ward: WardRisk; rainfallMm: number | null; durationHours: number }) {
   return (
     <div className="card p-4 border-l-4" style={{ borderLeftColor: getRiskColor(ward.risk_level) }}>
       <div className="flex items-center justify-between mb-3">
@@ -145,23 +154,27 @@ function RiskSummaryCard({ ward, rainfallMm }: { ward: WardRisk; rainfallMm: num
       </div>
       <dl className="grid grid-cols-2 gap-3 text-sm">
         <div>
-          <dt className="text-xs text-gray-600">Likely water depth</dt>
+          <dt className="text-xs text-gray-600">Indicative depth band</dt>
           <dd className="font-medium text-gray-900 flex items-center gap-1.5">
             <span className="w-2 h-2 rounded" style={{ backgroundColor: getDepthColor(ward.depth_band) }} aria-hidden="true" />
-            {getDepthLabel(ward.depth_band)}
+            ≈ {getDepthLabel(ward.depth_band)}
           </dd>
         </div>
         <div>
-          <dt className="text-xs text-gray-600">Expected peak</dt>
-          <dd className="font-medium text-gray-900">~{ward.peak_window_hours} h from now</dd>
+          <dt className="text-xs text-gray-600">Indicative peak window</dt>
+          <dd className="font-medium text-gray-900">≈ {ward.peak_window_hours} h</dd>
         </div>
         {rainfallMm !== null && (
           <div className="col-span-2">
             <dt className="text-xs text-gray-600">Scenario</dt>
-            <dd className="font-medium text-gray-900">{rainfallMm} mm rainfall</dd>
+            <dd className="font-medium text-gray-900">{rainfallMm} mm in {durationHours} h</dd>
           </div>
         )}
       </dl>
+      <p className="text-xs text-gray-600 mt-3 border-t border-gray-100 pt-2">
+        Depth and peak are display proxies derived from the risk index, not hydraulic predictions
+        (see docs/model_logic.md). Use the risk level for decisions.
+      </p>
     </div>
   );
 }

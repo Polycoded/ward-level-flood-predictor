@@ -3,6 +3,7 @@ import { getRiskLabel, getRiskColor } from '../lib/utils';
 import type { RiskResponse } from '../types';
 import { ProviderBadge } from './ProviderBadge';
 import { CROWD_REPORTS_ENABLED } from '../lib/features';
+import { isPlaceholderValidation } from '../lib/validation';
 
 interface HeaderProps {
   onClear: () => void;
@@ -10,7 +11,8 @@ interface HeaderProps {
 }
 
 export function Header({ onClear, onOpenReports }: HeaderProps) {
-  const { ui, riskData, validationData, setAlertsOpen, setValidationOpen, toggleSidebar } = useFloodStore();
+  const { ui, riskData, validationData, dataSource, setAlertsOpen, setValidationOpen, toggleSidebar } = useFloodStore();
+  const placeholderValidation = validationData ? isPlaceholderValidation(validationData, dataSource) : false;
 
   return (
     <header className="bg-white border-b border-gray-200 z-20">
@@ -38,7 +40,7 @@ export function Header({ onClear, onOpenReports }: HeaderProps) {
           )}
           {validationData && (
             <button onClick={() => setValidationOpen(!ui.validationOpen)} aria-pressed={ui.validationOpen} className="btn-secondary">
-              Validation
+              {placeholderValidation ? 'Validation (placeholder)' : 'Validation'}
             </button>
           )}
           {CROWD_REPORTS_ENABLED && (
