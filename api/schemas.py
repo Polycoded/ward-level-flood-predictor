@@ -103,6 +103,7 @@ class AlertRequest(BaseModel):
     # (200 wards x 1000 duplicate channels used to return 43 MB).
     ward_ids: List[int] = Field(..., min_length=1, max_length=200)
     rainfall_mm: float = Field(..., ge=0, le=500)
+    duration_hours: float = Field(default=3.0, ge=1, le=24, description="Accumulation interval in hours")
     language: Language = Language.ENGLISH
     channels: List[AlertChannel] = Field(
         default=[AlertChannel.SMS, AlertChannel.WHATSAPP], min_length=1, max_length=4

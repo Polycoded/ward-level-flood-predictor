@@ -37,14 +37,51 @@ With the FastAPI backend running (`uvicorn api.main:app --port 8000` from the re
 | Rainfall input: manual amount + duration, CSV upload, Open-Meteo forecast | `RainfallControl` | 4, problem statement §5 "Rainfall input" |
 | Colour-graded ward map, tooltips | `MapView` | 4 |
 | Ranked list with search and High+ filter | `RankedList` | 4 |
-| Ward detail: risk level and score; depth band and peak window labelled *indicative* (display proxies per `docs/model_logic.md`) | `WardDetailPanel` | 4 |
+| Ward detail: uncalibrated index/category and reasons; physical proxies suppressed | `WardDetailPanel` | 4 |
 | "Why this ward?": weighted factor bars beside the model's `reasons[]` | `ExplainabilityPanel` | 5 |
 | English/Tamil SMS and WhatsApp drafts, copy, share link, channel readiness | `AlertPanel`, `ChannelStatus` | 4 |
 | Today vs +15% / +30% built-up, with "N wards get worse" | `FutureScenarioToggle` | 6, stretch goal |
-| Roads and underpasses coloured by risk, "close/divert" hint | `MapView` road layer | 1, 4, stretch goal |
-| Nearest shelters, walking time, OSM directions link | `ShelterPanel` | 1, 4, stretch goal |
+| Roads and underpasses: uncalibrated screening requiring review, no depth/closure instruction | `MapView` road layer | 1, 4, stretch goal |
+| Shelter candidates and directions links, without verified availability/capacity/safe routes | `ShelterPanel` | 1, 4, stretch goal |
 | Live API vs mock, rainfall provider | `ProviderBadge` | honesty in the demo |
-| Dec 2023 validation metrics | `ValidationPanel` | 3 |
+| Evidence status, nullable observed-sample metrics and coverage; mock accuracy suppressed | `ValidationPanel` | 3 |
+
+## Resident app and phone alerts (docs/ACTION_PLAN_ALERTS.md, Ronit's part)
+
+Phones open the **Resident** screen by default; laptops open the **Official** dashboard. Both can switch, and the choice is remembered on the device.
+
+| Piece | Where | Notes |
+| --- | --- | --- |
+| Resident screen | `components/resident/ResidentView.tsx` | My ward, plain-language estimate from the live Open-Meteo forecast, Where do I go? (shelters), Get alerts, call 1913 / 112 |
+| On-device ward lookup | `lib/wardLookup.ts` | Point-in-polygon on cached ward shapes; only the ward ID ever leaves the phone. Points up to 150 m outside a ward (gaps, GPS error) snap to the nearest ward; further away = "outside Chennai" |
+| Tamil / English | `lib/i18n.ts` | Every key has a Tamil string (enforced by TypeScript and `i18n.test.ts`); native-speaker review still needed |
+| Subscribe flow | `components/resident/SubscribeSheet.tsx`, `lib/push.ts` | Web Push when `VITE_VAPID_PUBLIC_KEY` is set; otherwise the page shows notifications itself (preview). WhatsApp opt-in via a `JOIN <ward>` deep link to `VITE_WHATSAPP_NUMBER` |
+| Follow location | `components/resident/hooks.ts` | While the app is open, two readings in a new ward move the subscription (max once a minute). Browsers can't do this in the background |
+| Alert page | `components/AlertScreen.tsx` | Full screen; opened by a notification (`/?alert=<id>`), a new alert for my ward, or the banner. Drill banner on exercise alerts; general safety tips only |
+| Official approval | `components/AlertQueuePanel.tsx` | "Check wards for alerts" → pending EN/TA texts → Approve & send / Cancel. Nothing reaches phones without approval |
+| PWA | `public/manifest.webmanifest`, `public/sw.js`, `public/icons/` | Installable; offline app shell; ward shapes cached (stale-while-revalidate); last known alerts cached; push and notification-click handlers |
+
+### Endpoints from the plan that the backend doesn't have yet
+
+`api/client.ts` calls the planned endpoints (`/wards/lite`, `/subscriptions`, `/alerts/check`, `/alerts/pending`, `/alerts/{id}/approve|cancel`, `/alerts/active`, `/alerts/{id}`). If the live server answers 404/405/501, the call falls back to `api/mockAlerts.ts`, an in-browser stand-in stored in localStorage (so an official tab and a resident tab on one laptop see the same alerts in a demo), and the UI shows a **Preview** note. `/wards/lite` falls back to the full `/wards` (also on the 422 FastAPI currently returns for it). Once John's endpoints exist, the same UI uses them with no code change.
+
+The preview's alert rule (high → Watch, very high → Warning, no repeat within 6 h unless it worsens, max 25 wards per run) is a placeholder for Mit's `model/alert_rules.py`.
+
+### Offline and demo data
+- Offline phones stay on real data and use the service worker's cached copies; they never switch to the synthetic demo.
+- When the backend is unreachable while online, residents see an amber **"Demo data"** notice.
+
+### New environment variables
+| Variable | Purpose |
+| --- | --- |
+| `VITE_VAPID_PUBLIC_KEY` | Public key for Web Push subscriptions (matches the backend's private key) |
+| `VITE_WHATSAPP_NUMBER` | The OpenWA alert number residents message with `JOIN <ward>` |
+| `VITE_ENABLE_SW` | `true` to register the service worker in `npm run dev` (it always registers in production builds) |
+
+### Measured
+- Phone path: about 98 KB gzipped JS (the map library loads only for officials).
+- Lighthouse mobile on the resident screen: performance 99, accessibility 100, best practices 96, SEO 100.
+- Real headless Chrome: the service worker installs and takes control; with the network off, the app opens and shows the saved real ward.
 
 ## Data flow
 
@@ -57,11 +94,22 @@ RainfallControl ──reading──▶ App.runAnalysis ──▶ api.getScenario
                     MapView        RankedList         WardDetailPanel    FutureScenarioToggle
 ```
 
-All analyses go through `/scenario`, with `builtup_increase_pct: 0` meaning today's land use. `/risk` currently drops `duration_hours` while `/scenario` applies it, so mixing the two made "+15% built-up" look safer than today for long storms. Using one endpoint keeps the comparison honest whichever way `/risk` is fixed.
+Ward analyses go through `/scenario`, with `builtup_increase_pct: 0` meaning baseline land use.
+Both `/risk` and `/scenario` forward duration. AlertPanel passes the analyzed response's
+rainfall/duration (not unsubmitted control edits) to `/alerts`; omitted alert duration
+defaults to 3 hours. Live and mock alert scoring use that interval, and messages identify
+the total accumulation/interval. Alerts remain baseline land use, so built-up scenario
+map categories may differ. Road screening retains its separate endpoint/default interval;
+it is not a duration-aware physical road forecast. Compatibility depth fields remain in
+responses but are not displayed as predictions. Manual 300 mm is explicitly hypothetical.
 
 The rainfall factor follows `model/risk_engine.py`: `(mm / 200) × clamp(sqrt(3 / hours), 0.5, 1.5)`, capped at 1.5. The explainability panel shows it, and `lib/explain.test.ts` checks 27 cases (1–24 h, 0–30% built-up) against outputs recorded from the Python engine.
 
-The **Validation** panel labels metrics as placeholders, with a warning, when the app is in mock mode or the file's `notes` say mock/placeholder/template. The `validation_metrics.json` currently on `main` holds the frontend's mock numbers, so it is flagged.
+The **Validation** panel renders unavailable/partial/evaluated evidence states. Mock,
+unsupported legacy and malformed metrics never become accuracy cards. Schema-2 null
+metrics retain reasons; denominators/coverage and supplied event metadata are shown
+without a hardcoded validated event. Canonical metrics are still mock, so current live
+evidence is unavailable. Evaluated status does not certify the underlying observations.
 
 `api/client.ts` calls `/readyz` once per page load. If the backend answers with `features` and `wards` ready it uses the live API for the whole session; otherwise it uses `api/mock.ts`. The two sources are never mixed, so you never see live wards with mock scores.
 
@@ -85,7 +133,8 @@ If the backend moves somewhere other than `*.onrender.com`, add its origin to `c
 
 ## Tests
 
-`npm test -- --run` runs 85 tests:
+`npm test -- --run` runs the current suite; exact latest counts are recorded in
+`docs/mit_implementation_plan.md` rather than promised as a permanent inventory:
 
 | File | Covers |
 | --- | --- |
@@ -103,10 +152,14 @@ To regenerate the Python parity fixture after changing the model:
 python web/scripts/python_parity_fixture.py   # from the repo root, with the backend's Python deps installed
 ```
 
-## Known gaps (backend side, tracked in the PR)
+## Current evidence and operational limits
 
-- `data/processed/validation_metrics.json` on `main` contains mock numbers; the UI flags them as placeholders until the real evaluation replaces the file.
-- `/risk` ignores `duration_hours` (the dashboard uses `/scenario` instead; see above).
-- `model/alerts.py` "Tamil" templates are Chinese text. The mock's Tamil is correct but still needs a native-speaker review.
-- `/wards` is ~650 KB uncompressed; adding `GZipMiddleware` to `api/main.py` cuts it to ~77 KB. Lighthouse on the production build (offline mode): mobile 91–94 performance / 100 accessibility, desktop 99–100. The uncompressed payload is the main thing slowing the live version on mobile.
-- `risk_engine.py` labels a score of exactly 1.0 (any extreme storm) as `very_low`.
+- Reviewed historical labels and approved event alignment remain absent; station candidates
+  are not adopted ward rainfall. Do not edit canonical mock metrics to simulate evaluation.
+- Tamil live/mock templates require native-speaker review. Message generation, timestamps,
+  copy/share links and channel status cards do not establish notification delivery.
+- Shelter presence/opening/capacity and route safety are unverified; an empty live result
+  is not evidence of no shelters. Mock shelter names are demonstration data.
+- No latency, Lighthouse score, deployment headers or live-browser behavior is promised
+  by a local build. Run and record the relevant measurement before making such claims.
+- Index 1.0 is very_high. Categories are ordinal prototype bins, not validated warnings.

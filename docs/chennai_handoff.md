@@ -1,5 +1,22 @@
 # Chennai integration handoff
 
+## Current review-completion snapshot (2026-10-23)
+
+On mit-review-completion: feature assembly rejects missing/nonfinite values rather than
+fabricating zeros. Genuine supplied zeros and negative elevations remain accepted;
+both delivered tables pass validation. Integer storage overflow/duplicate columns and
+silent zone repair now have guards/regressions. Canonical datasets were not regenerated.
+Original measurements/source coverage still require review; finite outputs do not certify
+the absence of upstream imputation in previously generated artifacts.
+
+The [artifact audit](mit_artifact_audit.json) records hashes, required-feature ranges,
+zero/missing counts, matching 200 mappings and overlap diagnostics. Acknowledged conversion
+into a new temporary directory matches every mapping/zone; all 200 exact geometries differ,
+maximum symmetric difference 0.0000778922 m². No replacement/provenance approval follows.
+Both rainfall station candidates are staged and unadopted. Incomplete metadata/labels
+remain untouched. See [mit_review_guide.md](mit_review_guide.md) for the demo and limitations.
+This snapshot supersedes earlier outstanding delivery/zero-fill requests below.
+
 Original roles remain: John pipeline/API/deployment, Mit geography/model/evidence,
 Ronit frontend. Evidence-status API/UI and alert-message integration updated locally
 2026-10-23; no scoring, canonical data, readiness or alert-duration changes.
@@ -47,7 +64,7 @@ crosswalk, original feature artifact with source/version/units/coverage/processi
 and frozen model revision/scenario metadata. Mit still needs a supported rainfall interval
 and reviewed ward-aligned observations (including explicit negatives, not news omissions).
 
-## Current local readiness (rechecked 2026-10-23)
+## Earlier delivered-file snapshot (2026-10-23; current review above supersedes requests)
 
 The earlier 15-zone inventory is obsolete. Current files were inspected read-only:
 - wards.geojson: **200 nonempty valid polygons**, 200 unique internal ward_id values

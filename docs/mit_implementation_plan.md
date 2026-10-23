@@ -1,5 +1,11 @@
 # Mit implementation plan
 
+## master_dev / main merge resolution (2026-10-23)
+
+Combined-branch verification: 664 Python tests passed (54 existing dependency warnings); 251 frontend tests passed; TypeScript and production build passed. Temporary test environment received already-declared integration dependencies; project manifests/locks were not changed for testing. Historical review bundles retain their original snapshot hashes and are not a current merged-source audit.
+
+Scope: combine main alert-duration support with master_dev Exercise content and atomic SMS packing; preserve full messages and both documentation histories. Keep teammate integrations from the automatic merge. Validate affected alert contracts and the combined suites before pushing master_dev for PR #8.
+
 ## Bounded Mit completion pass — scope before edits (2026-10-23)
 
 Remain on mit-dev; preserve all existing tracked/untracked work and teammate interfaces.
@@ -86,6 +92,110 @@ checks passed. Frozen audit confirms all 19 canonical/raw/historical-staging inp
 HEAD and index unchanged. No staging/commits/pushes/branch changes. Browser/device visual
 verification not performed. Handoff and new review guide document remaining forecast issue
 time, 2D boundary approval, historical evidence, Tamil, approval/transport and SACHET gates.
+
+## Honest demo presets, road screening and alert duration — before edits (2026-10-23)
+
+Preserve pending completion work on mit-review-completion. Change RainfallControl preset
+and RankedList empty-state historical attribution to hypothetical/manual wording. MapView
+road popups suppress compatibility depth and closure/diversion recommendations. Add default
+3-hour duration_hours to AlertRequest; forward through alert route/scoring/message generation,
+web client/mock and AlertPanel, keeping older omitted-duration calls compatible. Messages
+state the selected accumulation interval; no new physical forecast. Keep baseline land-use
+alert semantics explicit rather than silently adding a built-up contract. Add isolated alert
+HTTP/message regressions and frontend request/mock/UI/road/preset regressions; adjust existing
+preset selectors, not assertions' strength. Update pitch/demo_script.md and docs/frontend.md
+to actual evidence status, preview-only notifications, unverified shelters/latency and duration.
+No audit/evidence/provenance/canonical data/coefficient/dependency changes or git write actions.
+Run affected/full Python and frontend suites, TypeScript/build and both whitespace checks.
+
+Demo repair results: full Python suite **542 passed** (54 existing dependency warnings);
+full frontend **209 passed** across 13 files. TypeScript and production build passed.
+New alert integration tests compare direct scorer/map categories at 1/3/12/1.5 hours,
+check omission=3, invalid intervals=422 and bilingual fractional interval preservation
+before SMS truncation. DOM tests exercise hypothetical preset, road popup/legend suppression,
+analyzed-versus-unsubmitted alert interval, client body and mock scoring. One initial new
+preset test used an incomplete accessible name; corrected to the actual label including mm,
+then full suite passed without weakening behavior assertions. Compatibility response fields,
+scoring coefficients and evidence/audit artifacts unchanged. Messages remain baseline land
+use; road screening retains its separate default interval. Browser visual verification not
+performed; DOM tests mock Leaflet and are not visual acceptance. Exact manual demo steps
+are in pitch/demo_script.md. No regeneration/dependencies/staging/commit/push/branch actions.
+
+## Audit acknowledgement correction — scope before edits (2026-10-23)
+
+Edit only scripts/review_chennai_artifacts.py, new tests/test_review_chennai_audit.py,
+docs/mit_artifact_audit.json and this plan. Replace hardcoded repair acknowledgement
+with null and an explicit unverified status: directory inspection cannot establish the
+conversion invocation or caller consent. No caller-attestation option is needed.
+Add an isolated artificial-directory regression; refresh only the audit report from
+the existing temporary conversion, without re-running conversion or changing canonical
+inputs. Run audit/pipeline tests and working-tree/cached whitespace checks. Preserve
+pending work and staging on mit-review-completion; do not touch the auxiliary index.
+Base source revision: 1bb52ed2adc5c76d199d86727d2460a1d33c9e1c plus pending local changes.
+
+Report refresh invocation (no conversion/dataset regeneration):
+```bash
+/private/var/folders/xf/gtc75bps4tx93_x6dlwfm01r0000gn/T/opencode/mit-risk-venv/bin/python scripts/review_chennai_artifacts.py --review-dir /private/var/folders/xf/gtc75bps4tx93_x6dlwfm01r0000gn/T/opencode/chennai-kml-review-lgw30l7i > docs/mit_artifact_audit.json
+```
+Audit script SHA-256 at refresh:
+`b4a538d2a781f4bd69dcea0b46a1c4ef5a183ed05f107f5b9d0bbab04c746366`.
+Affected audit/pipeline tests: **19 passed**. Report now explicitly records null repair
+acknowledgement with status unverified_from_directory. Prior conversion invocation notes
+are historical execution notes, not evidence independently established by the audit.
+
+## Review completion — scope before edits (2026-10-23)
+
+Stay mit-review-completion and preserve existing pipeline/build_features.py,
+pipeline/extract_wards_from_kml.py and tests/test_pipeline_contracts.py work. Review
+compatibility and add targeted regressions/fixes only in those pipeline files/tests.
+Run conversion with explicit --repair-invalid acknowledgement only into a new temporary
+directory. Add scripts/review_chennai_artifacts.py and docs/mit_artifact_audit.json for
+read-only hash/range/missingness/identity/topology/conversion comparison evidence.
+Update docs/model_logic.md, docs/chennai_boundary_review.md, docs/historical_evidence.md,
+docs/chennai_handoff.md and add docs/mit_review_guide.md; preserve dated findings as history.
+Copy supplied rainfall candidate CSV/review into data/evidence/chennai_2023, annotate the
+review as imported reference and append source-register entry without inventing provenance
+approval. Keep incomplete event metadata/labels untouched. No canonical regeneration,
+scoring/product-contract/dependency changes, teammate messages or git write operations.
+Run focused/full Python, full frontend, TypeScript/build and whitespace checks; attempt
+browser verification only if tooling exists, otherwise explicitly mark it pending.
+
+Review outcome: preserved initial 13-case pipeline work and added five regressions;
+18 focused tests pass. Delivered zonal/features tables pass the stricter validator.
+Additional defects guarded: int64 overflow in unscored integer columns, duplicate columns,
+nonpolygon source layers and implicit zone repair inside GeoPandas overlay. Genuine zeros,
+negative elevations and numeric CSV measurement strings remain accepted. Invalid ward/zone
+repair now requires acknowledgement; nine raw source wards are invalid. No canonical repair.
+
+Conversion command: existing temporary interpreter, `-m pipeline.extract_wards_from_kml
+--output-dir /private/var/folders/xf/gtc75bps4tx93_x6dlwfm01r0000gn/T/opencode/chennai-kml-review-lgw30l7i
+--repair-invalid` (invoked via main with these arguments). All 200 internal/official mappings
+and zone assignments match canonical wards/crosswalk. 200 exact geometry differences;
+largest symmetric difference 7.78921640840568e-05 m². Canonical feature geometries match
+wards; zonal stats is tabular without geometry. Audit hashes rechecked unchanged after work.
+Six required measurements have zero missing/nonfinite entries; source completeness is NOT
+proven. Canonical overlaps remain 448 positive-area pairs, 291 over 1 m². No regeneration.
+
+Upstream/product findings held for review rather than silently expanded: delivered numeric
+zeros still cannot establish actual observation coverage; the old auxiliary flood_prone_index
+derivation can divide by zero on all-zero maxima and is not the scorer's index. Geometry
+attachment assumes the frozen ID mapping and EPSG:32644; this local audit confirms current
+alignment, not arbitrary future inputs. Authenticity/legal vintage, missingness provenance,
+overlap/hole treatment and historical applicability need human/source review.
+
+Research: imported supplied bulletin-text review and exact two-row rainfall CSV; validated
+CSV shape, cm→mm conversion and timezone interval length. IMD03 inspection/date is attributed
+to supplied research, not a fresh PDF inspection. Both station candidates remain unadopted;
+incomplete metadata/reviewed labels unchanged. No new observations/negative labels/metrics.
+
+Final checks: **517 Python tests passed**, 54 existing dependency warnings; **202 frontend
+tests passed** across 12 files; TypeScript and production build passed. Working-tree and
+cached whitespace checks passed. Playwright/Puppeteer/@playwright/test unavailable in web;
+Python Playwright also absent. No browser live integration or visual verification claimed:
+visual acceptance remains pending, not replaced by jsdom tests. No installs, branch changes,
+staging/commits/pushes or teammate messages. New audit/review guide and four requested docs
+record current status while retaining dated historical findings.
+
 
 ## ValidationPanel artificial fixture follow-up — scope before edits (2026-10-23)
 
@@ -626,3 +736,8 @@ Scope: resolve the ten merge conflicts in API routes/schemas, API client, AlertP
 Integration follow-up scope: Header and App.test.tsx must use the schema-2 unavailable label instead of the retired placeholder helper. tests/test_api_abuse.py needs isolated shelter fixtures plus an empty-source regression because canonical shelters are absent. No shelter fallback or canonical dataset is added.
 
 Integration verification: 499 Python tests passed (54 dependency deprecation warnings); 202 frontend tests passed; TypeScript and production build passed; git diff --check passed. All ten conflicts resolved while retaining main's safeguards and mit-dev's evidence presentation. Visual browser verification not performed. Historical observations, source/provenance review, and canonical shelter availability remain unresolved.
+
+
+## Completion branch — 2026-10-23
+
+Authorized scope: close remaining implementation/review work on mit-review-completion from main. Fix pipeline/build_features.py to reject missing/invalid required measurements and identities without zero imputation or input mutation. Fix pipeline/extract_wards_from_kml.py to produce explicit stable identity columns and crosswalk names, provide configurable input/output paths, and protect existing canonical outputs. Add isolated regressions for both. Do not regenerate canonical data. Create a read-only hashed artifact audit and update current model/geographic/historical/handoff documentation, preserving dated evidence limitations. Stage sourced IMD rainfall candidates and the newly inspected NRSC acquisition report without inventing labels, negatives or historical accuracy. Prepare a review guide and inspect the integrated app in a browser where tooling permits. Run affected/full tests and production build. Source provenance, legal vintage, flood mask coverage and event alignment remain evidence requirements rather than fields to fabricate.

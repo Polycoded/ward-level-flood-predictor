@@ -24,7 +24,7 @@ async function renderLoaded() {
   return user;
 }
 
-async function analyze(user: ReturnType<typeof userEvent.setup>, preset = /300 · Dec 2023/) {
+async function analyze(user: ReturnType<typeof userEvent.setup>, preset = /300 · Hypothetical/) {
   await user.click(screen.getByRole('button', { name: preset }));
   await user.click(screen.getByRole('button', { name: 'Analyze' }));
   await screen.findByText(/200 wards, highest risk first/);
@@ -53,7 +53,7 @@ describe('official runs a rainfall scenario', () => {
     const user = await renderLoaded();
     await analyze(user, /^50 mm$/);
     const low = new Map(useFloodStore.getState().riskData!.wards.map((w) => [w.ward_id, w.risk_score]));
-    await analyze(user, /300 · Dec 2023/);
+    await analyze(user, /300 · Hypothetical/);
     for (const w of useFloodStore.getState().riskData!.wards) expect(w.risk_score).toBeGreaterThanOrEqual(low.get(w.ward_id)!);
   });
 
@@ -206,7 +206,7 @@ describe('alerts', () => {
   it('counts Tamil SMS in 70-character parts', async () => {
     const user = await renderLoaded();
     await analyze(user);
-    await user.click(screen.getByRole('button', { name: 'Alerts' }));
+    await user.click(screen.getByRole('button', { name: 'Draft messages' }));
     const dialog = await screen.findByRole('dialog');
     await user.click(within(dialog).getByRole('button', { name: 'Select top 10' }));
     await user.click(within(dialog).getByRole('button', { name: /Tamil/ }));
@@ -225,7 +225,7 @@ describe('alerts', () => {
         { ward_id: 1, ward_name: 'W', channel: 'whatsapp', language: 'en', message: 'm2', whatsapp_deeplink: 'https://wa.me/919876543210?text=m2' },
       ],
     });
-    await user.click(screen.getByRole('button', { name: 'Alerts' }));
+    await user.click(screen.getByRole('button', { name: 'Draft messages' }));
     const dialog = await screen.findByRole('dialog');
     await user.click(within(dialog).getByRole('button', { name: 'Select top 10' }));
     await user.click(within(dialog).getByRole('button', { name: /Generate alerts for 10 wards/ }));
@@ -244,7 +244,7 @@ describe('alerts', () => {
     const user = await renderLoaded();
     await analyze(user);
     vi.spyOn(api, 'generateAlerts').mockRejectedValue(new Error('500'));
-    await user.click(screen.getByRole('button', { name: 'Alerts' }));
+    await user.click(screen.getByRole('button', { name: 'Draft messages' }));
     const dialog = await screen.findByRole('dialog');
     await user.click(within(dialog).getByRole('button', { name: 'Select top 10' }));
     await user.click(within(dialog).getByRole('button', { name: /Generate alerts/ }));

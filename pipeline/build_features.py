@@ -46,37 +46,43 @@ FEATURE_SCHEMA = {
 }
 
 def validate_features(df: pd.DataFrame) -> pd.DataFrame:
-    logger.info("Validating feature schema")
-    
-    missing_cols = set(FEATURE_SCHEMA.keys()) - set(df.columns)
-    if missing_cols:
-        logger.warning("Missing feature columns", missing=list(missing_cols))
-        for col in missing_cols:
-            dtype = FEATURE_SCHEMA[col]
-            if "int" in dtype:
-                df[col] = 0
-            elif dtype == "string":
-                df[col] = ""
-            else:
-                df[col] = 0.0
-    
-    extra_cols = set(df.columns) - set(FEATURE_SCHEMA.keys()) - {"geometry"}
-    if extra_cols:
-        logger.info("Extra columns found (will be kept)", extra=list(extra_cols))
-    
+    """Validate supplied measurements without fabricating coverage or mutating input."""
+    import numpy as np
+    from model.risk_engine import effective_inputs
+
+    if not df.columns.is_unique:
+        raise ValueError("Feature columns must be unique")
+    missing = set(FEATURE_SCHEMA) - set(df.columns)
+    if missing:
+        raise ValueError(f"Missing feature columns: {sorted(missing)}")
+    result = df.copy(deep=True)
     for col, dtype in FEATURE_SCHEMA.items():
-        if col in df.columns:
-            if "int" in dtype:
-                df[col] = pd.to_numeric(df[col], errors="coerce").fillna(0).astype("int64")
-            elif dtype == "string":
-                df[col] = df[col].astype("string").fillna("")
-            else:
-                df[col] = pd.to_numeric(df[col], errors="coerce").fillna(0.0).astype("float64")
-    
-    df = df[sorted(df.columns, key=lambda x: list(FEATURE_SCHEMA.keys()).index(x) if x in FEATURE_SCHEMA else 999)]
-    
-    logger.info("Feature validation complete", rows=len(df), cols=len(df.columns))
-    return df
+        values = result[col]
+        if dtype == "string":
+            if values.isna().any() or values.astype(str).str.strip().eq("").any():
+                raise ValueError(f"{col} must contain nonempty identities")
+            result[col] = values.astype("string")
+            continue
+        if values.map(lambda v: isinstance(v, (bool, np.bool_))).any():
+            raise ValueError(f"{col} cannot contain booleans")
+        numeric = pd.to_numeric(values, errors="raise")
+        if numeric.isna().any() or not np.isfinite(numeric).all():
+            raise ValueError(f"{col} must contain finite measurements")
+        if "int" in dtype and ((numeric % 1 != 0).any() or (numeric < 0).any()):
+            raise ValueError(f"{col} must contain nonnegative integers")
+        if "int" in dtype and (numeric >= 2**63).any():
+            raise ValueError(f"{col} exceeds int64 storage range")
+        result[col] = numeric.astype(dtype)
+    if (result.ward_id <= 0).any() or result.ward_id.duplicated().any():
+        raise ValueError("ward_id must be positive and unique")
+    if result.ward_number.duplicated().any():
+        raise ValueError("ward_number must be unique")
+    if (result.area_sqkm <= 0).any():
+        raise ValueError("area_sqkm must be positive")
+    for _, row in result.iterrows():
+        effective_inputs(row, 0)
+    return result[sorted(result.columns, key=lambda c: list(FEATURE_SCHEMA).index(c)
+                         if c in FEATURE_SCHEMA else 999)]
 
 def add_derived_features(df: pd.DataFrame) -> pd.DataFrame:
     logger.info("Adding derived features")

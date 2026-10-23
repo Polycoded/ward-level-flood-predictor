@@ -152,12 +152,12 @@ function RoadLayer({ roads }: { roads: RoadRisk[] }) {
         if (road.geometry.type !== 'LineString') return null;
         const positions = road.geometry.coordinates.map(([lng, lat]) => [lat, lng] as [number, number]);
         const color = getRiskColor(road.risk_level);
-        const action = road.risk_level === 'very_high' || road.risk_level === 'high' ? 'Close / divert traffic' : 'Monitor';
+        const action = 'Uncalibrated screening indication — requires review, not a closure or diversion instruction.';
         const label = (
           <Tooltip sticky>
             <strong>{road.name}</strong>
             <br />
-            {getRiskLabel(road.risk_level)} • ~{road.flood_depth_estimate_m.toFixed(2)} m water
+            {getRiskLabel(road.risk_level)} • Screening index {Math.round(road.risk_score * 100)} / 100
             <br />
             {action}
           </Tooltip>
@@ -212,14 +212,14 @@ function MapLegend({ riskData }: { riskData: RiskResponse | null }) {
 
 function RoadLegend({ roads }: { roads: RoadRisk[] }) {
   const underpasses = roads.filter((r) => r.is_underpass);
-  const closeNow = underpasses.filter((r) => r.risk_level === 'high' || r.risk_level === 'very_high').length;
+  const highScreeningCount = underpasses.filter((r) => r.risk_level === 'high' || r.risk_level === 'very_high').length;
   return (
     <div className="absolute bottom-4 left-4 z-10 card p-3 shadow-lg w-60 animate-in">
       <h2 className="text-sm font-semibold text-gray-900 mb-1">Roads &amp; underpasses</h2>
       <p className="text-xs text-gray-700">
         {roads.length === 0
           ? 'No road data available for this scenario.'
-          : `${underpasses.length} underpasses, ${closeNow} at high risk (consider closing).`}
+          : `${underpasses.length} underpasses, ${highScreeningCount} in high screening bins. Uncalibrated; requires review.`}
       </p>
       <ul className="mt-2 space-y-1 text-xs text-gray-800">
         <li className="flex items-center gap-2"><span className="w-5 h-1.5 rounded" style={{ backgroundColor: getRiskColor('high') }} aria-hidden="true" /> Road segment, coloured by risk</li>

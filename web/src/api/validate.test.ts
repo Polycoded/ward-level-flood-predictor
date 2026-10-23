@@ -138,3 +138,46 @@ describe('other endpoints', () => {
     expect(roads[0].is_underpass).toBe(false); // only a real boolean counts
   });
 });
+
+describe('phone-alert contracts', () => {
+  const good = {
+    id: 'a1', ward_id: 3, ward_number: '3', ward_name: 'Ward 3', level: 'warning', risk_level: 'very_high', risk_score: 0.9,
+    rainfall_mm: 150, duration_hours: 3, created_at: '2026-10-23T10:00:00Z', status: 'approved', exercise: true,
+    messages: { en: 'EXERCISE - test', ta: 'பயிற்சி' }, delivery: { push_sent: 2, whatsapp_queued: 1 },
+  };
+
+  it('keeps valid alerts and drops broken ones', async () => {
+    const { validateBroadcastAlerts } = await import('./validate');
+    const list = validateBroadcastAlerts([good, { ...good, id: '' }, { ...good, level: 'panic' }, { ...good, messages: {} }, null]);
+    expect(list).toHaveLength(1);
+    expect(list[0].delivery).toEqual({ push_sent: 2, whatsapp_queued: 1 });
+  });
+
+  it('treats an alert as a drill unless the server explicitly says exercise=false', async () => {
+    const { validateBroadcastAlert } = await import('./validate');
+    expect(validateBroadcastAlert({ ...good, exercise: undefined }).exercise).toBe(true);
+    expect(validateBroadcastAlert({ ...good, exercise: 'no' }).exercise).toBe(true);
+    expect(validateBroadcastAlert({ ...good, exercise: false }).exercise).toBe(false);
+  });
+
+  it('falls back to English when the Tamil text is missing, and clamps the score', async () => {
+    const { validateBroadcastAlert } = await import('./validate');
+    const a = validateBroadcastAlert({ ...good, risk_score: 9, risk_level: 'low', messages: { en: 'hello' } });
+    expect(a.messages.ta).toBe('hello');
+    expect(a.risk_score).toBe(1);
+    expect(a.risk_level).toBe('very_high');
+  });
+
+  it('subscriptions need an id and an integer ward', async () => {
+    const { validateSubscription } = await import('./validate');
+    expect(validateSubscription({ id: 's', ward_id: 4, language: 'ta', channels: ['push', 'fax'] })).toEqual({ id: 's', ward_id: 4, language: 'ta', channels: ['push'] });
+    expect(() => validateSubscription({ id: 's', ward_id: 4.5 })).toThrow();
+    expect(() => validateSubscription('<html>')).toThrow();
+  });
+
+  it('lite wards must have drawable shapes', async () => {
+    const { validateWardsLite } = await import('./validate');
+    expect(() => validateWardsLite([{ ward_id: 1, ward_number: '1', ward_name: 'x' }])).toThrow();
+    expect(validateWardsLite(mockApi.getWards())).toHaveLength(200);
+  });
+});

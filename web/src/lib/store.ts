@@ -1,9 +1,22 @@
 import { create } from 'zustand';
-import type { Ward, WardFeature, RiskResponse, ValidationMetrics, Shelter, RoadRisk } from '../types';
+import type { Ward, WardFeature, RiskResponse, ValidationMetrics, Shelter, RoadRisk, Subscription } from '../types';
+import { readJson, writeJson } from './persist';
 import type { RainfallReading } from './rainfall';
 import { parseValidation } from './validation';
 
 export type DataSource = 'unknown' | 'live' | 'mock';
+export type AppMode = 'resident' | 'official';
+export type Language = 'en' | 'ta';
+
+const KEYS = { mode: 'flood-mode', language: 'flood-language', ward: 'flood-my-ward', subscription: 'flood-subscription' };
+
+// Phones default to the simple resident screen; officials work on laptops.
+const initialMode = (): AppMode =>
+  readJson<AppMode | null>(KEYS.mode, null) ??
+  (typeof window !== 'undefined' && window.innerWidth < 1024 ? 'resident' : 'official');
+const initialLanguage = (): Language =>
+  readJson<Language | null>(KEYS.language, null) ??
+  (typeof navigator !== 'undefined' && navigator.language?.toLowerCase().startsWith('ta') ? 'ta' : 'en');
 
 interface FloodState {
   wards: Ward[];
@@ -18,7 +31,13 @@ interface FloodState {
   shelterOrigin: { lat: number; lng: number; label: string } | null;
   roadRisks: RoadRisk[];
   dataSource: DataSource;
+  /** True when alert/subscription endpoints are served by the in-browser preview, not the backend. */
+  alertsPreview: boolean;
   error: string | null;
+  resident: {
+    wardId: number | null;
+    subscription: Subscription | null;
+  };
   scenario: {
     rainfall_mm: number;
     duration_hours: number;
@@ -30,7 +49,11 @@ interface FloodState {
     detailWardId: number | null;
     alertsOpen: boolean;
     validationOpen: boolean;
-    language: 'en' | 'ta';
+    alertQueueOpen: boolean;
+    /** alert shown full-screen (from a notification, ?alert=… or a new alert for my ward) */
+    openAlertId: string | null;
+    language: Language;
+    mode: AppMode;
   };
 
   setWards: (wards: Ward[]) => void;
@@ -45,6 +68,12 @@ interface FloodState {
   setShelters: (shelters: Shelter[]) => void;
   setRoadRisks: (roads: RoadRisk[]) => void;
   setDataSource: (source: DataSource) => void;
+  setAlertsPreview: (preview: boolean) => void;
+  setMode: (mode: AppMode) => void;
+  setMyWard: (wardId: number | null) => void;
+  setSubscription: (subscription: Subscription | null) => void;
+  setAlertQueueOpen: (open: boolean) => void;
+  setOpenAlert: (id: string | null) => void;
   setScenario: (scenario: Partial<FloodState['scenario']>) => void;
   setMapView: (view: FloodState['ui']['mapView']) => void;
   toggleSidebar: () => void;
@@ -52,7 +81,7 @@ interface FloodState {
   setDetailWard: (wardId: number | null) => void;
   setAlertsOpen: (open: boolean) => void;
   setValidationOpen: (open: boolean) => void;
-  setLanguage: (lang: 'en' | 'ta') => void;
+  setLanguage: (lang: Language) => void;
   clearRiskData: () => void;
 }
 
@@ -68,7 +97,12 @@ export const useFloodStore = create<FloodState>((set) => ({
   shelterOrigin: null,
   roadRisks: [],
   dataSource: 'unknown',
+  alertsPreview: false,
   error: null,
+  resident: {
+    wardId: readJson<number | null>(KEYS.ward, null),
+    subscription: readJson<Subscription | null>(KEYS.subscription, null),
+  },
   scenario: {
     rainfall_mm: 100,
     duration_hours: 3,
@@ -80,7 +114,10 @@ export const useFloodStore = create<FloodState>((set) => ({
     detailWardId: null,
     alertsOpen: false,
     validationOpen: false,
-    language: 'en',
+    alertQueueOpen: false,
+    openAlertId: null,
+    language: initialLanguage(),
+    mode: initialMode(),
   },
 
   setWards: (wards) => set({ wards }),
@@ -95,6 +132,21 @@ export const useFloodStore = create<FloodState>((set) => ({
   setShelters: (shelters) => set({ shelters }),
   setRoadRisks: (roadRisks) => set({ roadRisks }),
   setDataSource: (dataSource) => set({ dataSource }),
+  setAlertsPreview: (alertsPreview) => set({ alertsPreview }),
+  setMode: (mode) => {
+    writeJson(KEYS.mode, mode);
+    set((state) => ({ ui: { ...state.ui, mode } }));
+  },
+  setMyWard: (wardId) => {
+    writeJson(KEYS.ward, wardId);
+    set((state) => ({ resident: { ...state.resident, wardId } }));
+  },
+  setSubscription: (subscription) => {
+    writeJson(KEYS.subscription, subscription);
+    set((state) => ({ resident: { ...state.resident, subscription } }));
+  },
+  setAlertQueueOpen: (alertQueueOpen) => set((state) => ({ ui: { ...state.ui, alertQueueOpen } })),
+  setOpenAlert: (openAlertId) => set((state) => ({ ui: { ...state.ui, openAlertId } })),
   setScenario: (scenario) => set((state) => ({ scenario: { ...state.scenario, ...scenario } })),
   setMapView: (mapView) => set((state) => ({ ui: { ...state.ui, mapView } })),
   toggleSidebar: () => set((state) => ({ ui: { ...state.ui, sidebarOpen: !state.ui.sidebarOpen } })),
@@ -102,7 +154,10 @@ export const useFloodStore = create<FloodState>((set) => ({
   setDetailWard: (detailWardId) => set((state) => ({ ui: { ...state.ui, detailWardId } })),
   setAlertsOpen: (alertsOpen) => set((state) => ({ ui: { ...state.ui, alertsOpen } })),
   setValidationOpen: (validationOpen) => set((state) => ({ ui: { ...state.ui, validationOpen } })),
-  setLanguage: (language) => set((state) => ({ ui: { ...state.ui, language } })),
+  setLanguage: (language) => {
+    writeJson(KEYS.language, language);
+    set((state) => ({ ui: { ...state.ui, language } }));
+  },
   clearRiskData: () =>
     set((state) => ({
       riskData: null,
