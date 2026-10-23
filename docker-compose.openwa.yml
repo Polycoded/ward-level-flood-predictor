@@ -1,0 +1,36 @@
+# OpenWA sidecar for the flood-predictor hackathon demo.
+#
+# OpenWA is an *unofficial* WhatsApp Web bridge. Its own README warns that the
+# linked number can be banned. Use a dedicated SIM, make residents opt in by
+# messaging first, keep pacing on, and use Meta's official Cloud API for real
+# production. The image name differs between forks; set OPENWA_IMAGE to yours.
+#
+# Usage:
+#   docker compose -f docker-compose.openwa.yml up -d
+#   docker compose -f docker-compose.openwa.yml logs -f openwa
+
+services:
+  openwa:
+    image: ${OPENWA_IMAGE:-openwa/openwa:latest}
+    container_name: flood-openwa
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3001:3001"
+    environment:
+      # These names must match the image you deploy; check its README.
+      API_KEY: ${OPENWA_API_KEY:-change-me}
+      SESSION_NAME: ${OPENWA_SESSION:-default}
+      WEBHOOK_URL: ${OPENWA_WEBHOOK_URL:-http://host.docker.internal:8000/api/v1/whatsapp/webhook}
+      WEBHOOK_SECRET: ${OPENWA_WEBHOOK_SECRET:-}
+    volumes:
+      # Persist the WhatsApp Web session; losing it means re-pairing the SIM.
+      - openwa_sessions:/app/sessions
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1:3001/health || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+volumes:
+  openwa_sessions:

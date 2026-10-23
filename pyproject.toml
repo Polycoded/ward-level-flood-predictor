@@ -25,6 +25,9 @@ dependencies = [
     "structlog>=24.1.0",
     "pyogrio>=0.13.0",
     "fiona>=1.10.1",
+    "sqlmodel>=0.0.48",
+    "pywebpush>=2.5.0",
+    "cryptography>=50.0.2",
 ]
 
 [project.optional-dependencies]

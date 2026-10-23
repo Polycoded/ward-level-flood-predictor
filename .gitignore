@@ -31,3 +31,8 @@ dist/
 
 # Local documentation
 learn.md
+
+# Local SQLite database
+*.db
+*.sqlite*
+

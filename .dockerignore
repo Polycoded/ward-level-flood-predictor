@@ -46,3 +46,7 @@ htmlcov/
 *.egg-info/
 build/
 dist/
+# Local database
+*.db
+*.sqlite*
+
