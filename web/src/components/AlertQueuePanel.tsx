@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
-import { api } from '../api/client';
+import { api, isAuthError } from '../api/client';
+import { getOperatorKey, setOperatorKey } from '../lib/operatorKey';
 import { useFloodStore } from '../lib/store';
 import { cn, getRiskLabel } from '../lib/utils';
 import type { BroadcastAlert } from '../types';
@@ -18,6 +19,12 @@ export function AlertQueuePanel({ onClose }: { onClose: () => void }) {
   const [busyId, setBusyId] = useState<string | null>(null);
   const [checking, setChecking] = useState(false);
   const [note, setNote] = useState<string | null>(null);
+  const [operatorKey, setKey] = useState(getOperatorKey);
+
+  const saveOperatorKey = (value: string) => {
+    setKey(value);
+    setOperatorKey(value);
+  };
 
   const refresh = useCallback(() => {
     api
@@ -76,8 +83,12 @@ export function AlertQueuePanel({ onClose }: { onClose: () => void }) {
         setSent((list) => [updated, ...list]);
         if (animate) simulate([updated]);
       }
-    } catch {
-      setNote(`Could not ${action} the alert for ${alert.ward_name}. It may already have been handled.`);
+    } catch (e) {
+      setNote(
+        isAuthError(e)
+          ? `${action === 'approve' ? 'Approving' : 'Cancelling'} needs a valid operator key. Enter it above, then try again.`
+          : `Could not ${action} the alert for ${alert.ward_name}. It may already have been handled.`
+      );
       refresh();
     } finally {
       setBusyId(null);
@@ -91,6 +102,19 @@ export function AlertQueuePanel({ onClose }: { onClose: () => void }) {
           <p><strong>Exercise mode.</strong> Alerts are labelled as drills. Uncalibrated index: review each ward before approving.</p>
           {alertsPreview && <p>Preview: delivery is simulated in this browser until the backend alert endpoints are live.</p>}
         </div>
+
+        <label className="block text-sm">
+          <span className="font-medium text-gray-900">Operator key</span>
+          <input
+            type="password"
+            value={operatorKey}
+            onChange={(e) => saveOperatorKey(e.target.value)}
+            autoComplete="off"
+            placeholder="Required to approve or cancel"
+            className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-flood-600 focus:outline-none focus:ring-1 focus:ring-flood-600"
+          />
+          <span className="text-xs text-gray-600">Kept on this device only and sent with approvals. Ask the server admin for the key (ADMIN_API_TOKEN).</span>
+        </label>
 
         <div className="flex flex-wrap items-center gap-2">
           <button onClick={check} disabled={!riskData || checking} className="btn-primary">

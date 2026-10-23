@@ -19,6 +19,10 @@ class Settings(BaseSettings):
     # Everything the team sends during the hackathon is an exercise.
     exercise_mode: bool = True
 
+    # Shared secret required to approve or cancel alerts. Empty means those
+    # operator actions are refused (fail closed), never left open.
+    admin_api_token: str = ""
+
     # Background scheduler
     enable_scheduler: bool = False
     warm_cache_on_startup: bool = True

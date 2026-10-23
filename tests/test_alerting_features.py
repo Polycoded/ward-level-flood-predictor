@@ -25,12 +25,15 @@ from integrations.crypto import decrypt, encrypt, identifier_hash
 from services.rules import WardRisk, default_select
 
 WARD_ID = 168
+ADMIN_TOKEN = "test-operator-key"
+ADMIN = {"X-Admin-Token": ADMIN_TOKEN}
 
 
 @pytest.fixture()
 def client(tmp_path):
     settings.database_url = f"sqlite:///{tmp_path / 'test.db'}"
     settings.exercise_mode = True
+    settings.admin_api_token = ADMIN_TOKEN
     settings.warm_cache_on_startup = False
     settings.openwa_base_url = ""
     settings.openwa_webhook_secret = ""
@@ -227,7 +230,7 @@ def test_approve_dispatches_and_logs(client):
     pending = client.get("/api/v1/alerts/pending").json()
     assert any(item["id"] == alert_id for item in pending)
 
-    approved = client.post(f"/api/v1/alerts/{alert_id}/approve")
+    approved = client.post(f"/api/v1/alerts/{alert_id}/approve", headers=ADMIN)
     assert approved.status_code == 200
     summary = approved.json()
     assert summary["webpush"] == 1
@@ -257,7 +260,7 @@ def test_dispatch_is_scoped_to_the_alert_ward(client):
         session.commit()
 
     alert_id = _seed_alert()
-    summary = client.post(f"/api/v1/alerts/{alert_id}/approve").json()
+    summary = client.post(f"/api/v1/alerts/{alert_id}/approve", headers=ADMIN).json()
     assert summary["webpush"] == 1
     assert summary["whatsapp"] == 1
 
@@ -272,15 +275,109 @@ def test_dispatch_is_scoped_to_the_alert_ward(client):
 
 def test_cancel_prevents_dispatch(client):
     alert_id = _seed_alert()
-    cancelled = client.post(f"/api/v1/alerts/{alert_id}/cancel")
+    cancelled = client.post(f"/api/v1/alerts/{alert_id}/cancel", headers=ADMIN)
     assert cancelled.status_code == 200
     assert cancelled.json()["status"] == "cancelled"
-    assert client.post(f"/api/v1/alerts/{alert_id}/approve").status_code == 409
+    assert client.post(f"/api/v1/alerts/{alert_id}/approve", headers=ADMIN).status_code == 409
+
+
+def test_approve_and_cancel_require_the_operator_token(client):
+    # An anonymous caller must not be able to dispatch or suppress a public alert.
+    alert_id = _seed_alert()
+    assert client.post(f"/api/v1/alerts/{alert_id}/approve").status_code == 401
+    assert client.post(f"/api/v1/alerts/{alert_id}/approve",
+                       headers={"X-Admin-Token": "wrong"}).status_code == 401
+    assert client.post(f"/api/v1/alerts/{alert_id}/cancel").status_code == 401
+    # The alert is untouched: still pending, so a valid approve still works.
+    with Session(db.get_engine()) as session:
+        assert session.get(Alert, alert_id).status == "pending"
+    assert client.post(f"/api/v1/alerts/{alert_id}/approve", headers=ADMIN).status_code == 200
+
+
+def test_approve_fails_closed_when_no_token_is_configured(client):
+    settings.admin_api_token = ""
+    try:
+        alert_id = _seed_alert()
+        # Even with no header, approval is refused rather than left open.
+        assert client.post(f"/api/v1/alerts/{alert_id}/approve").status_code == 503
+        assert client.post(f"/api/v1/alerts/{alert_id}/approve", headers=ADMIN).status_code == 503
+        with Session(db.get_engine()) as session:
+            assert session.get(Alert, alert_id).status == "pending"
+    finally:
+        settings.admin_api_token = ADMIN_TOKEN
+
+
+@pytest.mark.parametrize("endpoint", [
+    "http://push.example/x",                       # not https
+    "https://169.254.169.254/latest/meta-data/",   # cloud metadata (link-local)
+    "https://127.0.0.1/x",                         # loopback
+    "https://10.0.0.5/x",                          # private range
+    "https://[::1]/x",                             # IPv6 loopback
+    "https://localhost/x",                         # blocked hostname
+    "https://metadata.google.internal/x",          # blocked hostname
+    "https://LOCALHOST./x",                        # case + trailing dot
+    "https://[::ffff:127.0.0.1]/x",                # IPv4-mapped IPv6 loopback
+    "https://2130706433/x",                        # 127.0.0.1 as one decimal number
+    "https://127.1/x",                             # shortened IPv4
+    "https://0x7f000001/x",                        # hex IPv4
+    "file:///etc/passwd",                          # not a URL a push service uses
+])
+def test_subscription_rejects_internal_push_endpoints(client, endpoint):
+    # SSRF guard: the server must not store an endpoint it could be made to call internally.
+    response = client.post("/api/v1/subscriptions", json=_push_payload(endpoint))
+    assert response.status_code == 422
+    with Session(db.get_engine()) as session:
+        assert session.exec(select(Subscription)).first() is None
+
+
+def test_push_send_blocks_an_internal_endpoint_even_if_stored():
+    # Defence in depth: a row that slipped past input validation is still not sent.
+    from integrations import webpush
+
+    settings.vapid_private_key = "x"
+    settings.vapid_public_key = "y"
+    try:
+        result = webpush.send_push(
+            {"endpoint": "https://169.254.169.254/x", "keys": {"p256dh": "p", "auth": "a"}},
+            {"type": "flood_alert"},
+        )
+    finally:
+        settings.vapid_private_key = ""
+        settings.vapid_public_key = ""
+    assert result["success"] is False
+    assert result["error"] == "blocked endpoint"
+
+
+def test_is_safe_push_endpoint_resolves_hostnames():
+    from api.security import is_safe_push_endpoint
+
+    assert is_safe_push_endpoint("https://fcm.googleapis.com/fcm/send/x", resolve=True)
+    assert not is_safe_push_endpoint("https://169.254.169.254/x", resolve=True)
+    assert not is_safe_push_endpoint("http://fcm.googleapis.com/x", resolve=True)
+    # A name that does not resolve cannot reach an internal host, so it is allowed.
+    assert is_safe_push_endpoint("https://push.example/abc", resolve=True)
+
+
+def test_send_time_check_blocks_a_public_name_that_resolves_inside(monkeypatch):
+    # e.g. localtest.me is a public name whose A record is 127.0.0.1: the input check
+    # cannot know without DNS, so the send-time check must catch it.
+    import socket
+
+    from api.security import is_safe_push_endpoint
+
+    def fake_getaddrinfo(host, *args, **kwargs):
+        ip = {"inside.example.com": "10.0.0.7", "outside.example.com": "142.250.1.1"}[host]
+        return [(socket.AF_INET, socket.SOCK_STREAM, 6, "", (ip, 443))]
+
+    monkeypatch.setattr(socket, "getaddrinfo", fake_getaddrinfo)
+    assert is_safe_push_endpoint("https://inside.example.com/x")              # input: no DNS
+    assert not is_safe_push_endpoint("https://inside.example.com/x", resolve=True)
+    assert is_safe_push_endpoint("https://outside.example.com/x", resolve=True)
 
 
 def test_cap_feed_is_exercise_xml(client):
     alert_id = _seed_alert()
-    client.post(f"/api/v1/alerts/{alert_id}/approve")
+    client.post(f"/api/v1/alerts/{alert_id}/approve", headers=ADMIN)
 
     response = client.get("/api/v1/alerts/cap.xml")
     assert response.status_code == 200

@@ -19,6 +19,7 @@ import type {
 import * as mockAlerts from './mockAlerts';
 import { mockApi } from './mock';
 import { parseValidation, unavailableValidation } from '../lib/validation';
+import { getOperatorKey } from '../lib/operatorKey';
 import {
   validateAlerts,
   validateRiskResponse,
@@ -61,7 +62,15 @@ export class ApiClient {
     });
 
     this.client.interceptors.request.use(
-      (config: InternalAxiosRequestConfig) => config,
+      (config: InternalAxiosRequestConfig) => {
+        // Attach the operator key only to the two actions that need it, so ordinary
+        // GETs stay simple requests (no extra CORS preflight) and the key is not sent around.
+        if (config.url && /\/(approve|cancel)$/.test(config.url)) {
+          const key = getOperatorKey();
+          if (key) config.headers.set('X-Admin-Token', key);
+        }
+        return config;
+      },
       (error) => Promise.reject(error)
     );
 
@@ -333,3 +342,9 @@ export class ApiClient {
 }
 
 export const api = new ApiClient();
+
+/** True when a request failed because the operator key was missing, wrong, or not configured server-side. */
+export function isAuthError(error: unknown): boolean {
+  const status = (error as { response?: { status?: number } })?.response?.status;
+  return status === 401 || status === 403 || status === 503;
+}

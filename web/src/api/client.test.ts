@@ -1,6 +1,7 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 import type { AxiosAdapter, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
-import { ApiClient } from './client';
+import { ApiClient, isAuthError } from './client';
+import { getOperatorKey, setOperatorKey } from '../lib/operatorKey';
 import { useFloodStore } from '../lib/store';
 
 type Route = (config: InternalAxiosRequestConfig) => { status: number; data: unknown } | Error;
@@ -209,5 +210,60 @@ describe('alert check on a live backend', () => {
     );
     const wards = await new ApiClient({ forceMock: false, adapter: fn }).getWardsLite();
     expect(wards).toEqual([expect.objectContaining({ ward_id: 1, ward_number: '168', ward_name: 'Ward 168' })]);
+  });
+});
+
+describe('operator key on approve / cancel', () => {
+  beforeEach(() => {
+    localStorage.clear();
+    useFloodStore.setState({ alertsPreview: false });
+  });
+
+  const alertOut = { id: 'a-1', ward_id: 77, ward_name: 'W', risk_level: 'high', risk_score: 0.8, alert_type: 'warning',
+    status: 'pending', rainfall_mm: 200, duration_hours: 3, message_en: 'EN', message_ta: 'TA', created_at: '2026-01-01T00:00:00Z' };
+
+  it('sends X-Admin-Token only on approve and cancel, never on reads', async () => {
+    setOperatorKey('  s3cret  ');
+    const seen: Record<string, string | undefined> = {};
+    const { fn } = adapter((c) => {
+      seen[`${c.method} ${c.url}`] = c.headers.get('X-Admin-Token') as string | undefined;
+      if (c.url === '/readyz') return { status: 200, data: READY };
+      if (c.url === '/alerts/a-1/approve') return { status: 200, data: { alert_id: 'a-1', ward_id: 77, webpush: 1, whatsapp: 0, sms: 0, failed: 0, status: 'sent' } };
+      if (c.url === '/alerts/a-1/cancel') return { status: 200, data: { ...alertOut, status: 'cancelled' } };
+      return { status: 200, data: { ...alertOut, status: 'sent' } };
+    });
+    const client = new ApiClient({ forceMock: false, adapter: fn });
+    await client.approveAlert('a-1');
+    await client.cancelAlert('a-1');
+    expect(seen['post /alerts/a-1/approve']).toBe('s3cret');
+    expect(seen['post /alerts/a-1/cancel']).toBe('s3cret');
+    expect(seen['get /alerts/a-1']).toBeUndefined();
+    expect(seen['get /readyz']).toBeUndefined();
+  });
+
+  it('sends no header without a key, and a 401 is reported, not hidden behind the preview', async () => {
+    let header: unknown = 'unset';
+    const { fn } = adapter((c) => {
+      if (c.url === '/readyz') return { status: 200, data: READY };
+      header = c.headers.get('X-Admin-Token');
+      return { status: 401, data: { detail: 'A valid operator token is required for this action.' } };
+    });
+    const client = new ApiClient({ forceMock: false, adapter: fn });
+    const error = await client.approveAlert('a-1').catch((e) => e);
+    expect(header).toBeUndefined();
+    expect(isAuthError(error)).toBe(true);
+    expect(useFloodStore.getState().alertsPreview).toBe(false);
+  });
+
+  it('treats a server with no token configured (503) as an auth problem', async () => {
+    const { fn } = adapter((c) => (c.url === '/readyz' ? { status: 200, data: READY } : { status: 503, data: {} }));
+    const error = await new ApiClient({ forceMock: false, adapter: fn }).cancelAlert('a-1').catch((e) => e);
+    expect(isAuthError(error)).toBe(true);
+    expect(isAuthError(new Error('Network Error'))).toBe(false);
+  });
+
+  it('ignores a corrupt stored key', () => {
+    localStorage.setItem('flood-operator-key', '{"not":"a string"}');
+    expect(getOperatorKey()).toBe('');
   });
 });
