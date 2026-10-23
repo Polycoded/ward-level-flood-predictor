@@ -318,13 +318,14 @@ describe('live forecast', () => {
   });
 });
 
-describe('validation panel', () => {
-  it('never presents placeholder metrics as a real result', async () => {
+describe('top bar', () => {
+  it('has no Validation tab and does not fetch validation data for it', async () => {
+    const validation = vi.spyOn(api, 'getValidation');
     const user = await renderLoaded();
-    await user.click(screen.getByRole('button', { name: 'Validation (unavailable)' }));
-    const panel = await screen.findByRole('region', { name: 'Evaluation evidence' });
-    expect(panel).toHaveTextContent('Status: unavailable');
-    expect(panel).not.toHaveTextContent('65.0%');
+    await analyze(user);
+    expect(screen.queryByRole('button', { name: /Validation/ })).toBeNull();
+    expect(screen.queryByRole('region', { name: 'Evaluation evidence' })).toBeNull();
+    expect(validation).not.toHaveBeenCalled();
   });
 });
 

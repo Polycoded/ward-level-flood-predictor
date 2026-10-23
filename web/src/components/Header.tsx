@@ -3,7 +3,6 @@ import { getRiskLabel, getRiskColor } from '../lib/utils';
 import type { RiskResponse } from '../types';
 import { ProviderBadge } from './ProviderBadge';
 import { CROWD_REPORTS_ENABLED } from '../lib/features';
-import { parseValidation } from '../lib/validation';
 
 interface HeaderProps {
   onClear: () => void;
@@ -11,7 +10,7 @@ interface HeaderProps {
 }
 
 export function Header({ onClear, onOpenReports }: HeaderProps) {
-  const { ui, riskData, validationData, setAlertsOpen, setValidationOpen, setAlertQueueOpen, setMode, setSimulation, toggleSidebar } = useFloodStore();
+  const { ui, riskData, setAlertsOpen, setAlertQueueOpen, setMode, setSimulation, toggleSidebar } = useFloodStore();
 
   // Simulate an alert to every high / very-high ward in the current analysis (or the top 5).
   const simulateFromAnalysis = () => {
@@ -25,7 +24,6 @@ export function Header({ onClear, onOpenReports }: HeaderProps) {
       title: `Simulated alert to ${chosen.length} ward${chosen.length === 1 ? '' : 's'} at ${riskData.scenario.rainfall_mm} mm / ${riskData.scenario.duration_hours} h`,
     });
   };
-  const validationUnavailable = validationData ? parseValidation(validationData).status === 'unavailable' : false;
 
   return (
     <header className="bg-white border-b border-gray-200 z-20">
@@ -59,11 +57,6 @@ export function Header({ onClear, onOpenReports }: HeaderProps) {
           </button>
           {riskData && (
             <button onClick={() => setAlertsOpen(true)} className="btn-secondary">Draft messages</button>
-          )}
-          {validationData && (
-            <button onClick={() => setValidationOpen(!ui.validationOpen)} aria-pressed={ui.validationOpen} className="btn-secondary">
-              {validationUnavailable ? 'Validation (unavailable)' : 'Validation'}
-            </button>
           )}
           {CROWD_REPORTS_ENABLED && (
             <button onClick={onOpenReports} className="btn-secondary">Report flooding</button>

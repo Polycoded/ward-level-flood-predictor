@@ -14,7 +14,6 @@ import { LoadingOverlay } from './LoadingOverlay';
 // Dialogs load on demand; the map is in the main bundle because its tiles are the largest paint.
 const AlertPanel = lazy(() => import('./AlertPanel').then((m) => ({ default: m.AlertPanel })));
 const ShelterPanel = lazy(() => import('./ShelterPanel').then((m) => ({ default: m.ShelterPanel })));
-const ValidationPanel = lazy(() => import('./ValidationPanel').then((m) => ({ default: m.ValidationPanel })));
 const WardDetailPanel = lazy(() => import('./WardDetailPanel').then((m) => ({ default: m.WardDetailPanel })));
 const CrowdReportPanel = lazy(() => import('./CrowdReportPanel').then((m) => ({ default: m.CrowdReportPanel })));
 const AlertQueuePanel = lazy(() => import('./AlertQueuePanel').then((m) => ({ default: m.AlertQueuePanel })));
@@ -32,7 +31,6 @@ export function OfficialDashboard() {
     setBaselineRisk,
     setRainfall,
     setRoadRisks,
-    setValidationData,
     setScenario,
     setError,
     clearRiskData,
@@ -46,12 +44,7 @@ export function OfficialDashboard() {
   useEffect(() => {
     const loadInitialData = async () => {
       try {
-        const [wardsData, validation] = await Promise.all([
-          api.getWards(),
-          api.getValidation().catch(() => null),
-        ]);
-        setWards(wardsData);
-        if (validation) setValidationData(validation);
+        setWards(await api.getWards());
       } catch (e) {
         reportError(e, { stage: 'initial-load' });
         setError(
@@ -64,7 +57,7 @@ export function OfficialDashboard() {
       }
     };
     loadInitialData();
-  }, [setWards, setValidationData, setError]);
+  }, [setWards, setError]);
 
   const runAnalysis = async (reading: RainfallReading, builtupIncrease: number) => {
     if (runningRef.current) return;
@@ -146,7 +139,6 @@ export function OfficialDashboard() {
         {ui.detailWardId !== null && <WardDetailPanel key={ui.detailWardId} wardId={ui.detailWardId} />}
         {ui.alertsOpen && <AlertPanel onClose={() => useFloodStore.getState().setAlertsOpen(false)} />}
         {ui.mapView === 'shelters' && <ShelterPanel />}
-        {ui.validationOpen && <ValidationPanel />}
         {reportsOpen && <CrowdReportPanel onClose={() => setReportsOpen(false)} />}
         {ui.alertQueueOpen && <AlertQueuePanel onClose={() => useFloodStore.getState().setAlertQueueOpen(false)} />}
       </Suspense>
