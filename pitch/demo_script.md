@@ -1,67 +1,38 @@
-# Demo script (≈6 min)
+# Honest screening demo — manual sequence
 
-Run the live stack (backend + `npm run preview`). If the backend is down, the header says **Mock data**: say so out loud and keep going. Never present mock numbers as real.
+Start the backend from the repository root (`uvicorn api.main:app --port 8000`) and
+the web dev server (`cd web && npm run dev`) using the existing environment. Confirm
+the header says **Live API**. If it says **Mock data**, disclose synthetic grid wards;
+do not present them as Chennai measurements. Network services may be unavailable.
 
-Before going on stage:
-- [ ] Header shows **Live API**
-- [ ] Browser zoom at 100%, window ≥ 1280 px wide, notifications off
-- [ ] Open-Meteo reachable (Forecast tab → Fetch works)
-- [ ] Real `validation_metrics.json` from Mit's evaluation committed. If the button still says **Validation (placeholder)**, skip Act 3's numbers and show `docs/validation.md` instead.
-- [ ] Phone ready with WhatsApp open, for the share-link moment
+1. Choose Manual → **100** mm, **3 h**, then Analyze. Explain that this is a hypothetical
+   uniform accumulation, not a measured city-wide event. The **300 · Hypothetical** preset
+   is another manual sensitivity input, not December 2023 attribution.
+2. Read the ward index/category and shared model reasons. Explain the hand-chosen weights
+   and uncalibrated duration heuristic. No flood probability, physical depth or peak time
+   is established. Ward/internal IDs differ from official ward numbers.
+3. Repeat 100 mm at **12 h**, Analyze, then draft alerts for a selected ward. Generate a
+   preview and show **100mm/12h** in the message. Generation is not delivery: SMS, voice
+   and LiveKit require separately verified integrations. WhatsApp is a user-mediated
+   share action, not proof of recipient delivery. Tamil wording needs native review.
+4. Open Validation. Current canonical mock metrics must render **unavailable**, not
+   accuracy percentages. Partial/evaluated schema-2 results describe observed-sample
+   eligibility/coverage, not independently verified representative accuracy. No historical
+   labels or completed evaluation are claimed. Research station candidates remain separate.
+5. Open Roads & underpasses: show **uncalibrated screening**, requiring human review,
+   not an automatic closure/diversion or water-depth prediction. The road endpoint currently
+   retains its own default rainfall-duration behavior; do not equate road screening to a
+   duration-aware hydraulic forecast.
+6. Optionally open Shelters. Presence, capacity, opening status and route safety are not
+   certified. An empty live layer is legitimate. Do not promise available accommodation
+   or validated walking times based on this demo.
+7. Compare +15%/+30% built-up with the same rainfall/duration for planning sensitivity.
+   Alert drafts remain baseline land use, not that built-up scenario. Return to baseline
+   before comparing alert categories with map categories.
 
----
+Close: this is transparent prioritization mechanics and an evidence-review workflow,
+not a validated emergency-warning system. Do not claim historical metrics, measured latency,
+production notification delivery or plug-and-play accuracy in another city.
 
-## Act 1: The decision gap (60 s)
-
-> *(Optional 15-second personal hook, in your own words.)*
->
-> "On 4 December 2023, Cyclone Michaung parked over Chennai. IMD's warning said *heavy to extremely heavy rain over Chennai*. That is one sentence for 200 wards. The Corporation still had to decide where pumps and boats go first, and it did that ward by ward, after the WhatsApp complaints came in."
-
-1. Point at the empty map: "This is what an official has before the rain: a city-wide number."
-2. Rainfall panel → **100 mm** preset, **3 hours** → **Analyze**.
-3. The map re-colours and the ranking fills in. Read the top three wards aloud from the list.
-4. "Every ward now has a risk level and a score, ranked. That is the decision we are trying to support: where to send pumps and teams first."
-
-## Act 2: Why this ward? (60 s)
-
-1. Click the top-ranked ward. The detail drawer opens.
-2. Read the risk card: level and score. If asked about the depth and peak bands, say they are *indicative* proxies from the index, not hydraulic predictions.
-3. Scroll to **Why this ward?**: "Each bar is one physical factor, weighted exactly as in our model: low ground, paved surface, flat terrain, distance to the river. Score out of 100, then rainfall scales it."
-4. Point at **Model reasons**: "Plain-language reasons an engineer can check against the ground."
-
-## Act 3: Did it work in December 2023? (90 s)
-
-1. Rainfall → **300 · Dec 2023** preset → **Analyze**.
-2. Header → **Validation**.
-3. Read *precision@20*, *recall* and false positives **from the panel, not from memory**.
-4. Name one false positive and why it happened (Mit owns this story; see `docs/validation.md`).
-5. "We report our misses, because a tool officials will trust has to show them."
-
-## Act 4: Alerts and the last mile (90 s)
-
-1. With the ward still open → **Draft alerts for this ward**.
-2. Toggle **தமிழ் (Tamil)** → **Generate**. Show the SMS character counter and the channel status cards.
-3. **Open in WhatsApp** on the phone: "The official picks the group; the link never pre-addresses a number."
-4. Sidebar → **Roads & underpasses**: "Traffic police see which underpasses to close first."
-5. Sidebar → **Shelters**: nearest named schools and halls from OpenStreetMap, walking time, a directions link.
-
-## Act 5: Planning, not just response (45 s)
-
-1. Map top-right → **+30% built-up**.
-2. Read the delta line: *"N wards move up a risk level."*
-3. "Same storm, more concrete. This is the conversation a planning department needs before approving the next layout."
-
-## Close (15 s)
-
-> "Open data, runs on a free tier, results in under two seconds. Any Indian city with ward boundaries and an elevation model can switch this on."
-
----
-
-### If something breaks
-
-| Problem | Say / do |
-| --- | --- |
-| Header shows **Mock data** | "The backend is offline, so this is our synthetic offline mode; the scoring is identical." Carry on. |
-| Validation button missing or says "placeholder" | Do not read numbers; show `docs/validation.md` and explain the evaluation is pending. |
-| Forecast fetch fails | Use the Manual tab; the error message explains it. |
-| Map tiles slow | The ranking and detail drawer work without tiles; keep talking over them. |
+If tiles/network/forecast fail, use manual inputs and disclose the failure. Automated tests
+and a successful build do not establish live-browser, source-quality or safety acceptance.

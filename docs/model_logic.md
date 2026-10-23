@@ -1,5 +1,17 @@
 # Ward risk index contract
 
+## Current integration status — 2026-10-23 review completion
+
+The formula below is unchanged. Original KMLs and both 200-row Parquet tables are
+delivered; see [mit_artifact_audit.json](mit_artifact_audit.json). Feature assembly now
+rejects missing/nonfinite measurements rather than creating zeros. This does not prove
+the older canonical measurements have authentic sources or complete coverage.
+Validation API/UI now preserve schema-2 null reasons/coverage and suppress mock accuracy;
+arithmetic tolerance is absolute 1e-12, with rainfall/selection consistency guards.
+Ward details, rankings, tooltips and alerts suppress physical proxy claims. Compatibility
+fields remain. The two staged rainfall values remain station candidates, not adopted
+historical inputs. Reviewed labels and provenance/coverage approvals remain absent.
+
 This is an **uncalibrated risk index**, not a flood probability or a hydrodynamic
 forecast. Weights, thresholds and rainfall response are hand-chosen prototype
 assumptions. Index categories are ordinal display bins, not validated warning levels.
@@ -106,7 +118,10 @@ Proposed future coordinated contract: nullable depth/timing with explicit unavai
 status and method/version metadata, only populated after suitable validation. No
 return types, API schemas or consumer types were changed in this task.
 
-## Assumptions and integration handoffs
+## Assumptions and dated integration handoffs (superseded status above)
+
+The pipeline/validation migration requests below record earlier gaps, not current TODOs;
+retain them as development history. See the current integration status at the top.
 
 - DEM, slope, distance and density must use consistent units and defensible source
   coverage. Ward means lose local detail; proximity does not establish backflow.
@@ -141,8 +156,9 @@ Individual validity does not certify coverage or a nonoverlapping partition. The
 readiness diagnostic counts all positive-area overlap pairs (448 in this snapshot);
 [chennai_boundary_review.md](chennai_boundary_review.md) counts 291 pairs over 1 m².
 Neither predicate is a geographic acceptance standard. Source/vintage/topology review,
-missing features.parquet, upstream zero-fill provenance and reviewed historical observations/
-rainfall remain blockers. See [chennai_handoff.md](chennai_handoff.md) for current requests.
+original measurement provenance and reviewed historical observations remain blockers.
+The earlier missing-feature blocker is resolved by delivery, not by independent verification.
+See [chennai_handoff.md](chennai_handoff.md) for current requests.
 
 See [validation.md](validation.md) for evidence requirements. Unit tests demonstrate
 mechanical consistency only; they do not validate flood accuracy.

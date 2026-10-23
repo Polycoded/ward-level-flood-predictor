@@ -1,5 +1,25 @@
 # December 2023 Chennai evidence preparation
 
+## Current status — review completion, 2026-10-23
+
+Ward/zone KMLs, 200-ward crosswalk and features are now delivered. See the
+[artifact audit](mit_artifact_audit.json), not the historical missing/empty inventory below.
+No reviewed flood labels, explicit negatives, approved metadata or historical metrics exist.
+The evidence-status API/UI suppress canonical mock metrics rather than claiming accuracy.
+
+User-supplied research is incorporated as
+[rainfall_review.md](../data/evidence/chennai_2023/rainfall_review.md) and
+[rainfall_candidates.csv](../data/evidence/chennai_2023/rainfall_candidates.csv).
+It reports text inspection of a separate IMD bulletin (IMD03), page 2: Chennai (N)
+23 cm / 230 mm and Chennai (AP) 25 cm / 250 mm, both 24 hours ending 4 December 2023
+08:30 IST. Both are station candidates, not ward measurements or adopted historical
+forcing. No source PDF bytes/hash or visual page verification is claimed in this phase.
+Earlier IMD02 access failures below refer to a different report and remain history.
+event_metadata_INCOMPLETE.json stays incomplete. Spatial representativeness, observation
+window, ward alignment and provenance still require review before evaluation.
+
+## Archived research inventory and findings (2026-10-22)
+
 Research checked 2026-10-22. **No evaluator-ready historical labels or accuracy metrics.**
 This is a traceable research staging pack, not a completed evaluation. Source IDs resolve
 to URLs and inspection notes in `data/evidence/chennai_2023/source_register.csv`.

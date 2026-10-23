@@ -28,7 +28,7 @@ const PRESETS = [
   { mm: 50, label: '50' },
   { mm: 100, label: '100' },
   { mm: 200, label: '200' },
-  { mm: 300, label: '300 · Dec 2023' },
+  { mm: 300, label: '300 · Hypothetical' },
 ];
 const DURATIONS = [1, 3, 6, 12, 24];
 

@@ -4,12 +4,12 @@ from typing import Tuple, Optional
 ALERT_TEMPLATES = {
     "en": {
         level: "Uncalibrated index: " + level.replace("_", " ") +
-        ". {ward_name}. Rainfall: {rainfall_mm}mm. Not a flood forecast. Follow official advice."
+        ". Rain: {rainfall_mm}mm/{duration_hours}h. {ward_name}. Not a flood forecast. Follow official advice."
         for level in ("very_low", "low", "moderate", "high", "very_high")
     },
     "ta": {
         level: "அளவுத்திருத்தம் செய்யப்படாத குறியீடு: " + label +
-        ". {ward_name}. மழை: {rainfall_mm}mm. வெள்ள முன்னறிவிப்பு அல்ல."
+        ". மழை: {rainfall_mm}mm/{duration_hours}h. {ward_name}. வெள்ள முன்னறிவிப்பு அல்ல."
         for level, label in (("very_low", "மிகக் குறைவு"), ("low", "குறைவு"),
                              ("moderate", "மிதமானது"), ("high", "அதிகம்"),
                              ("very_high", "மிக அதிகம்"))
@@ -45,7 +45,8 @@ def generate_alert_messages(
     depth_band: str,
     rainfall_mm: float,
     language: str = "en",
-    channel: str = "sms"
+    channel: str = "sms",
+    *, duration_hours: float = 3.0
 ) -> Tuple[str, Optional[str]]:
     lang = language if language in ALERT_TEMPLATES else "en"
     
@@ -53,7 +54,8 @@ def generate_alert_messages(
     
     message = template.format(
         ward_name=ward_name,
-        rainfall_mm=f"{rainfall_mm:.0f}"
+        rainfall_mm=f"{rainfall_mm:g}",
+        duration_hours=f"{duration_hours:g}"
     )
     
     if channel == "sms" and len(message) > 160:
