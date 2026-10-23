@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import type { Ward, WardFeature, RiskResponse, ValidationMetrics, Shelter, RoadRisk } from '../types';
 import type { RainfallReading } from './rainfall';
+import { parseValidation } from './validation';
 
 export type DataSource = 'unknown' | 'live' | 'mock';
 
@@ -90,7 +91,7 @@ export const useFloodStore = create<FloodState>((set) => ({
   setSelectedShelter: (selectedShelterId) => set({ selectedShelterId }),
   setShelterOrigin: (shelterOrigin) => set({ shelterOrigin }),
   setError: (error) => set({ error }),
-  setValidationData: (validationData) => set({ validationData }),
+  setValidationData: (validationData) => set({ validationData: validationData === null ? null : parseValidation(validationData) }),
   setShelters: (shelters) => set({ shelters }),
   setRoadRisks: (roadRisks) => set({ roadRisks }),
   setDataSource: (dataSource) => set({ dataSource }),

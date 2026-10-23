@@ -2,7 +2,7 @@ import { useEffect, useState, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { useFloodStore } from '../lib/store';
 import { api } from '../api/client';
-import { getRiskColor, getDepthLabel, getDepthColor, formatPercent, formatDistance } from '../lib/utils';
+import { getRiskColor, formatPercent, formatDistance } from '../lib/utils';
 import { geometryCenter } from '../lib/geo';
 import { RiskBadge } from './RiskBadge';
 import { ExplainabilityPanel } from './ExplainabilityPanel';
@@ -153,17 +153,7 @@ function RiskSummaryCard({ ward, rainfallMm, durationHours }: { ward: WardRisk; 
         </div>
       </div>
       <dl className="grid grid-cols-2 gap-3 text-sm">
-        <div>
-          <dt className="text-xs text-gray-600">Indicative depth band</dt>
-          <dd className="font-medium text-gray-900 flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded" style={{ backgroundColor: getDepthColor(ward.depth_band) }} aria-hidden="true" />
-            ≈ {getDepthLabel(ward.depth_band)}
-          </dd>
-        </div>
-        <div>
-          <dt className="text-xs text-gray-600">Indicative peak window</dt>
-          <dd className="font-medium text-gray-900">≈ {ward.peak_window_hours} h</dd>
-        </div>
+        <p className="col-span-2 text-gray-600">Uncalibrated index, not a prediction of flood probability, depth or timing.</p>
         {rainfallMm !== null && (
           <div className="col-span-2">
             <dt className="text-xs text-gray-600">Scenario</dt>
@@ -172,8 +162,7 @@ function RiskSummaryCard({ ward, rainfallMm, durationHours }: { ward: WardRisk; 
         )}
       </dl>
       <p className="text-xs text-gray-600 mt-3 border-t border-gray-100 pt-2">
-        Depth and peak are display proxies derived from the risk index, not hydraulic predictions
-        (see docs/model_logic.md). Use the risk level for decisions.
+        Scores summarize relative susceptibility under the selected scenario; historical accuracy is not established.
       </p>
     </div>
   );

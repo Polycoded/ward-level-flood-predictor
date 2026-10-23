@@ -33,6 +33,28 @@ def _identity(frame, official_column):
             "duplicate_official_numbers": sorted(value for value, count in Counter(nonblank).items() if count > 1)}, ids, numbers
 
 
+
+def _overlap_diagnostics(wards, geometry_issues):
+    """Positive-area intersections only; touching edges are allowed.
+
+    Row positions are zero-based. No area units or geographic truth are inferred
+    from a CRS declaration. Warnings do not certify or repair the partition.
+    """
+    if any(geometry_issues.values()):
+        return {"status": "not_assessed", "reason": "Resolve invalid, empty or missing geometries first."}
+    pairs = []
+    for left, geom in enumerate(wards.geometry):
+        for right in sorted(wards.sindex.query(geom, predicate="intersects")):
+            right = int(right)
+            if right > left and geom.intersection(wards.geometry.iloc[right]).area > 0:
+                pairs.append({"rows": [left, right],
+                              "ward_ids": [str(wards.iloc[left].get("ward_id")),
+                                           str(wards.iloc[right].get("ward_id"))]})
+    return {"status": "review_required" if pairs else "no_positive_area_overlap_detected",
+            "pair_count": len(pairs), "pairs": pairs,
+            "limitations": "No tolerance applied; tiny slivers may reflect precision. Does not assess gaps, coverage, source fidelity or historical applicability."}
+
+
 def inspect_inputs(boundary: Path, features: Path | None = None, metrics: Path | None = None,
                    *, boundary_version: str = "", identity_reference: str = "",
                    administrative_unit: str = "ward") -> dict:
@@ -61,6 +83,7 @@ def inspect_inputs(boundary: Path, features: Path | None = None, metrics: Path |
                 geometry_issues["empty_geometry_rows"].append(i)
             elif not geom.is_valid or geom.geom_type not in ("Polygon", "MultiPolygon"):
                 geometry_issues["invalid_geometry_rows"].append(i)
+        result["boundary"]["overlap_review"] = _overlap_diagnostics(wards, geometry_issues)
         zones = [str(name) for name in wards.get("ward_name", []) if re.search(r"\bzone\b", str(name), re.I)]
         result["boundary"].update(record_count=len(wards), **issues, **geometry_issues,
                                   zone_name_signals=zones if administrative_unit == "ward" else [])
@@ -153,6 +176,9 @@ def main(argv=None):
         print(f"Identity ready: {report['identity_ready']}; structural scoring ready: {report['structural_scoring_ready']}; historical ready: False")
         print(f"Boundary records: {report['boundary'].get('record_count', 'unavailable')}; feature records: {report['features'].get('record_count', 'unavailable')}")
         print(f"Blank boundary official numbers: {len(report['boundary'].get('blank_official_number_rows', []))}; zone-name signals: {len(report['boundary'].get('zone_name_signals', []))}")
+        overlap = report["boundary"].get("overlap_review", {})
+        if overlap.get("status") == "review_required":
+            print(f"- Boundary overlap review required: {overlap['pair_count']} positive-area pairs; inspect JSON details. Structural readiness does not resolve these warnings.")
         for message in report["blockers"] + report["historical_blockers"]:
             print(f"- {message}")
         if args.output:

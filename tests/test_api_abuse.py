@@ -80,10 +80,31 @@ def test_shelter_search_is_bounded(body):
     assert client.post(f"{API}/shelters", json=body).status_code == 422
 
 
-def test_shelter_search_still_works():
+def test_shelter_search_still_works(monkeypatch):
+    import geopandas as gpd
+    from shapely.geometry import Point
+    import api.routes.main as routes
+
+    # Artificial route fixture; independent of an optional canonical shelter file.
+    shelters = gpd.GeoDataFrame([{
+        "shelter_id": 1, "name": "Test shelter", "latitude": 13.0827,
+        "longitude": 80.2707, "capacity": 50, "geometry": Point(80.2707, 13.0827),
+    }], crs="EPSG:4326")
+    monkeypatch.setattr(routes, "load_shelters", lambda: shelters)
     r = client.post(f"{API}/shelters", json={"latitude": 13.0827, "longitude": 80.2707, "max_distance_km": 10, "max_results": 5})
     assert r.status_code == 200
-    assert 0 < len(r.json()) <= 5
+    assert len(r.json()) == 1
+    assert r.json()[0]["name"] == "Test shelter"
+
+
+def test_missing_shelters_return_empty_without_inventing_locations(monkeypatch):
+    import geopandas as gpd
+    import api.routes.main as routes
+
+    monkeypatch.setattr(routes, "load_shelters", lambda: gpd.GeoDataFrame())
+    r = client.post(f"{API}/shelters", json={"latitude": 13.0827, "longitude": 80.2707})
+    assert r.status_code == 200
+    assert r.json() == []
 
 
 # --- error handling and headers ---------------------------------------------

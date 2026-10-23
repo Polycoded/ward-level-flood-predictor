@@ -18,6 +18,7 @@ import type {
   WardRisk,
 } from '../types';
 import { classifyRisk } from '../lib/explain';
+import { parseValidation } from '../lib/validation';
 
 export class ApiDataError extends Error {
   constructor(what: string) {
@@ -194,29 +195,7 @@ export function validateRiskResponse(data: unknown): RiskResponse {
 // --- other endpoints --------------------------------------------------------
 
 export function validateValidation(data: unknown): ValidationMetrics {
-  if (!isObj(data)) throw new ApiDataError('validation is not an object');
-  const ratio = (k: string) => {
-    const n = finite(data[k]);
-    if (n === null || n < 0 || n > 1) throw new ApiDataError(`validation ${k} is not a ratio`);
-    return n;
-  };
-  const count = (k: string) => {
-    const n = finite(data[k]);
-    if (n === null || n < 0 || !Number.isInteger(n)) throw new ApiDataError(`validation ${k} is not a count`);
-    return n;
-  };
-  return {
-    precision_at_20: ratio('precision_at_20'),
-    recall: ratio('recall'),
-    false_positive_rate: ratio('false_positive_rate'),
-    true_positives: count('true_positives'),
-    false_positives: count('false_positives'),
-    false_negatives: count('false_negatives'),
-    total_flooded_wards: count('total_flooded_wards'),
-    total_wards: count('total_wards'),
-    event_date: text(data.event_date, 30) ?? '',
-    notes: text(data.notes, 500) ?? '',
-  };
+  return parseValidation(data);
 }
 
 export function validateAlerts(data: unknown): AlertResponse {

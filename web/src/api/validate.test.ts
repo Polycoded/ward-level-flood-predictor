@@ -95,12 +95,16 @@ describe('validateWardFeature', () => {
 });
 
 describe('other endpoints', () => {
-  it('validation metrics must be real ratios and counts', () => {
+  it('validation uses schema-2 evidence handling and suppresses legacy or malformed numbers', () => {
     const ok = mockApi.getValidation();
     expect(validateValidation(ok)).toEqual(ok);
-    expect(() => validateValidation({ ...ok, recall: 7 })).toThrow(ApiDataError);
-    expect(() => validateValidation({ ...ok, true_positives: -1 })).toThrow(ApiDataError);
-    expect(() => validateValidation('<html>')).toThrow(ApiDataError);
+    for (const invalid of [
+      { precision_at_20: 0.65, recall: 0.72, notes: 'MOCK NUMBERS' },
+      { ...ok, schema_version: '1.0' }, '<html>', null,
+    ]) {
+      expect(validateValidation(invalid).status).toBe('unavailable');
+      expect(validateValidation(invalid).metrics).toBeUndefined();
+    }
   });
 
   it('alerts with unknown channels or no text are dropped; messages are length-limited', () => {

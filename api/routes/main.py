@@ -251,14 +251,8 @@ async def get_scenario_risk(input_data: ScenarioInput):
 
 @router.get("/validation", response_model=ValidationMetrics)
 async def get_validation():
-    if not VALIDATION_PATH.exists():
-        raise HTTPException(status_code=404, detail="Validation metrics not found")
-    
-    import json
-    with open(VALIDATION_PATH) as f:
-        data = json.load(f)
-    
-    return ValidationMetrics(**data)
+    from api.validation_status import validation_status
+    return validation_status(VALIDATION_PATH)
 
 
 @router.post("/alerts", response_model=AlertResponse)

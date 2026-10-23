@@ -28,6 +28,21 @@ beforeEach(() => {
 });
 
 describe('ApiClient live/mock decision', () => {
+  it('suppresses legacy mock accuracy returned by a live backend', async () => {
+    const { fn } = adapter(c => ({ status: 200, data: c.url === '/readyz' ? READY :
+      { precision_at_20: 0.65, notes: 'MOCK NUMBERS' } }));
+    const result = await new ApiClient({ forceMock: false, adapter: fn }).getValidation();
+    expect(result.status).toBe('unavailable');
+    expect(result.metrics).toBeUndefined();
+    expect(result.status_reason).toMatch(/not accuracy evidence/);
+  });
+
+  it('returns explicit unavailable evidence on a live validation fetch failure', async () => {
+    const { fn } = adapter(c => c.url === '/readyz' ? { status: 200, data: READY } : new Error('Network error'));
+    const result = await new ApiClient({ forceMock: false, adapter: fn }).getValidation();
+    expect(result.status).toBe('unavailable');
+    expect(result.status_reason).toMatch(/could not be loaded/);
+  });
   it('uses the backend when /readyz reports features and wards', async () => {
     const { fn, calls } = adapter((c) => (c.url === '/readyz' ? { status: 200, data: READY } : { status: 200, data: LIVE_WARD }));
     const client = new ApiClient({ forceMock: false, adapter: fn });

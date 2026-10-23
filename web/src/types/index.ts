@@ -66,17 +66,22 @@ export interface AlertResponse {
   sent_at: string;
 }
 
+export interface EvidenceMetric {
+  value: number | null;
+  numerator: number;
+  denominator: number;
+  unavailable_reason: string | null;
+}
+
 export interface ValidationMetrics {
-  precision_at_20: number;
-  recall: number;
-  false_positive_rate: number;
-  true_positives: number;
-  false_positives: number;
-  false_negatives: number;
-  total_flooded_wards: number;
-  total_wards: number;
-  event_date: string;
-  notes: string;
+  schema_version: '2.0';
+  status: 'unavailable' | 'partial' | 'evaluated';
+  status_reason: string | null;
+  metrics?: Record<string, EvidenceMetric> | null;
+  coverage?: Record<string, EvidenceMetric> | null;
+  event_metadata?: Record<string, unknown> | null;
+  warnings: string[];
+  [key: string]: unknown;
 }
 
 export interface Shelter {

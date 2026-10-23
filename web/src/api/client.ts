@@ -13,12 +13,12 @@ import type {
   ReadyResponse,
 } from '../types';
 import { mockApi } from './mock';
+import { parseValidation, unavailableValidation } from '../lib/validation';
 import {
   validateAlerts,
   validateRiskResponse,
   validateRoads,
   validateShelters,
-  validateValidation,
   validateWardFeature,
   validateWards,
 } from './validate';
@@ -129,7 +129,11 @@ export class ApiClient {
   }
 
   async getValidation(): Promise<ValidationMetrics> {
-    return this.call(async () => validateValidation((await this.client.get('/validation')).data), mockApi.getValidation);
+    try {
+      return parseValidation(await this.call(async () => (await this.client.get<unknown>('/validation')).data, mockApi.getValidation));
+    } catch {
+      return unavailableValidation('Validation evidence could not be loaded.');
+    }
   }
 
   async generateAlerts(

@@ -11,7 +11,7 @@ export function wardTooltipHtml(
   if (risk) {
     html +=
       `<br/><span style="color:${getRiskColor(risk.risk_level)};font-weight:600">${escapeHtml(getRiskLabel(risk.risk_level))}</span>` +
-      ` • score ${Math.round(risk.risk_score * 100)} • depth ≈ ${escapeHtml(risk.depth_band)}`;
+      ` • Uncalibrated index ${Math.round(risk.risk_score * 100)} / 100`;
   }
   return html;
 }

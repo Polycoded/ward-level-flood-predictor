@@ -1,5 +1,189 @@
 # Mit implementation plan
 
+## ValidationPanel artificial fixture follow-up — scope before edits (2026-10-23)
+
+Edit only web/src/components/ValidationPanel.test.tsx and this plan. Add rainfall_mm:100
+and duration_hours:3 to shared artificial event metadata, retaining every assertion.
+Add an explicit missing-measurement rendering regression requiring unavailable and no
+accuracy values. Do not change parser/production code, dependencies or canonical data.
+Preserve all staging/pending work on mit-dev. Run panel/parser tests, full frontend tests,
+TypeScript, production build and working-tree/cached whitespace checks. No staging,
+commits, pushes or branch operations; record actual outcomes below.
+
+Results: panel/parser tests **65 passed**; full frontend suite **164 passed** across
+11 files. TypeScript checking and production build passed. All original assertions
+retained; missing duration now has an explicit unavailable/no-percentage rendering test.
+No production/parser/dependency/canonical changes. Visual verification not performed.
+
+## Validation boundary arithmetic/selection repair — scope before edits (2026-10-23)
+
+Confirmed bounded follow-up; preserve all staged/unstaged work on mit-dev. Edit only:
+- api/validation_status.py: adapter-only finite numeric rainfall [0,500]/duration [1,24]
+  checks rejecting booleans; all metric/coverage numerators <= denominators; available
+  fractions match numerator/denominator with absolute tolerance 1e-12 (no relative
+  tolerance); selected IDs unique, count matches actual_selected_size; positive top-k
+  and actual size equals min(top-k,prediction_count). Reject, never repair, invalid output.
+- tests/test_validation_api.py: isolated independent mutations for each invariant,
+  genuine evaluator round trips including fractional and zero-denominator/null metrics.
+- web/src/lib/validation.ts: equivalent metric arithmetic and optional evaluator metadata
+  measurement guards, preserving minimal unavailable envelopes and valid null metrics.
+- web/src/lib/validation.test.ts: dedicated artificial parser regressions, independent
+  malformed fields, fractional/zero-denominator/null/tolerance cases and valid states.
+- This plan: record actual outcomes/blockers. No schema/routes/UI/store/model/alert/data/
+  manifest/lockfile edits; no dependency installation/upgrades or git staging operations.
+Run affected Python then existing Python suite; dedicated parser then existing frontend
+tests; TypeScript and production build; both working-tree/cached diff checks. Compare
+final file hashes and index against initial snapshot. Visual verification not performed.
+
+Boundary repair results: regressions first reproduced 20 failures before adapter fixes.
+Final affected API suite: **64 passed**; complete Python tests directory: **470 passed**
+(54 existing dependency deprecation warnings). Dedicated parser suite: **56 passed**.
+Full frontend suite executed: **160 passed, 3 failed** in the existing, out-of-scope
+web/src/components/ValidationPanel.test.tsx. Its shared fixture supplies event name/date
+but omits rainfall_mm/duration_hours; the required stricter metadata guard now correctly
+rejects it as unavailable. Did not edit that fixture or weaken the parser to make it pass.
+Initial type errors in the new parser test were repaired within the allowed test file;
+final npm run typecheck and npm run build both passed. New adapter/API-test Ruff passed.
+No dependency reinstall/upgrade or permission denial occurred. Genuine evaluator
+unavailable/partial/evaluated results (including fractional metrics, unknown selection,
+zero denominators and empty prediction universe) round-trip unchanged. Arithmetic uses
+absolute 1e-12 tolerance on both boundaries and never changes accepted payload values.
+Minimal unavailable frontend envelopes remain valid; malformed/cyclic stored objects
+return unavailable rather than throwing. Working-tree/cached diff checks passed; snapshot
+audit confirmed only the five allowed paths changed and the staging index is unchanged.
+Still on mit-dev. No visual/browser verification performed. The three
+component-test fixture failures remain the only failed verification checks in this task;
+fixing that excluded file requires a separate authorized follow-up.
+
+## Evidence-status demo integration — scope before implementation (2026-10-23)
+
+Preserve staged and unstaged work on mit-dev. User authorized all phases without
+intermediate stops. API: add api/validation_status.py to parse persisted metrics strictly
+and validate the existing evaluator's schema-2 contract without rewriting the evaluator;
+replace legacy ValidationMetrics in api/schemas.py with evidence-status models retaining
+nullable metrics, denominators, coverage, metadata, warnings and extra evaluator fields;
+route /validation through that adapter in api/routes/main.py. Invalid/missing/empty/mock/
+legacy input returns unavailable with a reason, never fabricated zeros. Canonical files stay intact.
+Frontend: web/src/types/index.ts, new lib/validation.ts, api/client.ts, api/mock.ts,
+lib/store.ts and components/ValidationPanel.tsx coordinate parsing, fallback and rendering
+of unavailable/partial/evaluated evidence, null reasons and observed coverage. Guard legacy
+and mock payloads at fetch/store/render boundaries. Use supplied event metadata only.
+Physical claims: edit WardDetailPanel.tsx, RankedList.tsx, AlertPanel.tsx, lib/tooltip.ts,
+model/alerts.py and mock alert generation to remove proxy claims and disclose an uncalibrated
+index while retaining scoring, compatibility fields, category and shared reasons.
+Tests: new tests/test_validation_api.py and tests/test_alert_evidence.py, frontend
+validation/component/display regressions using isolated data; update affected existing
+assertions only where the intended evidence contract changed. Update docs/chennai_handoff.md
+for delivered Parquet/KML files and remaining provenance/historical limitations.
+Run relevant Python/frontend tests, TypeScript, production build, scoped lint and diff check.
+Report visual UI verification separately. No dataset generation, evaluator/scoring/readiness/
+alert-duration changes, dependencies, git staging/commit/push/branch operations.
+
+Evidence integration outcome: API boundary preserves complete evaluator schema-2 results
+(including null values) in isolated round-trip tests; mock/missing/empty/malformed/legacy
+payloads return unavailable without accuracy defaults. Frontend types, parser, fetch/store,
+panel and defensive regressions updated together. Removed physical claims from the four
+affected displays and both live/mock alert generators; compatibility fields/arguments remain.
+Added web/src/components/ValidationPanel.test.tsx and evidence-displays.test.tsx, plus
+validation fetch tests in api/client.test.ts and negative proxy assertions in tooltip.test.ts.
+337 Python tests passed including existing tests/test_api.py, validation, runner/readiness,
+risk engine/duration/scenario and new validation/alert evidence tests (2 existing warnings).
+Read-only runtime smoke: delivered features 200x44, zonal stats 200x39; /risk and /scenario
+HTTP 200 with 200 wards, /validation HTTP 200 unavailable due to canonical mock notes.
+New Python adapter/test Ruff passed. Existing model/alerts.py Ruff issues remain (typing
+annotations/import order and whitespace); no unrelated cleanup made. npm test -- --run,
+npm run typecheck and npm run build attempted but blocked by missing vitest/tsc commands;
+no dependency changes. UI/browser visual checks not performed. Frontend checks remain
+unverified, not passed. Final diff/preservation audit follows; no canonical writes or git
+staging/commit/push/branch changes. Historical observations/provenance remain unresolved.
+
+## /scenario isolated integration verification (before edits, 2026-10-23)
+
+Read LOCAL_CHAT_HANDOFF.md and current status; stay mit-dev, preserving all pending
+/risk duration, overlap/review and documentation edits. Inspected scenario/risk callers,
+schemas, scorer and test_risk_duration.py. Add only tests/test_scenario_integration.py
+and this plan: monkeypatch loading of shared artificial multi-ward GeoDataFrame; check
+zero-increase parity, direct-model agreement at 1/3/12 h with unsaturated increments,
+default duration, impervious cap, identity/order, repeatability/nonmutation and 422 bounds.
+Production code changes only if these regressions reveal a specific bug. No canonical
+inputs/external calls, schema/model/alert/pipeline/UI/dependency edits. Run new tests plus
+risk duration/engine tests, scoped Ruff and diff check. No git branch/commit/push actions.
+
+Scenario verification outcome: all 18 new artificial HTTP cases passed on existing
+production code; no integration bug exposed and no production fix made. New scenario
+tests + risk duration (5) + risk engine (97): **120 passed**, 2 existing FastAPI/Starlette/
+Pydantic deprecation warnings. Scoped Ruff passed (existing config deprecation warning)
+and git diff --check passed. Used existing temporary interpreter; no dependencies added
+or upgraded. Full API suite not run. These tests establish integration mechanics only,
+not real feature readiness or flood accuracy. Only new scenario test and this plan changed
+in this task; all pre-existing pending edits preserved.
+
+## /risk duration forwarding fix (scope before edits, 2026-10-23)
+
+Read LOCAL_CHAT_HANDOFF.md, status and current callers/schema/tests. Stay mit-dev and
+preserve pending documentation/overlap review/diagnostic changes. Change only get_risk
+call to forward duration_hours explicitly and RainfallInput rainfall description to total
+accumulation over duration_hours. Add isolated HTTP regression tests with patched loading
+of artificial valid GeoDataFrame features; compare unsaturated direct scorer outputs for
+1/3/12 hours, omitted default 3 and echoed scenario. Update duration statements in handoff
+and model docs. No alert/scenario/formula/proxy/type/pipeline/UI/metrics changes. Run new
+tests and existing model tests in available environment (no dependency installs), plus
+diff check; do not claim the full API suite ran.
+
+Duration fix verification: new tests initially reproduced 3 failures/2 passes before
+the production edit; after forwarding, all 5 passed (2 existing API dependency warnings).
+Existing risk/geographic/validation/runner/readiness suites: 337 passed, 52 existing
+Rasterio/affine warnings. Scoped Ruff on the new test and git diff --check passed.
+Used existing temporary Python environment; no installs/upgrades or environment blockers.
+Full tests/test_api.py and UI suites were not executed. Preserved all pending overlap/
+review/documentation changes. Alerts still default to three hours; real feature/evidence
+blockers remain. Changed only the two API lines, new isolated test and three scoped docs.
+
+## Integration documentation reconciliation (before edits, 2026-10-23)
+
+Read ignored LOCAL_CHAT_HANDOFF.md first, git status, current API/scorer, boundary review,
+crosswalk/GeoJSON and isolated validation tests. Preserve pending overlap diagnostic,
+its tests/review and all prior plan notes. Edit only this plan, chennai_handoff.md and
+model_logic.md: replace stale zone inventory with verified 200-ward snapshot and identity
+distinction; separate fixed scenario/wrapper duration from remaining /risk and alert
+omissions; remove outstanding canonical-file test-failure claim; retain absent features,
+upstream zero-fill/mock/evidence blockers; explain >0 versus >1 m² overlap counts and
+reference boundary review. Preserve exact formula/proxy caveats. No tests/code/data edits,
+network or branch operations. Check source/CSV/geometry read-only and git diff --check;
+do not portray dated test evidence as a new suite run.
+
+Reconciliation results: current files confirm 200 valid/nonempty polygons, 200 unique
+internal IDs and official numbers, and matching 200-row crosswalk (internal 1 → official
+168). Read-only pairwise comparison found 448 positive-area pairs versus 291 over 1 m²,
+consistent with the diagnostic/review's distinct predicates. features.parquet absent,
+labels zero bytes and metrics explicitly mock. Wrapper/scenario duration forwarding and
+single adjustment verified; /risk and /alerts still use default 3 hours. Temporary-fixture
+validation regression fix verified in test source. Updated only three allowed docs;
+formula unchanged. git diff --check passed; no test suites executed in this docs-only task.
+Pre-existing input_readiness.py/test changes and untracked boundary review preserved.
+
+## Boundary overlap diagnostic (scope before implementation)
+
+Add a read-only positive-area overlap diagnostic to input_readiness.py, artificial
+overlap/touching tests and a review-document note. Use source coordinate units only
+for the intersection predicate; report row pairs and IDs, not unverified metric areas.
+Skip topology when geometry is defective. Treat findings as review warnings, without
+automatic repair or changing existing readiness gates. Source review remains separate.
+Run focused tests and the actual read-only CLI. Preserve existing pending documents.
+
+
+## 200-ward review scope (2026-10-23, before edits)
+
+User authorized beginning Mit work after repository verification. Keep mit-dev at
+6210aba; preserve pipeline/API/UI/canonical data. Perform read-only topology, identity,
+source-traceability and local feature inventory review. Add docs/chennai_boundary_review.md
+with measured findings and explicit source-access limits. Do not auto-repair boundaries,
+attest historical readiness, generate scores, or reuse old zone aggregates. No commits/pushes.
+This entry is recorded before creating the review document. Older plan entries are dated
+history, not the current input inventory. Current review supersedes the older 15-zone
+readiness inventory; the canonical mock-metrics regression was already fixed.
+
+
 ## Chennai input-readiness check (scope before edits, 2026-10-23)
 
 Confirmed mit-dev, clean initial status (prior work is present in this branch); do not
@@ -346,3 +530,12 @@ labels, and evidence collectors must establish reviewed ward IDs, observation wi
 both flooded/non-flooded provenance and sampling bias. Exact contracts/examples are
 in docs/validation.md. No real artifacts downloaded, no processed metrics overwritten,
 and no commits or pushes performed; all work remains local for review.
+
+
+## PR #5 integration with Ronit's main branch — 2026-10-23
+
+Scope: resolve the ten merge conflicts in API routes/schemas, API client, AlertPanel, RankedList, ValidationPanel, WardDetailPanel, tooltip, and validation parser/tests. Preserve main's endpoint hardening, map-route ordering, response guards, duration-aware explanations and application flow. Preserve mit-dev's schema-2 evidence contract and suppression of unsupported physical outputs. Adapt web/src/api/validate.ts and its tests to delegate validation to the strict schema-2 parser; update stale integrated comments/caveats in App and WardDetailPanel. Verify combined Python/frontend suites, typecheck, build and whitespace before pushing mit-dev.
+
+Integration follow-up scope: Header and App.test.tsx must use the schema-2 unavailable label instead of the retired placeholder helper. tests/test_api_abuse.py needs isolated shelter fixtures plus an empty-source regression because canonical shelters are absent. No shelter fallback or canonical dataset is added.
+
+Integration verification: 499 Python tests passed (54 dependency deprecation warnings); 202 frontend tests passed; TypeScript and production build passed; git diff --check passed. All ten conflicts resolved while retaining main's safeguards and mit-dev's evidence presentation. Visual browser verification not performed. Historical observations, source/provenance review, and canonical shelter availability remain unresolved.

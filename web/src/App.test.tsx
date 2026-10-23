@@ -153,10 +153,10 @@ describe('ward detail and explainability', () => {
     expect(within(panel).getByText('Why this ward?')).toBeInTheDocument();
     expect(within(panel).getAllByRole('row').length).toBeGreaterThanOrEqual(7);
     expect(within(panel).getByText('Model reasons')).toBeInTheDocument();
-    // depth and peak are presented as proxies, not predictions (docs/model_logic.md)
-    expect(within(panel).getByText('Indicative depth band')).toBeInTheDocument();
-    expect(within(panel).getByText('Indicative peak window')).toBeInTheDocument();
-    expect(within(panel).getByText(/not hydraulic predictions/)).toBeInTheDocument();
+    // Unsupported physical outputs remain suppressed after integration.
+    expect(within(panel).queryByText('Indicative depth band')).not.toBeInTheDocument();
+    expect(within(panel).queryByText('Indicative peak window')).not.toBeInTheDocument();
+    expect(within(panel).getByText(/Uncalibrated index, not a prediction/)).toBeInTheDocument();
     expect(within(panel).queryByText(/from now/)).toBeNull();
     await user.keyboard('{Escape}');
     await waitFor(() => expect(screen.queryByRole('complementary', { name: 'Ward details' })).toBeNull());
@@ -321,10 +321,10 @@ describe('live forecast', () => {
 describe('validation panel', () => {
   it('never presents placeholder metrics as a real result', async () => {
     const user = await renderLoaded();
-    await user.click(screen.getByRole('button', { name: 'Validation (placeholder)' }));
-    const alert = await screen.findByRole('alert');
-    expect(alert).toHaveTextContent(/Placeholder numbers, not a validation result/);
-    expect(alert).toHaveTextContent(/Do not quote them/);
+    await user.click(screen.getByRole('button', { name: 'Validation (unavailable)' }));
+    const panel = await screen.findByRole('region', { name: 'Evaluation evidence' });
+    expect(panel).toHaveTextContent('Status: unavailable');
+    expect(panel).not.toHaveTextContent('65.0%');
   });
 });
 

@@ -3,18 +3,16 @@ from typing import Tuple, Optional
 
 ALERT_TEMPLATES = {
     "en": {
-        "very_low": "No significant flood risk expected for {ward_name}. Rainfall: {rainfall_mm}mm.",
-        "low": "Low flood risk for {ward_name}. Minor waterlogging possible. Rainfall: {rainfall_mm}mm. Stay alert.",
-        "moderate": "Moderate flood risk for {ward_name}. Waterlogging expected up to {depth_band}. Rainfall: {rainfall_mm}mm. Avoid low-lying areas.",
-        "high": "HIGH FLOOD RISK for {ward_name}. Significant waterlogging up to {depth_band} expected. Rainfall: {rainfall_mm}mm. Move to higher ground if needed.",
-        "very_high": "SEVERE FLOOD WARNING for {ward_name}. Dangerous flooding up to {depth_band} expected. Rainfall: {rainfall_mm}mm. EVACUATE if advised by authorities.",
+        level: "Uncalibrated index: " + level.replace("_", " ") +
+        ". {ward_name}. Rainfall: {rainfall_mm}mm. Not a flood forecast. Follow official advice."
+        for level in ("very_low", "low", "moderate", "high", "very_high")
     },
     "ta": {
-        "very_low": "{ward_name}印度洪水风险低。降雨量：{rainfall_mm}毫米。",
-        "low": "{ward_name}印度洪水风险低。可能有轻微积水。降雨量：{rainfall_mm}毫米。请保持警惕。",
-        "moderate": "{ward_name}印度洪水风险中等。预计积水深度达{depth_band}。降雨量：{rainfall_mm}毫米。避免前往低洼地区。",
-        "high": "{ward_name}印度洪水风险高！预计严重积水达{depth_band}。降雨量：{rainfall_mm}毫米。如有需要请前往高地。",
-        "very_high": "{ward_name}印度严重洪水警告！预计危险性洪水达{depth_band}。降雨量：{rainfall_mm}毫米。如当局建议请立即撤离。",
+        level: "அளவுத்திருத்தம் செய்யப்படாத குறியீடு: " + label +
+        ". {ward_name}. மழை: {rainfall_mm}mm. வெள்ள முன்னறிவிப்பு அல்ல."
+        for level, label in (("very_low", "மிகக் குறைவு"), ("low", "குறைவு"),
+                             ("moderate", "மிதமானது"), ("high", "அதிகம்"),
+                             ("very_high", "மிக அதிகம்"))
     }
 }
 
@@ -52,12 +50,10 @@ def generate_alert_messages(
     lang = language if language in ALERT_TEMPLATES else "en"
     
     template = ALERT_TEMPLATES[lang].get(risk_level, ALERT_TEMPLATES[lang]["moderate"])
-    depth_label = DEPTH_BAND_LABELS[lang].get(depth_band, depth_band)
     
     message = template.format(
         ward_name=ward_name,
-        rainfall_mm=f"{rainfall_mm:.0f}",
-        depth_band=depth_label
+        rainfall_mm=f"{rainfall_mm:.0f}"
     )
     
     if channel == "sms" and len(message) > 160:

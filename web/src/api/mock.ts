@@ -173,29 +173,6 @@ export function scoreWard(w: WardFeature, rainfallMm: number, builtupIncrease = 
 
 // --- alerts ------------------------------------------------------------------
 
-const ALERT_TEMPLATES: Record<Language, Record<RiskLevel, string>> = {
-  en: {
-    very_low: 'No significant flood risk expected for {ward}. Rainfall: {mm}mm.',
-    low: 'Low flood risk for {ward}. Minor waterlogging possible. Rainfall: {mm}mm. Stay alert.',
-    moderate: 'Moderate flood risk for {ward}. Waterlogging expected up to {depth}. Rainfall: {mm}mm. Avoid low-lying areas.',
-    high: 'HIGH FLOOD RISK for {ward}. Significant waterlogging up to {depth} expected. Rainfall: {mm}mm. Move to higher ground if needed.',
-    very_high: 'SEVERE FLOOD WARNING for {ward}. Dangerous flooding up to {depth} expected. Rainfall: {mm}mm. EVACUATE if advised by authorities.',
-  },
-  // Needs a native-speaker review before the demo.
-  ta: {
-    very_low: '{ward}: குறிப்பிடத்தக்க வெள்ள அபாயம் இல்லை. மழை: {mm} மி.மீ.',
-    low: '{ward}: குறைந்த வெள்ள அபாயம். லேசான நீர் தேக்கம் இருக்கலாம். மழை: {mm} மி.மீ. விழிப்புடன் இருங்கள்.',
-    moderate: '{ward}: மிதமான வெள்ள அபாயம். {depth} வரை நீர் தேங்கலாம். மழை: {mm} மி.மீ. தாழ்வான பகுதிகளைத் தவிர்க்கவும்.',
-    high: '{ward}: அதிக வெள்ள அபாயம்! {depth} வரை நீர் தேங்கும். மழை: {mm} மி.மீ. தேவைப்பட்டால் மேடான இடத்திற்குச் செல்லவும்.',
-    very_high: '{ward}: கடும் வெள்ள எச்சரிக்கை! {depth} வரை ஆபத்தான வெள்ளம். மழை: {mm} மி.மீ. அதிகாரிகள் அறிவுறுத்தினால் உடனே வெளியேறவும்.',
-  },
-};
-
-const DEPTH_WORDS: Record<Language, Record<DepthBand, string>> = {
-  en: { none: 'no flooding', '0-0.15m': 'ankle-deep', '0.15-0.5m': 'knee-deep', '0.5-1.0m': 'waist-deep', '1.0m+': 'over 1 metre' },
-  ta: { none: 'வெள்ளம் இல்லை', '0-0.15m': 'கணுக்கால் அளவு', '0.15-0.5m': 'முழங்கால் அளவு', '0.5-1.0m': 'இடுப்பு அளவு', '1.0m+': '1 மீட்டருக்கு மேல்' },
-};
-
 // --- shelters ----------------------------------------------------------------
 
 const SHELTERS = [
@@ -314,16 +291,8 @@ export const mockApi = {
   getScenarioRisk: (input: ScenarioInput): RiskResponse => riskResponse(input, input.builtup_increase_pct),
 
   getValidation: (): ValidationMetrics => ({
-    precision_at_20: 0.65,
-    recall: 13 / 18,
-    false_positive_rate: 7 / 182,
-    true_positives: 13,
-    false_positives: 7,
-    false_negatives: 5,
-    total_flooded_wards: 18,
-    total_wards: 200,
-    event_date: '2023-12-04',
-    notes: 'MOCK NUMBERS: placeholder until validation_metrics.json from the real Dec 2023 run is committed.',
+    schema_version: '2.0', status: 'unavailable',
+    status_reason: 'Demonstration mode has no reviewed evaluation evidence.', warnings: [],
   }),
 
   generateAlerts: (
@@ -336,10 +305,9 @@ export const mockApi = {
     for (const wardId of wardIds) {
       const ward = findWard(wardId);
       const risk = scoreWard(ward, rainfallMm);
-      const fullMessage = ALERT_TEMPLATES[language][risk.risk_level]
-        .replace('{ward}', ward.ward_name)
-        .replace('{depth}', DEPTH_WORDS[language][risk.depth_band])
-        .replace('{mm}', rainfallMm.toFixed(0));
+      const fullMessage = language === 'ta'
+        ? `அளவுத்திருத்தம் செய்யப்படாத குறியீடு: ${risk.risk_level}. ${ward.ward_name}. மழை: ${rainfallMm.toFixed(0)}mm. வெள்ள முன்னறிவிப்பு அல்ல.`
+        : `Uncalibrated index: ${risk.risk_level.replace(/_/g, ' ')}. ${ward.ward_name}. Rainfall: ${rainfallMm.toFixed(0)}mm. Not a flood forecast. Follow official advice.`;
 
       for (const channel of channels) {
         const message =
