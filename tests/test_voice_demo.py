@@ -44,7 +44,12 @@ def test_twiml_is_valid_xml_and_uses_tamil_voice():
 
 
 def test_token_helpers_simulate_without_credentials(monkeypatch, tmp_path):
-    monkeypatch.chdir(tmp_path)  # ensure no local .env supplies credentials
+    import dotenv.main
+
+    monkeypatch.chdir(tmp_path)
+    # token_server calls load_dotenv(), which searches upward from its own file and
+    # would find the developer's real .env. Disable discovery for this test.
+    monkeypatch.setattr(dotenv.main, "find_dotenv", lambda *a, **k: "")
     monkeypatch.delenv("LIVEKIT_API_KEY", raising=False)
     monkeypatch.delenv("LIVEKIT_API_SECRET", raising=False)
     module = importlib.reload(token_server)
@@ -55,7 +60,10 @@ def test_token_helpers_simulate_without_credentials(monkeypatch, tmp_path):
 
 
 def test_token_helper_generates_jwt_with_credentials(monkeypatch, tmp_path):
+    import dotenv.main
+
     monkeypatch.chdir(tmp_path)
+    monkeypatch.setattr(dotenv.main, "find_dotenv", lambda *a, **k: "")
     monkeypatch.setenv("LIVEKIT_API_KEY", "devkey")
     monkeypatch.setenv("LIVEKIT_API_SECRET", "s" * 40)
     module = importlib.reload(token_server)
@@ -94,3 +102,38 @@ def test_voice_agent_builds_script_when_agents_installed():
     assert "Ward 168" in agent.script()
     assert "flood-alert voice assistant" in agent.instructions()
     assert "EXERCISE" in agent.instructions()
+
+
+def test_provider_prefers_deepseek_then_openai(monkeypatch):
+    import voice.family_agent as fa
+
+    monkeypatch.setenv("DEEPSEEK_API_KEY", "ds-key")
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    assert fa.provider_name() == "deepseek"
+
+    monkeypatch.delenv("DEEPSEEK_API_KEY", raising=False)
+    monkeypatch.setenv("OPENAI_API_KEY", "oa-key")
+    assert fa.provider_name() == "openai"
+
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    with pytest.raises(RuntimeError):
+        fa.provider_name()
+
+
+def test_local_audio_plugins_construct_without_loading_models():
+    pytest.importorskip("livekit.agents")
+    pytest.importorskip("edge_tts")
+    pytest.importorskip("faster_whisper")
+
+    from voice.plugins.edge_tts import EdgeTTS
+    from voice.plugins.faster_whisper_stt import FasterWhisperSTT
+
+    tts_impl = EdgeTTS(language="ta")
+    assert tts_impl.voice == "ta-IN-PallaviNeural"
+    assert tts_impl.sample_rate == 24000
+    assert tts_impl.capabilities.streaming is False
+
+    stt_impl = FasterWhisperSTT(language="ta")
+    assert stt_impl._engine is None  # lazy: no model download during tests
+    assert stt_impl.capabilities.streaming is False
+
