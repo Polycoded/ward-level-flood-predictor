@@ -1,0 +1,3 @@
+source_id,station_label,reported_cm,rainfall_mm,duration_hours,interval_start,interval_end,review_status
+IMD_PRIMARY_REVIEW,Chennai (AP) (dist Chennai),25,250,24,2023-12-03T08:30:00+05:30,2023-12-04T08:30:00+05:30,verified_text_station_candidate_not_adopted
+IMD_PRIMARY_REVIEW,Chennai (N) (dist Chennai),23,230,24,2023-12-03T08:30:00+05:30,2023-12-04T08:30:00+05:30,verified_text_station_candidate_not_adopted

@@ -1,6 +1,3 @@
-from typing import Tuple, Optional
-
-
 ALERT_TEMPLATES = {
     "en": {
         level: "Uncalibrated index: " + level.replace("_", " ") +
@@ -47,40 +44,87 @@ def generate_alert_messages(
     language: str = "en",
     channel: str = "sms",
     *, duration_hours: float = 3.0
-) -> Tuple[str, Optional[str]]:
+) -> tuple[str, str | None]:
     lang = language if language in ALERT_TEMPLATES else "en"
-    
+
     template = ALERT_TEMPLATES[lang].get(risk_level, ALERT_TEMPLATES[lang]["moderate"])
-    
+
     message = template.format(
         ward_name=ward_name,
         rainfall_mm=f"{rainfall_mm:g}",
         duration_hours=f"{duration_hours:g}"
     )
-    
-    if channel == "sms" and len(message) > 160:
-        message = message[:157] + "..."
-    
+
+    # Multipart is acceptable; never silently remove safety/disclaimer content.
+
     whatsapp_deeplink = None
     if channel == "whatsapp":
         whatsapp_number = WHATSAPP_NUMBERS.get(lang, WHATSAPP_NUMBERS["en"])
         import urllib.parse
         encoded_msg = urllib.parse.quote(message)
         whatsapp_deeplink = f"https://wa.me/{whatsapp_number}?text={encoded_msg}"
-    
+
     return message, whatsapp_deeplink
 
 
 def format_alert_for_channel(message: str, channel: str, max_length: int = None) -> str:
-    if channel == "sms":
-        max_len = max_length or 160
-    elif channel == "whatsapp":
-        max_len = max_length or 4096
-    elif channel == "voice":
-        max_len = max_length or 500
-    else:
-        max_len = max_length or 160
-    
-    if len(message) > max_len:
-        return message[:max_len - 3] + "..."
+    # max_length is a compatibility argument, not permission to truncate content.
     return message
+
+
+def sms_info(message: str) -> dict:
+    """Pack whole characters; never split a GSM escape or UTF-16 surrogate pair."""
+    basic = '@£$¥èéùìòÇ\nØø\rÅåΔ_ΦΓΛΩΠΨΣΘΞÆæßÉ !"#¤%&\'()*+,-./0123456789:;<=>?¡ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÑÜ§¿abcdefghijklmnopqrstuvwxyzäöñüà'
+    extended = '^{}\\[~]|€\f'
+    gsm = all(c in basic or c in extended for c in message)
+    widths = [2 if c in extended else 1 for c in message] if gsm else [
+        len(c.encode("utf-16-le")) // 2 for c in message]
+    units = sum(widths)
+    single, multi = (160, 153) if gsm else (70, 67)
+    segments, used = 1, 0
+    if units > single:
+        for width in widths:
+            if used + width > multi:
+                segments += 1
+                used = 0
+            used += width
+    return {"encoding": "GSM-7" if gsm else "UCS-2", "units": units,
+            "segments": segments, "singleLimit": single}
+
+
+def exercise_message(candidate: dict, *, exercise_id: str, language: str = "en",
+                     shelter: dict | None = None) -> dict:
+    """Content only: does not approve, send, or invent shelter information."""
+    from urllib.parse import urlparse
+
+    from model.alert_contract import digest, integer, scenario_input, text
+    if candidate.get("mode") != "Exercise" or candidate.get("status") != "pending":
+        raise ValueError("Only pending Exercise candidates may be rendered")
+    text(exercise_id, "exercise_id")
+    integer(candidate.get("ward_id"), "ward_id", 1)
+    official = text(candidate.get("ward_number"), "ward_number")
+    forcing = scenario_input(candidate["rainfall"])
+    text(candidate.get("candidate_id"), "candidate_id")
+    if language not in ("en", "ta"):
+        raise ValueError("Supported Exercise languages: en, ta (draft)")
+    amount, hours = f'{forcing["rainfall_mm"]:g}', f'{forcing["duration_hours"]:g}'
+    action = "Exercise only: review this ward's information with the exercise coordinator."
+    if language == "en":
+        message = (f"EXERCISE {exercise_id}. Ward {official}. {amount} mm total over {hours} h. "
+                   "This index is uncalibrated, not a flood forecast. " + action)
+    else:
+        action = "பயிற்சி மட்டும்: இந்த வார்டின் தகவலை பயிற்சி ஒருங்கிணைப்பாளருடன் மதிப்பாய்வு செய்யவும்."
+        message = (f"EXERCISE {exercise_id} — பயிற்சி. வார்டு {official}. "
+                   f"{hours} மணி நேர மொத்த மழை {amount} mm. "
+                   "இது அளவுத்திருத்தம் செய்யப்படாத குறியீடு; வெள்ள முன்னறிவிப்பு அல்ல. " + action)
+    if shelter is not None:
+        name, ref, url = (text(shelter.get(key), f"shelter.{key}") for key in ("name", "source_ref", "url"))
+        parsed = urlparse(url)
+        if parsed.scheme != "https" or not parsed.netloc or parsed.username or parsed.password:
+            raise ValueError("Shelter requires a traceable HTTPS information URL")
+        message += f" Supplied shelter information (availability/routes unverified): {name}; {url}; source: {ref}."
+    return {"mode": "Exercise", "exercise_id": exercise_id, "candidate_id": candidate["candidate_id"],
+            "candidate_digest": digest(candidate), "ward_id": candidate["ward_id"], "ward_number": official,
+            "language": language, "headline": f"EXERCISE {exercise_id}: Ward {official}",
+            "text": message, "instruction": action, "sms": sms_info(message),
+            "language_review": "pending_native_speaker" if language == "ta" else "draft_exercise_content"}

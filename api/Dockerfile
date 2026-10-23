@@ -19,6 +19,7 @@ COPY api/ ./api/
 COPY model/ ./model/
 COPY pipeline/ ./pipeline/
 COPY integrations/ ./integrations/
+COPY services/ ./services/
 COPY voice/ ./voice/
 COPY data/ ./data/
 

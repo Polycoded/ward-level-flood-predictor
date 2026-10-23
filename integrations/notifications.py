@@ -1,8 +1,9 @@
 import os
+from typing import Any
+
 import structlog
-from typing import List, Optional
-from twilio.rest import Client
 from twilio.base.exceptions import TwilioException
+from twilio.rest import Client
 
 logger = structlog.get_logger()
 
@@ -11,26 +12,26 @@ TWILIO_AUTH_TOKEN = os.getenv("TWILIO_AUTH_TOKEN")
 TWILIO_PHONE_NUMBER = os.getenv("TWILIO_PHONE_NUMBER")
 TWILIO_WHATSAPP_NUMBER = os.getenv("TWILIO_WHATSAPP_NUMBER", "whatsapp:+14155238886")
 
-_client: Optional[Client] = None
+_client: Client | None = None
 
 
-def get_twilio_client() -> Optional[Client]:
+def get_twilio_client() -> Client | None:
     global _client
     if _client is None and TWILIO_ACCOUNT_SID and TWILIO_AUTH_TOKEN:
         _client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
     return _client
 
 
-async def send_sms(to: str, body: str) -> Dict[str, Any]:
+async def send_sms(to: str, body: str) -> dict[str, Any]:
     client = get_twilio_client()
     if not client:
         logger.warning("Twilio not configured, simulating SMS send")
         return {"success": True, "sid": "mock_sid", "simulated": True}
-    
+
     if not TWILIO_PHONE_NUMBER:
         logger.error("TWILIO_PHONE_NUMBER not configured")
         return {"success": False, "error": "Sender number not configured"}
-    
+
     try:
         message = client.messages.create(
             body=body,
@@ -44,12 +45,12 @@ async def send_sms(to: str, body: str) -> Dict[str, Any]:
         return {"success": False, "error": str(e)}
 
 
-async def send_whatsapp(to: str, body: str) -> Dict[str, Any]:
+async def send_whatsapp(to: str, body: str) -> dict[str, Any]:
     client = get_twilio_client()
     if not client:
         logger.warning("Twilio not configured, simulating WhatsApp send")
         return {"success": True, "sid": "mock_wa_sid", "simulated": True}
-    
+
     try:
         message = client.messages.create(
             body=body,
@@ -63,16 +64,16 @@ async def send_whatsapp(to: str, body: str) -> Dict[str, Any]:
         return {"success": False, "error": str(e)}
 
 
-async def make_voice_call(to: str, twiml_url: str) -> Dict[str, Any]:
+async def make_voice_call(to: str, twiml_url: str) -> dict[str, Any]:
     client = get_twilio_client()
     if not client:
         logger.warning("Twilio not configured, simulating voice call")
         return {"success": True, "sid": "mock_call_sid", "simulated": True}
-    
+
     if not TWILIO_PHONE_NUMBER:
         logger.error("TWILIO_PHONE_NUMBER not configured")
         return {"success": False, "error": "Sender number not configured"}
-    
+
     try:
         call = client.calls.create(
             twiml=twiml_url,
@@ -88,26 +89,26 @@ async def make_voice_call(to: str, twiml_url: str) -> Dict[str, Any]:
 
 async def send_alert_to_ward(
     ward_name: str,
-    phone_numbers: List[str],
+    phone_numbers: list[str],
     message: str,
-    whatsapp_deeplink: Optional[str] = None,
+    whatsapp_deeplink: str | None = None,
     language: str = "en"
-) -> List[Dict[str, Any]]:
+) -> list[dict[str, Any]]:
     results = []
-    
+
     for phone in phone_numbers:
         sms_result = await send_sms(phone, message)
         results.append({"channel": "sms", "phone": phone, **sms_result})
-        
+
         if whatsapp_deeplink:
             wa_message = f"{message}\n\nWhatsApp: {whatsapp_deeplink}"
             wa_result = await send_whatsapp(phone, wa_message)
             results.append({"channel": "whatsapp", "phone": phone, **wa_result})
-    
+
     return results
 
 
-def generate_twiml_for_alert(ward_name: str, risk_level: str, depth_band: str, 
+def generate_twiml_for_alert(ward_name: str, risk_level: str, depth_band: str,
                               rainfall_mm: float, language: str = "en") -> str:
     messages = {
         "en": {
@@ -125,14 +126,14 @@ def generate_twiml_for_alert(ward_name: str, risk_level: str, depth_band: str,
             "very_high": f"{ward_name}க்காக கடுமையான வெள்ளம் எச்சரிக்கை. {depth_band} வரை ஆபத்தான வெள்ளம் எதிர்பார்க்கப்படுகிறது. அதிகாரிகள் அறிவுறுத்தியால் ತಡவாமல் வெளியேறவும்.",
         }
     }
-    
+
     lang = language if language in messages else "en"
     message_text = messages[lang].get(risk_level, messages[lang]["moderate"])
-    
+
     return f"""<?xml version="1.0" encoding="UTF-8"?>
 <Response>
     <Say language="{'en-IN' if language == 'en' else 'ta-IN'}" voice="Polly.Aditi">
-        {message_text} Rainfall forecast is {rainfall_mm:.0f} millimeters. 
+        {message_text} Rainfall forecast is {rainfall_mm:.0f} millimeters.
         Stay safe and follow local authority instructions.
     </Say>
 </Response>"""

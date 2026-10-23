@@ -9,7 +9,13 @@ import structlog
 from datetime import datetime
 
 from api.routes.main import router as api_router
+from api.routes.subscriptions import router as subscriptions_router
+from api.routes.whatsapp import router as whatsapp_router
+from api.routes.alerts_admin import router as alerts_router
+from api.routes.cap import router as cap_router
+from api.routes.lite import router as lite_router
 from api.schemas import ErrorResponse
+from api.settings import settings
 
 
 structlog.configure(
@@ -33,10 +39,26 @@ structlog.configure(
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    from api.db import init_db
+    from services import scheduler
+
     logger = structlog.get_logger()
     logger.info("Starting Flood Predictor API")
-    yield
-    logger.info("Shutting down Flood Predictor API")
+    init_db()
+    if settings.enable_scheduler:
+        scheduler.start_scheduler()
+    if settings.warm_cache_on_startup:
+        import asyncio
+
+        from api.warmup import warm_caches
+
+        asyncio.create_task(asyncio.to_thread(warm_caches))
+    try:
+        yield
+    finally:
+        if settings.enable_scheduler:
+            await scheduler.stop_scheduler()
+        logger.info("Shutting down Flood Predictor API")
 
 
 app = FastAPI(
@@ -59,7 +81,14 @@ app.add_middleware(
 # /wards is ~2.9 MB of GeoJSON; gzip takes it to a few hundred KB.
 app.add_middleware(GZipMiddleware, minimum_size=1000)
 
+# Include specific-path routers before the catch-all /wards/{ward_id} and
+# /alerts/{alert_id} routes so "lite" and "cap.xml" are not parsed as IDs.
+app.include_router(lite_router)
+app.include_router(cap_router)
 app.include_router(api_router)
+app.include_router(subscriptions_router)
+app.include_router(whatsapp_router)
+app.include_router(alerts_router)
 
 
 @app.exception_handler(RequestValidationError)

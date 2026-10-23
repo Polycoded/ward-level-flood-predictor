@@ -1,0 +1,19 @@
+{
+  "status": "blocked",
+  "event_id": "chennai-december-2023-research-draft",
+  "evaluation_executed": false,
+  "metrics": null,
+  "reviewed_label_rows": 0,
+  "explicit_negative_rows": 0,
+  "blockers": [
+    "No reviewed ward-aligned flooded observations; existing locality candidates lack exact location/boundary mappings.",
+    "No explicitly observed non-flooded wards; unreported wards cannot be negatives.",
+    "No adopted observation window: December 6 locality reports are not automatically aligned with December 3-4 station rainfall.",
+    "No approved event boundary version, legal effective-date history or reviewed official/internal ward crosswalk provenance.",
+    "No adopted spatial rainfall input: verified Chennai (AP) and Chennai (N) totals are station candidates, not uniform ward rainfall.",
+    "Existing event metadata is an incomplete research template, not evaluator-ready."
+  ],
+  "preserved_inputs": "data/evidence/chennai_2023/; data/processed/validation_metrics.json remains untouched",
+  "next_valid_evaluation": "Once evidence and metadata are reviewed, use existing model.evaluation_runner/model.validation with explicit rainfall duration and matching event/boundary IDs. Do not create a second evaluator.",
+  "claims_not_supported": ["accuracy", "recall", "false alarm rate", "warning calibration", "operational flood forecasting"]
+}

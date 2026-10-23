@@ -16,3 +16,6 @@ httpx-sse>=0.4.0
 pydantic-settings>=2.3.0
 tenacity>=8.4.0
 structlog>=24.1.0
+sqlmodel>=0.0.48
+pywebpush>=2.5.0
+cryptography>=50.0.2

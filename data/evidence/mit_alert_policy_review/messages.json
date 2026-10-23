@@ -1,0 +1,64 @@
+{
+  "en": {
+    "approval_fixture": {
+      "approved_at": "2000-01-01T00:00:00+00:00",
+      "approved_by": "ARTIFICIAL reviewer fixture",
+      "cancelled": false,
+      "candidate_id": "4587d115023ba073a6d25c92fc992978ed4732c5df927977e6f791a86aec701d",
+      "content_digest": "0198c4467205402b27bc53568747408280a5c56b4d62caa010c220b67c11bd89",
+      "status": "approved"
+    },
+    "content": {
+      "candidate_digest": "44cedceb50d2ac2130087cb9c7c06f4a3ad7fdbeb3bbc8780968d71733afd6cd",
+      "candidate_id": "4587d115023ba073a6d25c92fc992978ed4732c5df927977e6f791a86aec701d",
+      "exercise_id": "ARTIFICIAL-REVIEW",
+      "headline": "EXERCISE ARTIFICIAL-REVIEW: Ward 168",
+      "instruction": "Exercise only: review this ward's information with the exercise coordinator.",
+      "language": "en",
+      "language_review": "draft_exercise_content",
+      "mode": "Exercise",
+      "sms": {
+        "encoding": "GSM-7",
+        "segments": 2,
+        "singleLimit": 160,
+        "units": 187
+      },
+      "text": "EXERCISE ARTIFICIAL-REVIEW. Ward 168. 120 mm total over 3 h. This index is uncalibrated, not a flood forecast. Exercise only: review this ward's information with the exercise coordinator.",
+      "ward_id": 1,
+      "ward_number": "168"
+    },
+    "geometry": "ARTIFICIAL rectangle, not ward targeting",
+    "xsd_status": "valid"
+  },
+  "ta": {
+    "approval_fixture": {
+      "approved_at": "2000-01-01T00:00:00+00:00",
+      "approved_by": "ARTIFICIAL reviewer fixture",
+      "cancelled": false,
+      "candidate_id": "4587d115023ba073a6d25c92fc992978ed4732c5df927977e6f791a86aec701d",
+      "content_digest": "3f93862d98fd61612fdcd1510351225f1091fc8f4bda753da64b7944750cdcde",
+      "status": "approved"
+    },
+    "content": {
+      "candidate_digest": "44cedceb50d2ac2130087cb9c7c06f4a3ad7fdbeb3bbc8780968d71733afd6cd",
+      "candidate_id": "4587d115023ba073a6d25c92fc992978ed4732c5df927977e6f791a86aec701d",
+      "exercise_id": "ARTIFICIAL-REVIEW",
+      "headline": "EXERCISE ARTIFICIAL-REVIEW: Ward 168",
+      "instruction": "\u0baa\u0baf\u0bbf\u0bb1\u0bcd\u0b9a\u0bbf \u0bae\u0b9f\u0bcd\u0b9f\u0bc1\u0bae\u0bcd: \u0b87\u0ba8\u0bcd\u0ba4 \u0bb5\u0bbe\u0bb0\u0bcd\u0b9f\u0bbf\u0ba9\u0bcd \u0ba4\u0b95\u0bb5\u0bb2\u0bc8 \u0baa\u0baf\u0bbf\u0bb1\u0bcd\u0b9a\u0bbf \u0b92\u0bb0\u0bc1\u0b99\u0bcd\u0b95\u0bbf\u0ba3\u0bc8\u0baa\u0bcd\u0baa\u0bbe\u0bb3\u0bb0\u0bc1\u0b9f\u0ba9\u0bcd \u0bae\u0ba4\u0bbf\u0baa\u0bcd\u0baa\u0bbe\u0baf\u0bcd\u0bb5\u0bc1 \u0b9a\u0bc6\u0baf\u0bcd\u0baf\u0bb5\u0bc1\u0bae\u0bcd.",
+      "language": "ta",
+      "language_review": "pending_native_speaker",
+      "mode": "Exercise",
+      "sms": {
+        "encoding": "UCS-2",
+        "segments": 4,
+        "singleLimit": 70,
+        "units": 233
+      },
+      "text": "EXERCISE ARTIFICIAL-REVIEW \u2014 \u0baa\u0baf\u0bbf\u0bb1\u0bcd\u0b9a\u0bbf. \u0bb5\u0bbe\u0bb0\u0bcd\u0b9f\u0bc1 168. 3 \u0bae\u0ba3\u0bbf \u0ba8\u0bc7\u0bb0 \u0bae\u0bca\u0ba4\u0bcd\u0ba4 \u0bae\u0bb4\u0bc8 120 mm. \u0b87\u0ba4\u0bc1 \u0b85\u0bb3\u0bb5\u0bc1\u0ba4\u0bcd\u0ba4\u0bbf\u0bb0\u0bc1\u0ba4\u0bcd\u0ba4\u0bae\u0bcd \u0b9a\u0bc6\u0baf\u0bcd\u0baf\u0baa\u0bcd\u0baa\u0b9f\u0bbe\u0ba4 \u0b95\u0bc1\u0bb1\u0bbf\u0baf\u0bc0\u0b9f\u0bc1; \u0bb5\u0bc6\u0bb3\u0bcd\u0bb3 \u0bae\u0bc1\u0ba9\u0bcd\u0ba9\u0bb1\u0bbf\u0bb5\u0bbf\u0baa\u0bcd\u0baa\u0bc1 \u0b85\u0bb2\u0bcd\u0bb2. \u0baa\u0baf\u0bbf\u0bb1\u0bcd\u0b9a\u0bbf \u0bae\u0b9f\u0bcd\u0b9f\u0bc1\u0bae\u0bcd: \u0b87\u0ba8\u0bcd\u0ba4 \u0bb5\u0bbe\u0bb0\u0bcd\u0b9f\u0bbf\u0ba9\u0bcd \u0ba4\u0b95\u0bb5\u0bb2\u0bc8 \u0baa\u0baf\u0bbf\u0bb1\u0bcd\u0b9a\u0bbf \u0b92\u0bb0\u0bc1\u0b99\u0bcd\u0b95\u0bbf\u0ba3\u0bc8\u0baa\u0bcd\u0baa\u0bbe\u0bb3\u0bb0\u0bc1\u0b9f\u0ba9\u0bcd \u0bae\u0ba4\u0bbf\u0baa\u0bcd\u0baa\u0bbe\u0baf\u0bcd\u0bb5\u0bc1 \u0b9a\u0bc6\u0baf\u0bcd\u0baf\u0bb5\u0bc1\u0bae\u0bcd.",
+      "ward_id": 1,
+      "ward_number": "168"
+    },
+    "geometry": "ARTIFICIAL rectangle, not ward targeting",
+    "xsd_status": "valid"
+  }
+}

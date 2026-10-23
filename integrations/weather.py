@@ -1,7 +1,8 @@
+from datetime import datetime
+from typing import Any
+
 import httpx
 import structlog
-from typing import Dict, Any, Optional
-from datetime import datetime
 
 logger = structlog.get_logger()
 
@@ -12,11 +13,11 @@ IMD_API_KEY = None
 IMD_BASE_URL = "https://api.imd.gov.in"
 
 
-async def fetch_openweather_forecast(lat: float, lon: float) -> Dict[str, Any]:
+async def fetch_openweather_forecast(lat: float, lon: float) -> dict[str, Any]:
     if not OPENWEATHER_API_KEY:
         logger.warning("OpenWeather API key not configured, returning mock data")
         return get_mock_forecast()
-    
+
     async with httpx.AsyncClient(timeout=30.0) as client:
         try:
             response = await client.get(
@@ -30,10 +31,10 @@ async def fetch_openweather_forecast(lat: float, lon: float) -> Dict[str, Any]:
             )
             response.raise_for_status()
             data = response.json()
-            
+
             forecast_3h = sum(item.get("rain", {}).get("3h", 0) for item in data.get("list", [])[:1])
             forecast_24h = sum(item.get("rain", {}).get("3h", 0) for item in data.get("list", [])[:8])
-            
+
             return {
                 "current_mm": data.get("list", [{}])[0].get("rain", {}).get("3h", 0),
                 "forecast_3h_mm": forecast_3h,
@@ -47,11 +48,11 @@ async def fetch_openweather_forecast(lat: float, lon: float) -> Dict[str, Any]:
             return get_mock_forecast()
 
 
-async def fetch_imd_forecast(lat: float, lon: float) -> Dict[str, Any]:
+async def fetch_imd_forecast(lat: float, lon: float) -> dict[str, Any]:
     if not IMD_API_KEY:
         logger.warning("IMD API key not configured, returning mock data")
         return get_mock_forecast()
-    
+
     async with httpx.AsyncClient(timeout=30.0) as client:
         try:
             response = await client.get(
@@ -60,7 +61,7 @@ async def fetch_imd_forecast(lat: float, lon: float) -> Dict[str, Any]:
             )
             response.raise_for_status()
             data = response.json()
-            
+
             return {
                 "current_mm": data.get("current_rainfall", 0),
                 "forecast_3h_mm": data.get("forecast_3h", 0),
@@ -74,7 +75,7 @@ async def fetch_imd_forecast(lat: float, lon: float) -> Dict[str, Any]:
             return get_mock_forecast()
 
 
-async def fetch_rainfall_forecast(lat: float, lon: float, provider: str = "auto") -> Dict[str, Any]:
+async def fetch_rainfall_forecast(lat: float, lon: float, provider: str = "auto") -> dict[str, Any]:
     if provider == "openweather" or (provider == "auto" and OPENWEATHER_API_KEY):
         return await fetch_openweather_forecast(lat, lon)
     elif provider == "imd" or (provider == "auto" and IMD_API_KEY):
@@ -83,7 +84,7 @@ async def fetch_rainfall_forecast(lat: float, lon: float, provider: str = "auto"
         return get_mock_forecast()
 
 
-def get_mock_forecast() -> Dict[str, Any]:
+def get_mock_forecast() -> dict[str, Any]:
     return {
         "current_mm": 0.0,
         "forecast_3h_mm": 0.0,
@@ -94,7 +95,7 @@ def get_mock_forecast() -> Dict[str, Any]:
     }
 
 
-async def fetch_historical_rainfall(lat: float, lon: float, date: str) -> Dict[str, Any]:
+async def fetch_historical_rainfall(lat: float, lon: float, date: str) -> dict[str, Any]:
     logger.warning("Historical rainfall API not implemented, returning mock data")
     return {
         "date": date,

@@ -202,3 +202,65 @@ class ErrorResponse(BaseModel):
     error: str
     detail: Optional[str] = None
     timestamp: datetime
+
+
+# --- subscriptions (ward-only; no coordinates) -----------------------------
+
+
+class PushKeys(BaseModel):
+    p256dh: str = Field(..., min_length=1, max_length=512)
+    auth: str = Field(..., min_length=1, max_length=256)
+
+
+class PushSubscription(BaseModel):
+    endpoint: str = Field(..., min_length=1, max_length=2048)
+    keys: PushKeys
+
+
+class SubscriptionCreate(BaseModel):
+    ward_id: int = Field(..., ge=1, le=100000)
+    language: Literal["en", "ta"] = "en"
+    push: PushSubscription
+
+
+class SubscriptionUpdate(BaseModel):
+    ward_id: int = Field(..., ge=1, le=100000)
+    language: Literal["en", "ta"] | None = None
+
+
+class SubscriptionOut(BaseModel):
+    id: str
+    ward_id: int
+    language: str
+    active: bool
+
+
+# --- alerts ----------------------------------------------------------------
+
+
+class AlertOut(BaseModel):
+    id: str
+    ward_id: int
+    ward_name: str
+    risk_level: str
+    risk_score: float
+    alert_type: str
+    status: str
+    rainfall_mm: float
+    duration_hours: float
+    message_en: str
+    message_ta: str
+    created_at: datetime
+    approved_at: Optional[datetime] = None
+    sent_at: Optional[datetime] = None
+    exercise: bool = True
+
+
+class DispatchResult(BaseModel):
+    alert_id: str
+    ward_id: int
+    webpush: int = 0
+    whatsapp: int = 0
+    sms: int = 0
+    failed: int = 0
+    status: Optional[str] = None

@@ -1,10 +1,12 @@
 from fastapi import APIRouter, HTTPException, Query
 from typing import List, Optional
+import threading
 import geopandas as gpd
 import pandas as pd
 from pathlib import Path
 import structlog
 
+from api.cache import scenario_cache, TTLCache
 from api.schemas import (
     WardResponse, WardFeatureResponse, WardRiskResponse, 
     RiskResponse, RainfallInput, ScenarioInput,
@@ -29,6 +31,9 @@ _wards_cache: Optional[gpd.GeoDataFrame] = None
 _shelters_cache: Optional[gpd.GeoDataFrame] = None
 _roads_cache: Optional[gpd.GeoDataFrame] = None
 _underpasses_cache: Optional[gpd.GeoDataFrame] = None
+_road_index = None
+_road_index_lock = threading.Lock()
+_road_score_cache = TTLCache(maxsize=128, ttl_seconds=300.0)
 
 
 def load_features() -> gpd.GeoDataFrame:
@@ -87,12 +92,29 @@ async def health_check():
 
 @router.get("/readyz", response_model=ReadyResponse)
 async def ready_check():
+    from api.db import get_engine
+    from api.settings import settings
+    from integrations import openwa
+
+    try:
+        with get_engine().connect() as connection:
+            connection.exec_driver_sql("SELECT 1")
+        database_ok = True
+    except Exception:
+        database_ok = False
+
+    openwa_status = await openwa.probe()
+
     checks = {
         "features": FEATURES_PATH.exists(),
         "wards": WARDS_PATH.exists(),
         "validation": VALIDATION_PATH.exists(),
         "shelters": SHELTERS_PATH.exists(),
         "roads": ROADS_PATH.exists(),
+        "database": database_ok,
+        # An unconfigured OpenWA is not a failure; a configured but unhealthy one is.
+        "openwa": (not openwa_status.get("configured")) or bool(openwa_status.get("ok")),
+        "exercise_mode": bool(settings.exercise_mode),
     }
     return ReadyResponse(
         ready=all(checks.values()),
@@ -204,6 +226,15 @@ async def get_risk(input_data: RainfallInput):
 @router.post("/scenario", response_model=RiskResponse)
 async def get_scenario_risk(input_data: ScenarioInput):
     features = load_features()
+    key = (
+        id(features),
+        round(float(input_data.rainfall_mm), 2),
+        round(float(input_data.duration_hours), 2),
+        round(float(input_data.builtup_increase_pct), 2),
+    )
+    cached = scenario_cache.get(key)
+    if cached is not None:
+        return cached
     
     results = []
     for _, row in features.iterrows():
@@ -241,12 +272,14 @@ async def get_scenario_risk(input_data: ScenarioInput):
         scenario_name=f"+{input_data.builtup_increase_pct}% built-up"
     )
     
-    return RiskResponse(
+    response = RiskResponse(
         scenario=scenario,
         wards=results,
         generated_at=pd.Timestamp.now(),
         model_version="0.1.0"
     )
+    scenario_cache.set(key, response)
+    return response
 
 
 @router.get("/validation", response_model=ValidationMetrics)
@@ -328,19 +361,33 @@ async def find_shelters(request: ShelterRequest):
     ]
 
 
+def warm_road_index() -> bool:
+    """Build the static road index once (startup or first request)."""
+    global _road_index
+    if _road_index is not None:
+        return True
+    from model.road_risk_index import build_index
+
+    with _road_index_lock:
+        if _road_index is None:
+            roads = load_roads()
+            if len(roads) == 0:
+                return False
+            _road_index = build_index(roads, load_underpasses(), load_features())
+    return True
+
+
 @router.get("/roads/risk", response_model=List[RoadRiskResponse])
 async def get_road_risk(rainfall_mm: float = Query(..., ge=0, le=500)):
-    from model.road_risk import score_roads
-    
-    roads = load_roads()
-    underpasses = load_underpasses()
-    features = load_features()
-    
-    if len(roads) == 0:
+    if not warm_road_index():
         return []
-    
-    results = score_roads(roads, underpasses, features, rainfall_mm)
-    
+
+    key = round(float(rainfall_mm), 1)
+    cached = _road_score_cache.get(key)
+    if cached is None:
+        cached = _road_index.score(rainfall_mm)
+        _road_score_cache.set(key, cached)
+
     return [
         RoadRiskResponse(
             road_id=str(r["road_id"]),
@@ -352,5 +399,5 @@ async def get_road_risk(rainfall_mm: float = Query(..., ge=0, le=500)):
             flood_depth_estimate_m=r["flood_depth_estimate_m"],
             geometry=r["geometry"]
         )
-        for r in results
+        for r in cached
     ]
