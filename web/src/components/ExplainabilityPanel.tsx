@@ -1,10 +1,11 @@
-import { factorContributions, rainfallFactor, toFactorInputs } from '../lib/explain';
+import { durationFactor, factorContributions, rainfallFactor, toFactorInputs } from '../lib/explain';
 import type { WardFeature, WardRisk } from '../types';
 
 interface ExplainabilityPanelProps {
   ward: WardFeature;
   riskWard: WardRisk | null;
   rainfallMm: number | null;
+  durationHours: number;
   builtupIncreasePct: number;
 }
 
@@ -13,11 +14,11 @@ interface ExplainabilityPanelProps {
  * Bars show how many points each factor adds to the static susceptibility score;
  * rainfall then scales that score into the final risk.
  */
-export function ExplainabilityPanel({ ward, riskWard, rainfallMm, builtupIncreasePct }: ExplainabilityPanelProps) {
+export function ExplainabilityPanel({ ward, riskWard, rainfallMm, durationHours, builtupIncreasePct }: ExplainabilityPanelProps) {
   const inputs = toFactorInputs({ ...(ward as unknown as Record<string, number>), ...(riskWard?.features ?? {}) });
   const factors = factorContributions(inputs, builtupIncreasePct).sort((a, b) => b.contribution - a.contribution);
   const base = factors.reduce((s, f) => s + f.contribution, 0);
-  const rf = rainfallMm !== null ? rainfallFactor(rainfallMm) : null;
+  const rf = rainfallMm !== null ? rainfallFactor(rainfallMm, durationHours) : null;
 
   return (
     <section className="card p-4" aria-labelledby="why-heading">
@@ -65,7 +66,8 @@ export function ExplainabilityPanel({ ward, riskWard, rainfallMm, builtupIncreas
             {rf !== null && riskWard && (
               <tr className="text-xs text-gray-700">
                 <th scope="row" colSpan={2} className="pt-1 text-left font-medium">
-                  × rainfall factor for {rainfallMm} mm ({rf.toFixed(2)}) = risk
+                  × rainfall factor for {rainfallMm} mm in {durationHours} h ({rf.toFixed(2)}
+                  {durationFactor(durationHours) !== 1 && `, incl. duration ×${durationFactor(durationHours).toFixed(2)}`}) = risk
                 </th>
                 <td className="pt-1 font-mono text-right">{Math.round(riskWard.risk_score * 100)}</td>
               </tr>

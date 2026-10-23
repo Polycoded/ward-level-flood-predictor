@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { baseSusceptibility, factorContributions, toFactorInputs } from './explain';
+import { baseSusceptibility, durationFactor, factorContributions, rainfallFactor, toFactorInputs } from './explain';
 import { scoreWard } from '../api/mock';
 import pythonCases from '../test/python_engine_cases.json';
 import type { WardFeature } from '../types';
@@ -9,32 +9,35 @@ import type { WardFeature } from '../types';
 const toWard = (features: Record<string, number>) =>
   ({ ward_id: 1, ward_number: '1', ward_name: 'W', area_sqkm: 1, vegetation_frac: 0, flood_prone_index: 0, ...features }) as WardFeature;
 
-// risk_engine.py uses `low <= score < high` with very_high = (0.75, 1.0), so a score capped at
-// exactly 1.0 matches no band and falls back to VERY_LOW. The frontend treats 1.0 as very_high.
-const pythonCapBug = (c: (typeof pythonCases)[number]) => c.risk_score >= 1;
-
 describe('parity with model/risk_engine.py', () => {
-  it.each(pythonCases.filter((c) => !pythonCapBug(c)).map((c) => [`${c.rainfall_mm}mm +${c.builtup}% elev ${c.features.elevation_mean}`, c] as const))(
-    '%s',
-    (_, c) => {
-      const r = scoreWard(toWard(c.features), c.rainfall_mm, c.builtup);
-      expect(r.risk_score).toBeCloseTo(c.risk_score, 9);
-      expect(r.risk_level).toBe(c.risk_level);
-      expect(r.depth_band).toBe(c.depth_band);
-      expect(r.peak_window_hours).toBe(c.peak);
-    }
-  );
+  it.each(
+    pythonCases.map((c) => [`${c.rainfall_mm} mm / ${c.duration_hours} h +${c.builtup}% elev ${c.features.elevation_mean}`, c] as const)
+  )('%s', (_, c) => {
+    const r = scoreWard(toWard(c.features), c.rainfall_mm, c.builtup, c.duration_hours);
+    expect(r.risk_score).toBeCloseTo(c.risk_score, 9);
+    expect(r.risk_level).toBe(c.risk_level);
+    expect(r.depth_band).toBe(c.depth_band);
+    expect(r.peak_window_hours).toBe(c.peak);
+  });
 
-  it('classifies a maxed-out score as very_high (Python returns very_low: known engine bug)', () => {
-    const capped = pythonCases.filter(pythonCapBug);
-    expect(capped.length).toBeGreaterThan(0);
-    for (const c of capped) {
-      expect(c.risk_level).toBe('very_low'); // documents the backend behaviour this test caught
-      const r = scoreWard(toWard(c.features), c.rainfall_mm, c.builtup);
-      expect(r.risk_score).toBe(1);
-      expect(r.risk_level).toBe('very_high');
-      expect(r.depth_band).toBe(c.depth_band);
-    }
+  it('covers a capped score, so the old "1.0 is very_low" engine bug would be caught', () => {
+    expect(pythonCases.some((c) => c.risk_score === 1 && c.risk_level === 'very_high')).toBe(true);
+  });
+});
+
+describe('duration factor', () => {
+  it('is anchored at 3 h and bounded to [0.5, 1.5]', () => {
+    expect(durationFactor(3)).toBe(1);
+    expect(durationFactor(12)).toBe(0.5);
+    expect(durationFactor(24)).toBe(0.5);
+    expect(durationFactor(1)).toBe(1.5); // sqrt(3) = 1.73, clamped
+    expect(durationFactor(2)).toBeCloseTo(Math.sqrt(1.5), 12);
+  });
+
+  it('the same rain over a longer window scores lower, never higher', () => {
+    expect(rainfallFactor(150, 1)).toBeGreaterThan(rainfallFactor(150, 3));
+    expect(rainfallFactor(150, 3)).toBeGreaterThan(rainfallFactor(150, 12));
+    expect(rainfallFactor(500, 1)).toBe(1.5);
   });
 });
 

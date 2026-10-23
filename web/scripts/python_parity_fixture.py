@@ -23,13 +23,19 @@ CASES = [
     dict(elevation_mean=6.5, slope_mean=0.9, impervious_frac=0.92, water_frac=0.05,
          dist_to_water_m=120, road_density_km_per_sqkm=19.5, underpass_count=2),
 ]
-SCENARIOS = [(50, 0), (100, 0), (200, 0), (300, 0), (100, 30)]
+# (rainfall mm, built-up increase %, duration h)
+SCENARIOS = [
+    (50, 0, 3), (100, 0, 3), (200, 0, 3), (300, 0, 3), (100, 30, 3),
+    (100, 0, 1), (150, 0, 12), (150, 15, 12), (200, 0, 24),
+]
 
 out = []
 for features in CASES:
-    for rainfall_mm, builtup in SCENARIOS:
-        score, level, depth, peak, _ = score_ward(pd.Series(features), rainfall_mm, builtup)
+    for rainfall_mm, builtup, hours in SCENARIOS:
+        score, level, depth, peak, _ = score_ward(pd.Series(features), rainfall_mm, builtup,
+                                                  duration_hours=hours)
         out.append(dict(features=features, rainfall_mm=rainfall_mm, builtup=builtup,
+                        duration_hours=hours,
                         risk_score=round(float(score), 10), risk_level=level.value,
                         depth_band=depth.value, peak=peak))
 

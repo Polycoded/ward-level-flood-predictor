@@ -134,11 +134,11 @@ function WardRow({ ward, rank, selected, onClick }: { ward: WardRisk; rank: numb
           </div>
           <p className="text-xs text-gray-600">Ward {ward.ward_number}</p>
           <div className="flex items-center gap-3 mt-1.5 text-xs text-gray-700">
-            <span className="flex items-center gap-1" title="Estimated waterlogging depth">
+            <span className="flex items-center gap-1" title="Indicative depth band (proxy from the risk index, not a hydraulic prediction)">
               <span className="w-2 h-2 rounded-full" style={{ backgroundColor: getDepthColor(ward.depth_band) }} />
-              {getDepthLabel(ward.depth_band)}
+              ≈ {getDepthLabel(ward.depth_band)}
             </span>
-            <span title="Expected peak, hours from now">Peak ~{ward.peak_window_hours}h</span>
+            <span title="Indicative peak window (proxy from the risk index)">peak ≈ {ward.peak_window_hours}h</span>
             <span className="font-mono ml-auto">{Math.round(ward.risk_score * 100)}</span>
           </div>
         </div>

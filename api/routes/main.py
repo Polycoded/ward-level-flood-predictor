@@ -117,6 +117,14 @@ async def list_wards():
     ]
 
 
+# Declared before /wards/{ward_id}; otherwise FastAPI tries to parse "geojson" as an int.
+@router.get("/wards/geojson")
+async def get_wards_geojson():
+    wards = load_wards()
+    wards_wgs84 = wards.to_crs("EPSG:4326")
+    return wards_wgs84.__geo_interface__
+
+
 @router.get("/wards/{ward_id}", response_model=WardFeatureResponse)
 async def get_ward(ward_id: int):
     features = load_features()
@@ -158,12 +166,9 @@ async def get_risk(input_data: RainfallInput):
     results = []
     for _, row in features.iterrows():
         risk_score, risk_level, depth_band, peak_window, reasons = compute_risk_score(
-            row, input_data.rainfall_mm
+            row, input_data.rainfall_mm, duration_hours=input_data.duration_hours
         )
-        
-        ward_wgs84 = features[features.ward_id == row.ward_id].to_crs("EPSG:4326")
-        geom = ward_wgs84.iloc[0].geometry if len(ward_wgs84) > 0 else None
-        
+
         feature_dict = {
             "elevation_mean": float(row.elevation_mean),
             "slope_mean": float(row.slope_mean),
@@ -354,10 +359,3 @@ async def get_road_risk(rainfall_mm: float = Query(..., ge=0, le=500)):
         )
         for r in results
     ]
-
-
-@router.get("/wards/geojson")
-async def get_wards_geojson():
-    wards = load_wards()
-    wards_wgs84 = wards.to_crs("EPSG:4326")
-    return wards_wgs84.__geo_interface__

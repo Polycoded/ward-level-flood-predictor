@@ -3,6 +3,7 @@ import { useFloodStore } from './lib/store';
 import { api } from './api/client';
 import { cn } from './lib/utils';
 import { reportError } from './lib/monitoring';
+import { ApiDataError } from './api/validate';
 import type { RainfallReading } from './lib/rainfall';
 import { Header } from './components/Header';
 import { Sidebar } from './components/Sidebar';
@@ -51,7 +52,11 @@ function App() {
         if (validation) setValidationData(validation);
       } catch (e) {
         reportError(e, { stage: 'initial-load' });
-        setError('Could not load ward boundaries. Check that the API is running, then reload.');
+        setError(
+          e instanceof ApiDataError
+            ? 'The server sent ward data the dashboard could not use. Reload, or report this to the backend team.'
+            : 'Could not load ward boundaries. Check that the API is running, then reload.'
+        );
       } finally {
         setInitialLoading(false);
       }
@@ -66,9 +71,12 @@ function App() {
     setError(null);
     const base = { rainfall_mm: reading.rainfall_mm, duration_hours: reading.duration_hours };
     try {
+      // Everything goes through /scenario (0% = today's land use) so the current map and the
+      // built-up comparison use one formula. /risk currently ignores duration_hours while
+      // /scenario applies it, which made "+15% built-up" look safer than today for long storms.
       const [response, baseline] = await Promise.all([
-        builtupIncrease > 0 ? api.getScenarioRisk({ ...base, builtup_increase_pct: builtupIncrease }) : api.getRisk(base),
-        builtupIncrease > 0 ? api.getRisk(base) : Promise.resolve(null),
+        api.getScenarioRisk({ ...base, builtup_increase_pct: builtupIncrease }),
+        builtupIncrease > 0 ? api.getScenarioRisk({ ...base, builtup_increase_pct: 0 }) : Promise.resolve(null),
       ]);
       setRiskData(response);
       setBaselineRisk(baseline ?? response);
@@ -78,7 +86,11 @@ function App() {
       if (window.innerWidth < 1024) useFloodStore.getState().setSidebarOpen(false);
     } catch (e) {
       reportError(e, { stage: 'risk', ...base, builtupIncrease });
-      setError('Risk analysis failed. The previous result is still shown.');
+      setError(
+        e instanceof ApiDataError
+          ? 'The server returned invalid risk data, so it was not shown. The previous result is still on screen.'
+          : 'Risk analysis failed. The previous result is still shown.'
+      );
     } finally {
       runningRef.current = false;
       setBusy(false);

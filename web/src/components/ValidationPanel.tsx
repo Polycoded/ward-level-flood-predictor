@@ -1,18 +1,20 @@
 import { useFloodStore } from '../lib/store';
 import { cn } from '../lib/utils';
 import type { ValidationMetrics } from '../types';
+import { isPlaceholderValidation } from '../lib/validation';
 
 interface ValidationPanelProps {
   data?: ValidationMetrics;
 }
 
 export function ValidationPanel({ data }: ValidationPanelProps) {
-  const { validationData, setValidationOpen } = useFloodStore();
+  const { validationData, dataSource, setValidationOpen } = useFloodStore();
   const validation = data || validationData;
   
   if (!validation) return null;
 
   const { precision_at_20, recall, false_positive_rate, true_positives, false_positives, false_negatives, total_flooded_wards, total_wards, notes } = validation;
+  const placeholder = isPlaceholderValidation(validation, dataSource);
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-200 rounded-t-2xl shadow-xl max-h-[70vh] flex flex-col lg:bottom-4 lg:left-4 lg:top-20 lg:right-auto lg:w-[26rem] lg:rounded-xl lg:max-h-none lg:shadow-2xl">
@@ -31,7 +33,16 @@ export function ValidationPanel({ data }: ValidationPanelProps) {
       </div>
 
       <div className="flex-1 overflow-y-auto p-4 space-y-6">
-        <div className="grid grid-cols-3 gap-3">
+        {placeholder && (
+          <div role="alert" className="text-sm text-amber-900 bg-amber-50 border border-amber-300 rounded-lg p-3">
+            <p className="font-semibold">Placeholder numbers, not a validation result</p>
+            <p className="mt-1">
+              These metrics are not from an evidence-backed Dec 2023 evaluation. Do not quote them. The real
+              figures come from the model owner's evaluation run (docs/validation.md).
+            </p>
+          </div>
+        )}
+        <div className={cn('grid grid-cols-3 gap-3', placeholder && 'opacity-50')}>
           <MetricCard
             label="Precision@20"
             value={`${(precision_at_20 * 100).toFixed(1)}%`}
