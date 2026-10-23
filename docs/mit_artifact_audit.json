@@ -1,0 +1,2245 @@
+{
+  "interpretation": "Structural consistency only; no source authenticity, coverage or historical approval.",
+  "hashes_sha256": {
+    "data/raw/Chennai GCC Ward Map - 2022.kml": "e7c485c7fa4a1178772e419d382ea985b148ca8c8ba67a557545c3672a4f9e9c",
+    "data/raw/Chennai GCC Zones Map - 2022.kml": "5939657bf539b4c708758232cf8c77129a67928df3f74699d5b8c3660aef951d",
+    "data/processed/wards.geojson": "475e65d9c9f7844fee387429f6f891c1a9be4f22a70cd3a0b964c075a68171ab",
+    "data/processed/ward_crosswalk.csv": "d28caa4ed0c609ee4cfdcffc63684d7fa32724b72f91c28a7fb9b2b1cfacdd22",
+    "data/processed/features.parquet": "a497e175da324d43325bac4a6e0126b8aae8b13489485bc9d24bd10db88b92f4",
+    "data/processed/zonal_stats.parquet": "2ec3cd59fc98e47be6cc4fad9e23e215ef0d53df39d7b93e452a3bc7b9facc19",
+    "data/processed/validation_metrics.json": "07e9bb25c748815a9650ab893071a5a0be23f0f2fdd0c1617c250644f4fd6cc3",
+    "data/processed/validation_labels.csv": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "data/processed/roads.gpkg": "57cd1212ef2bcea378dfc52e124845c1c71dc606cf82e7bbcc82363279dde818",
+    "data/processed/water.gpkg": "ddc4f87703ca4d3f864b9ee4b7e5f23273fc58a945792e48f87374da51cf30ec",
+    "data/processed/underpasses.gpkg": "b6025d1a63f6d9017caf96f5fca2aef4e88122bd98c3e0664b1422bb2cd9be42"
+  },
+  "declared_crs": "EPSG:32644",
+  "identity": {
+    "crosswalk": {
+      "rows": 200,
+      "unique_ids": true,
+      "missing_ids": [],
+      "extra_ids": [],
+      "official_mismatches": []
+    },
+    "converted": {
+      "rows": 200,
+      "unique_ids": true,
+      "missing_ids": [],
+      "extra_ids": [],
+      "official_mismatches": []
+    },
+    "converted_crosswalk": {
+      "rows": 200,
+      "unique_ids": true,
+      "missing_ids": [],
+      "extra_ids": [],
+      "official_mismatches": []
+    },
+    "features": {
+      "rows": 200,
+      "unique_ids": true,
+      "missing_ids": [],
+      "extra_ids": [],
+      "official_mismatches": []
+    },
+    "zonal_stats": {
+      "rows": 200,
+      "unique_ids": true,
+      "missing_ids": [],
+      "extra_ids": [],
+      "official_mismatches": []
+    }
+  },
+  "required_features": {
+    "features": {
+      "elevation_mean": {
+        "missing": 0,
+        "nonfinite": 0,
+        "zero_count": 0,
+        "min": 3.1366498470306396,
+        "max": 26.6859188079834
+      },
+      "slope_mean": {
+        "missing": 0,
+        "nonfinite": 0,
+        "zero_count": 0,
+        "min": 0.8761599063873291,
+        "max": 3.5950944423675537
+      },
+      "impervious_frac": {
+        "missing": 0,
+        "nonfinite": 0,
+        "zero_count": 0,
+        "min": 0.12915048599462303,
+        "max": 0.9824269769650914
+      },
+      "dist_to_water_m": {
+        "missing": 0,
+        "nonfinite": 0,
+        "zero_count": 2,
+        "min": 0.0,
+        "max": 1140.538398769309
+      },
+      "road_density_km_per_sqkm": {
+        "missing": 0,
+        "nonfinite": 0,
+        "zero_count": 0,
+        "min": 5.334916028862745,
+        "max": 31.438677237413046
+      },
+      "underpass_count": {
+        "missing": 0,
+        "nonfinite": 0,
+        "zero_count": 67,
+        "min": 0.0,
+        "max": 49.0
+      }
+    },
+    "zonal_stats": {
+      "elevation_mean": {
+        "missing": 0,
+        "nonfinite": 0,
+        "zero_count": 0,
+        "min": 3.1366498470306396,
+        "max": 26.6859188079834
+      },
+      "slope_mean": {
+        "missing": 0,
+        "nonfinite": 0,
+        "zero_count": 0,
+        "min": 0.8761599063873291,
+        "max": 3.5950944423675537
+      },
+      "impervious_frac": {
+        "missing": 0,
+        "nonfinite": 0,
+        "zero_count": 0,
+        "min": 0.12915048599462303,
+        "max": 0.9824269769650914
+      },
+      "dist_to_water_m": {
+        "missing": 0,
+        "nonfinite": 0,
+        "zero_count": 2,
+        "min": 0.0,
+        "max": 1140.538398769309
+      },
+      "road_density_km_per_sqkm": {
+        "missing": 0,
+        "nonfinite": 0,
+        "zero_count": 0,
+        "min": 5.334916028862745,
+        "max": 31.438677237413046
+      },
+      "underpass_count": {
+        "missing": 0,
+        "nonfinite": 0,
+        "zero_count": 67,
+        "min": 0.0,
+        "max": 49.0
+      }
+    }
+  },
+  "parquet_geometry_agreement": {
+    "features": {
+      "crs_matches": true,
+      "unequal_geometry_ids": []
+    },
+    "zonal_stats": {
+      "status": "no_geometry_column"
+    }
+  },
+  "source_invalid_wards": 9,
+  "valid_polygons": 200,
+  "overlaps": {
+    "positive_area_pairs": 448,
+    "pairs_over_1_m2": 291,
+    "sum_area_m2": 431972356.42460483,
+    "union_area_m2": 431865150.8831819,
+    "largest_pairs": [
+      {
+        "internal_ids": [
+          178,
+          180
+        ],
+        "area_m2": 7894.628123805337
+      },
+      {
+        "internal_ids": [
+          27,
+          28
+        ],
+        "area_m2": 6993.275531119505
+      },
+      {
+        "internal_ids": [
+          45,
+          141
+        ],
+        "area_m2": 3886.4558199028884
+      },
+      {
+        "internal_ids": [
+          60,
+          72
+        ],
+        "area_m2": 3884.6897301932986
+      },
+      {
+        "internal_ids": [
+          162,
+          187
+        ],
+        "area_m2": 3041.8013713270775
+      },
+      {
+        "internal_ids": [
+          72,
+          100
+        ],
+        "area_m2": 2918.7399682856185
+      },
+      {
+        "internal_ids": [
+          176,
+          178
+        ],
+        "area_m2": 2908.975324647552
+      },
+      {
+        "internal_ids": [
+          10,
+          26
+        ],
+        "area_m2": 2836.9216484748076
+      },
+      {
+        "internal_ids": [
+          161,
+          187
+        ],
+        "area_m2": 2763.847604987376
+      },
+      {
+        "internal_ids": [
+          63,
+          65
+        ],
+        "area_m2": 2634.02708237707
+      }
+    ]
+  },
+  "conversion": {
+    "review_directory": "/private/var/folders/xf/gtc75bps4tx93_x6dlwfm01r0000gn/T/opencode/chennai-kml-review-lgw30l7i",
+    "repair_acknowledged": null,
+    "repair_acknowledgement_status": "unverified_from_directory",
+    "compared_ids": 200,
+    "unequal_geometry_count": 200,
+    "max_symmetric_difference_m2": 7.78921640840568e-05,
+    "zone_difference_count": 0,
+    "differences": [
+      {
+        "ward_id": 1,
+        "official_number": 168,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 1.897256513671414e-08,
+        "old_zone": "XIII",
+        "new_zone": "XIII",
+        "old_zone_name": "ADYAR",
+        "new_zone_name": "ADYAR"
+      },
+      {
+        "ward_id": 2,
+        "official_number": 169,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 7.522993243372437e-08,
+        "old_zone": "XIII",
+        "new_zone": "XIII",
+        "old_zone_name": "ADYAR",
+        "new_zone_name": "ADYAR"
+      },
+      {
+        "ward_id": 3,
+        "official_number": 170,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 4.1519777640553846e-08,
+        "old_zone": "XIII",
+        "new_zone": "XIII",
+        "old_zone_name": "ADYAR",
+        "new_zone_name": "ADYAR"
+      },
+      {
+        "ward_id": 4,
+        "official_number": 171,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 3.028822934484905e-08,
+        "old_zone": "XIII",
+        "new_zone": "XIII",
+        "old_zone_name": "ADYAR",
+        "new_zone_name": "ADYAR"
+      },
+      {
+        "ward_id": 5,
+        "official_number": 174,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 4.8660819384967495e-08,
+        "old_zone": "XIII",
+        "new_zone": "XIII",
+        "old_zone_name": "ADYAR",
+        "new_zone_name": "ADYAR"
+      },
+      {
+        "ward_id": 6,
+        "official_number": 173,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 2.9126476778800392e-08,
+        "old_zone": "XIII",
+        "new_zone": "XIII",
+        "old_zone_name": "ADYAR",
+        "new_zone_name": "ADYAR"
+      },
+      {
+        "ward_id": 7,
+        "official_number": 179,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 1.450463810043494e-08,
+        "old_zone": "XIII",
+        "new_zone": "XIII",
+        "old_zone_name": "ADYAR",
+        "new_zone_name": "ADYAR"
+      },
+      {
+        "ward_id": 8,
+        "official_number": 178,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 5.9442154219515404e-08,
+        "old_zone": "XIII",
+        "new_zone": "XIII",
+        "old_zone_name": "ADYAR",
+        "new_zone_name": "ADYAR"
+      },
+      {
+        "ward_id": 9,
+        "official_number": 172,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 9.879458010737672e-08,
+        "old_zone": "XIII",
+        "new_zone": "XIII",
+        "old_zone_name": "ADYAR",
+        "new_zone_name": "ADYAR"
+      },
+      {
+        "ward_id": 10,
+        "official_number": 177,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 2.849663960360839e-08,
+        "old_zone": "XIII",
+        "new_zone": "XIII",
+        "old_zone_name": "ADYAR",
+        "new_zone_name": "ADYAR"
+      },
+      {
+        "ward_id": 11,
+        "official_number": 176,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 1.249441561547554e-07,
+        "old_zone": "XIII",
+        "new_zone": "XIII",
+        "old_zone_name": "ADYAR",
+        "new_zone_name": "ADYAR"
+      },
+      {
+        "ward_id": 12,
+        "official_number": 175,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 2.3779258379513562e-08,
+        "old_zone": "XIII",
+        "new_zone": "XIII",
+        "old_zone_name": "ADYAR",
+        "new_zone_name": "ADYAR"
+      },
+      {
+        "ward_id": 13,
+        "official_number": 180,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 2.1242482830457837e-08,
+        "old_zone": "XIII",
+        "new_zone": "XIII",
+        "old_zone_name": "ADYAR",
+        "new_zone_name": "ADYAR"
+      },
+      {
+        "ward_id": 14,
+        "official_number": 193,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 4.5706069233621995e-08,
+        "old_zone": "XV",
+        "new_zone": "XV",
+        "old_zone_name": "SHOZHANGANALLUR",
+        "new_zone_name": "SHOZHANGANALLUR"
+      },
+      {
+        "ward_id": 15,
+        "official_number": 198,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 4.0960553357590693e-08,
+        "old_zone": "XV",
+        "new_zone": "XV",
+        "old_zone_name": "SHOZHANGANALLUR",
+        "new_zone_name": "SHOZHANGANALLUR"
+      },
+      {
+        "ward_id": 16,
+        "official_number": 199,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 1.3450828452222136e-07,
+        "old_zone": "XV",
+        "new_zone": "XV",
+        "old_zone_name": "SHOZHANGANALLUR",
+        "new_zone_name": "SHOZHANGANALLUR"
+      },
+      {
+        "ward_id": 17,
+        "official_number": 192,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 3.2555291910552834e-08,
+        "old_zone": "XV",
+        "new_zone": "XV",
+        "old_zone_name": "SHOZHANGANALLUR",
+        "new_zone_name": "SHOZHANGANALLUR"
+      },
+      {
+        "ward_id": 18,
+        "official_number": 200,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 2.3565630524210015e-07,
+        "old_zone": "XV",
+        "new_zone": "XV",
+        "old_zone_name": "SHOZHANGANALLUR",
+        "new_zone_name": "SHOZHANGANALLUR"
+      },
+      {
+        "ward_id": 19,
+        "official_number": 194,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 9.138365186050731e-08,
+        "old_zone": "XV",
+        "new_zone": "XV",
+        "old_zone_name": "SHOZHANGANALLUR",
+        "new_zone_name": "SHOZHANGANALLUR"
+      },
+      {
+        "ward_id": 20,
+        "official_number": 197,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 9.452165837056263e-08,
+        "old_zone": "XV",
+        "new_zone": "XV",
+        "old_zone_name": "SHOZHANGANALLUR",
+        "new_zone_name": "SHOZHANGANALLUR"
+      },
+      {
+        "ward_id": 21,
+        "official_number": 185,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 1.6484988057480438e-08,
+        "old_zone": "XIV",
+        "new_zone": "XIV",
+        "old_zone_name": "PERUNKUDI",
+        "new_zone_name": "PERUNKUDI"
+      },
+      {
+        "ward_id": 22,
+        "official_number": 186,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 6.437142075656205e-08,
+        "old_zone": "XIV",
+        "new_zone": "XIV",
+        "old_zone_name": "PERUNKUDI",
+        "new_zone_name": "PERUNKUDI"
+      },
+      {
+        "ward_id": 23,
+        "official_number": 184,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 5.589552800196559e-08,
+        "old_zone": "XIV",
+        "new_zone": "XIV",
+        "old_zone_name": "PERUNKUDI",
+        "new_zone_name": "PERUNKUDI"
+      },
+      {
+        "ward_id": 24,
+        "official_number": 181,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 2.7327813855709663e-08,
+        "old_zone": "XIV",
+        "new_zone": "XIV",
+        "old_zone_name": "PERUNKUDI",
+        "new_zone_name": "PERUNKUDI"
+      },
+      {
+        "ward_id": 25,
+        "official_number": 183,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 9.796781153689435e-09,
+        "old_zone": "XIV",
+        "new_zone": "XIV",
+        "old_zone_name": "PERUNKUDI",
+        "new_zone_name": "PERUNKUDI"
+      },
+      {
+        "ward_id": 26,
+        "official_number": 189,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 1.1268836175726548e-07,
+        "old_zone": "XIV",
+        "new_zone": "XIV",
+        "old_zone_name": "PERUNKUDI",
+        "new_zone_name": "PERUNKUDI"
+      },
+      {
+        "ward_id": 27,
+        "official_number": 190,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 1.0340254878473374e-07,
+        "old_zone": "XIV",
+        "new_zone": "XIV",
+        "old_zone_name": "PERUNKUDI",
+        "new_zone_name": "PERUNKUDI"
+      },
+      {
+        "ward_id": 28,
+        "official_number": 191,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 4.868736589123268e-08,
+        "old_zone": "XIV",
+        "new_zone": "XIV",
+        "old_zone_name": "PERUNKUDI",
+        "new_zone_name": "PERUNKUDI"
+      },
+      {
+        "ward_id": 29,
+        "official_number": 182,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 4.5572923826033484e-08,
+        "old_zone": "XIV",
+        "new_zone": "XIV",
+        "old_zone_name": "PERUNKUDI",
+        "new_zone_name": "PERUNKUDI"
+      },
+      {
+        "ward_id": 30,
+        "official_number": 126,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 3.23855411210307e-08,
+        "old_zone": "IX",
+        "new_zone": "IX",
+        "old_zone_name": "TEYNAMPET",
+        "new_zone_name": "TEYNAMPET"
+      },
+      {
+        "ward_id": 31,
+        "official_number": 125,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 3.4890312911793576e-08,
+        "old_zone": "IX",
+        "new_zone": "IX",
+        "old_zone_name": "TEYNAMPET",
+        "new_zone_name": "TEYNAMPET"
+      },
+      {
+        "ward_id": 32,
+        "official_number": 115,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 2.0171856878076504e-08,
+        "old_zone": "IX",
+        "new_zone": "IX",
+        "old_zone_name": "TEYNAMPET",
+        "new_zone_name": "TEYNAMPET"
+      },
+      {
+        "ward_id": 33,
+        "official_number": 116,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 9.076029527847025e-09,
+        "old_zone": "IX",
+        "new_zone": "IX",
+        "old_zone_name": "TEYNAMPET",
+        "new_zone_name": "TEYNAMPET"
+      },
+      {
+        "ward_id": 34,
+        "official_number": 114,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 5.641191669227794e-08,
+        "old_zone": "IX",
+        "new_zone": "IX",
+        "old_zone_name": "TEYNAMPET",
+        "new_zone_name": "TEYNAMPET"
+      },
+      {
+        "ward_id": 35,
+        "official_number": 124,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 4.140299738649426e-08,
+        "old_zone": "IX",
+        "new_zone": "IX",
+        "old_zone_name": "TEYNAMPET",
+        "new_zone_name": "TEYNAMPET"
+      },
+      {
+        "ward_id": 36,
+        "official_number": 113,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 0.0,
+        "old_zone": "IX",
+        "new_zone": "IX",
+        "old_zone_name": "TEYNAMPET",
+        "new_zone_name": "TEYNAMPET"
+      },
+      {
+        "ward_id": 37,
+        "official_number": 123,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 2.1288637448156112e-08,
+        "old_zone": "IX",
+        "new_zone": "IX",
+        "old_zone_name": "TEYNAMPET",
+        "new_zone_name": "TEYNAMPET"
+      },
+      {
+        "ward_id": 38,
+        "official_number": 112,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 2.6462804378990328e-08,
+        "old_zone": "IX",
+        "new_zone": "IX",
+        "old_zone_name": "TEYNAMPET",
+        "new_zone_name": "TEYNAMPET"
+      },
+      {
+        "ward_id": 39,
+        "official_number": 122,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 3.863993909680578e-08,
+        "old_zone": "IX",
+        "new_zone": "IX",
+        "old_zone_name": "TEYNAMPET",
+        "new_zone_name": "TEYNAMPET"
+      },
+      {
+        "ward_id": 40,
+        "official_number": 121,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 2.7082125425958027e-08,
+        "old_zone": "IX",
+        "new_zone": "IX",
+        "old_zone_name": "TEYNAMPET",
+        "new_zone_name": "TEYNAMPET"
+      },
+      {
+        "ward_id": 41,
+        "official_number": 120,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 1.2961330626552639e-08,
+        "old_zone": "IX",
+        "new_zone": "IX",
+        "old_zone_name": "TEYNAMPET",
+        "new_zone_name": "TEYNAMPET"
+      },
+      {
+        "ward_id": 42,
+        "official_number": 109,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 3.10843559907394e-08,
+        "old_zone": "IX",
+        "new_zone": "IX",
+        "old_zone_name": "TEYNAMPET",
+        "new_zone_name": "TEYNAMPET"
+      },
+      {
+        "ward_id": 43,
+        "official_number": 119,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 3.6795811594232957e-08,
+        "old_zone": "IX",
+        "new_zone": "IX",
+        "old_zone_name": "TEYNAMPET",
+        "new_zone_name": "TEYNAMPET"
+      },
+      {
+        "ward_id": 44,
+        "official_number": 118,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 4.98998565703806e-08,
+        "old_zone": "IX",
+        "new_zone": "IX",
+        "old_zone_name": "TEYNAMPET",
+        "new_zone_name": "TEYNAMPET"
+      },
+      {
+        "ward_id": 45,
+        "official_number": 117,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 5.84070642539256e-08,
+        "old_zone": "IX",
+        "new_zone": "IX",
+        "old_zone_name": "TEYNAMPET",
+        "new_zone_name": "TEYNAMPET"
+      },
+      {
+        "ward_id": 46,
+        "official_number": 108,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 2.377179789776404e-08,
+        "old_zone": "VIII",
+        "new_zone": "VIII",
+        "old_zone_name": "ANNA NAGAR",
+        "new_zone_name": "ANNA NAGAR"
+      },
+      {
+        "ward_id": 47,
+        "official_number": 106,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 9.913855677850473e-09,
+        "old_zone": "VIII",
+        "new_zone": "VIII",
+        "old_zone_name": "ANNA NAGAR",
+        "new_zone_name": "ANNA NAGAR"
+      },
+      {
+        "ward_id": 48,
+        "official_number": 107,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 2.8453968055123754e-08,
+        "old_zone": "VIII",
+        "new_zone": "VIII",
+        "old_zone_name": "ANNA NAGAR",
+        "new_zone_name": "ANNA NAGAR"
+      },
+      {
+        "ward_id": 49,
+        "official_number": 105,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 2.6764150998997516e-08,
+        "old_zone": "VIII",
+        "new_zone": "VIII",
+        "old_zone_name": "ANNA NAGAR",
+        "new_zone_name": "ANNA NAGAR"
+      },
+      {
+        "ward_id": 50,
+        "official_number": 104,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 7.047334029192044e-08,
+        "old_zone": "VIII",
+        "new_zone": "VIII",
+        "old_zone_name": "ANNA NAGAR",
+        "new_zone_name": "ANNA NAGAR"
+      },
+      {
+        "ward_id": 51,
+        "official_number": 99,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 5.717819923896437e-08,
+        "old_zone": "VIII",
+        "new_zone": "VIII",
+        "old_zone_name": "ANNA NAGAR",
+        "new_zone_name": "ANNA NAGAR"
+      },
+      {
+        "ward_id": 52,
+        "official_number": 98,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 5.1080541557442397e-08,
+        "old_zone": "VIII",
+        "new_zone": "VIII",
+        "old_zone_name": "ANNA NAGAR",
+        "new_zone_name": "ANNA NAGAR"
+      },
+      {
+        "ward_id": 53,
+        "official_number": 100,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 9.20229099084726e-08,
+        "old_zone": "VIII",
+        "new_zone": "VIII",
+        "old_zone_name": "ANNA NAGAR",
+        "new_zone_name": "ANNA NAGAR"
+      },
+      {
+        "ward_id": 54,
+        "official_number": 97,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 2.9434097555972526e-08,
+        "old_zone": "VIII",
+        "new_zone": "VIII",
+        "old_zone_name": "ANNA NAGAR",
+        "new_zone_name": "ANNA NAGAR"
+      },
+      {
+        "ward_id": 55,
+        "official_number": 101,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 4.072887858272672e-08,
+        "old_zone": "VIII",
+        "new_zone": "VIII",
+        "old_zone_name": "ANNA NAGAR",
+        "new_zone_name": "ANNA NAGAR"
+      },
+      {
+        "ward_id": 56,
+        "official_number": 96,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 3.8433965022901856e-08,
+        "old_zone": "VIII",
+        "new_zone": "VIII",
+        "old_zone_name": "ANNA NAGAR",
+        "new_zone_name": "ANNA NAGAR"
+      },
+      {
+        "ward_id": 57,
+        "official_number": 102,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 1.97145465697415e-08,
+        "old_zone": "VIII",
+        "new_zone": "VIII",
+        "old_zone_name": "ANNA NAGAR",
+        "new_zone_name": "ANNA NAGAR"
+      },
+      {
+        "ward_id": 58,
+        "official_number": 95,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 4.695056264894472e-08,
+        "old_zone": "VIII",
+        "new_zone": "VIII",
+        "old_zone_name": "ANNA NAGAR",
+        "new_zone_name": "ANNA NAGAR"
+      },
+      {
+        "ward_id": 59,
+        "official_number": 103,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 2.439365832854185e-08,
+        "old_zone": "VIII",
+        "new_zone": "VIII",
+        "old_zone_name": "ANNA NAGAR",
+        "new_zone_name": "ANNA NAGAR"
+      },
+      {
+        "ward_id": 60,
+        "official_number": 94,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 1.7848336168148815e-08,
+        "old_zone": "VIII",
+        "new_zone": "VIII",
+        "old_zone_name": "ANNA NAGAR",
+        "new_zone_name": "ANNA NAGAR"
+      },
+      {
+        "ward_id": 61,
+        "official_number": 15,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 5.269150860830142e-08,
+        "old_zone": "II",
+        "new_zone": "II",
+        "old_zone_name": "MANALI",
+        "new_zone_name": "MANALI"
+      },
+      {
+        "ward_id": 62,
+        "official_number": 16,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 1.7557805904584543e-07,
+        "old_zone": "II",
+        "new_zone": "II",
+        "old_zone_name": "MANALI",
+        "new_zone_name": "MANALI"
+      },
+      {
+        "ward_id": 63,
+        "official_number": 17,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 7.182130357234501e-08,
+        "old_zone": "II",
+        "new_zone": "II",
+        "old_zone_name": "MANALI",
+        "new_zone_name": "MANALI"
+      },
+      {
+        "ward_id": 64,
+        "official_number": 18,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 6.37321848253995e-08,
+        "old_zone": "II",
+        "new_zone": "II",
+        "old_zone_name": "MANALI",
+        "new_zone_name": "MANALI"
+      },
+      {
+        "ward_id": 65,
+        "official_number": 19,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 3.540409986805827e-08,
+        "old_zone": "II",
+        "new_zone": "II",
+        "old_zone_name": "MANALI",
+        "new_zone_name": "MANALI"
+      },
+      {
+        "ward_id": 66,
+        "official_number": 20,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 0.0,
+        "old_zone": "II",
+        "new_zone": "II",
+        "old_zone_name": "MANALI",
+        "new_zone_name": "MANALI"
+      },
+      {
+        "ward_id": 67,
+        "official_number": 21,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 1.9987494271017056e-07,
+        "old_zone": "II",
+        "new_zone": "II",
+        "old_zone_name": "MANALI",
+        "new_zone_name": "MANALI"
+      },
+      {
+        "ward_id": 68,
+        "official_number": 79,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 8.874461219456531e-08,
+        "old_zone": "VII",
+        "new_zone": "VII",
+        "old_zone_name": "AMBATTUR",
+        "new_zone_name": "AMBATTUR"
+      },
+      {
+        "ward_id": 69,
+        "official_number": 80,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 4.931629564673001e-08,
+        "old_zone": "VII",
+        "new_zone": "VII",
+        "old_zone_name": "AMBATTUR",
+        "new_zone_name": "AMBATTUR"
+      },
+      {
+        "ward_id": 70,
+        "official_number": 81,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 1.9000610934772472e-08,
+        "old_zone": "VII",
+        "new_zone": "VII",
+        "old_zone_name": "AMBATTUR",
+        "new_zone_name": "AMBATTUR"
+      },
+      {
+        "ward_id": 71,
+        "official_number": 82,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 1.3628292729297629e-07,
+        "old_zone": "VII",
+        "new_zone": "VII",
+        "old_zone_name": "AMBATTUR",
+        "new_zone_name": "AMBATTUR"
+      },
+      {
+        "ward_id": 72,
+        "official_number": 83,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 8.369184538108658e-08,
+        "old_zone": "VII",
+        "new_zone": "VII",
+        "old_zone_name": "AMBATTUR",
+        "new_zone_name": "AMBATTUR"
+      },
+      {
+        "ward_id": 73,
+        "official_number": 84,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 2.8135607759430985e-08,
+        "old_zone": "VII",
+        "new_zone": "VII",
+        "old_zone_name": "AMBATTUR",
+        "new_zone_name": "AMBATTUR"
+      },
+      {
+        "ward_id": 74,
+        "official_number": 85,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 7.70237170332467e-08,
+        "old_zone": "VII",
+        "new_zone": "VII",
+        "old_zone_name": "AMBATTUR",
+        "new_zone_name": "AMBATTUR"
+      },
+      {
+        "ward_id": 75,
+        "official_number": 86,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 5.357746474279304e-08,
+        "old_zone": "VII",
+        "new_zone": "VII",
+        "old_zone_name": "AMBATTUR",
+        "new_zone_name": "AMBATTUR"
+      },
+      {
+        "ward_id": 76,
+        "official_number": 87,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 3.409362802366228e-08,
+        "old_zone": "VII",
+        "new_zone": "VII",
+        "old_zone_name": "AMBATTUR",
+        "new_zone_name": "AMBATTUR"
+      },
+      {
+        "ward_id": 77,
+        "official_number": 88,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 3.557792285192402e-08,
+        "old_zone": "VII",
+        "new_zone": "VII",
+        "old_zone_name": "AMBATTUR",
+        "new_zone_name": "AMBATTUR"
+      },
+      {
+        "ward_id": 78,
+        "official_number": 90,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 7.522601428442462e-09,
+        "old_zone": "VII",
+        "new_zone": "VII",
+        "old_zone_name": "AMBATTUR",
+        "new_zone_name": "AMBATTUR"
+      },
+      {
+        "ward_id": 79,
+        "official_number": 92,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 3.1971103164929774e-08,
+        "old_zone": "VII",
+        "new_zone": "VII",
+        "old_zone_name": "AMBATTUR",
+        "new_zone_name": "AMBATTUR"
+      },
+      {
+        "ward_id": 80,
+        "official_number": 93,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 4.971743730937557e-08,
+        "old_zone": "VII",
+        "new_zone": "VII",
+        "old_zone_name": "AMBATTUR",
+        "new_zone_name": "AMBATTUR"
+      },
+      {
+        "ward_id": 81,
+        "official_number": 89,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 3.0573461273433614e-08,
+        "old_zone": "VII",
+        "new_zone": "VII",
+        "old_zone_name": "AMBATTUR",
+        "new_zone_name": "AMBATTUR"
+      },
+      {
+        "ward_id": 82,
+        "official_number": 162,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 1.450648198126367e-08,
+        "old_zone": "XII",
+        "new_zone": "XII",
+        "old_zone_name": "ALANDUR",
+        "new_zone_name": "ALANDUR"
+      },
+      {
+        "ward_id": 83,
+        "official_number": 163,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 5.227553875832605e-08,
+        "old_zone": "XII",
+        "new_zone": "XII",
+        "old_zone_name": "ALANDUR",
+        "new_zone_name": "ALANDUR"
+      },
+      {
+        "ward_id": 84,
+        "official_number": 164,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 3.3407850131344174e-08,
+        "old_zone": "XII",
+        "new_zone": "XII",
+        "old_zone_name": "ALANDUR",
+        "new_zone_name": "ALANDUR"
+      },
+      {
+        "ward_id": 85,
+        "official_number": 158,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 7.039980264344277e-08,
+        "old_zone": "XII",
+        "new_zone": "XII",
+        "old_zone_name": "ALANDUR",
+        "new_zone_name": "ALANDUR"
+      },
+      {
+        "ward_id": 86,
+        "official_number": 159,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 7.47227226383947e-08,
+        "old_zone": "XII",
+        "new_zone": "XII",
+        "old_zone_name": "ALANDUR",
+        "new_zone_name": "ALANDUR"
+      },
+      {
+        "ward_id": 87,
+        "official_number": 167,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 2.394801241709934e-08,
+        "old_zone": "XII",
+        "new_zone": "XII",
+        "old_zone_name": "ALANDUR",
+        "new_zone_name": "ALANDUR"
+      },
+      {
+        "ward_id": 88,
+        "official_number": 157,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 4.5606941983349894e-08,
+        "old_zone": "XII",
+        "new_zone": "XII",
+        "old_zone_name": "ALANDUR",
+        "new_zone_name": "ALANDUR"
+      },
+      {
+        "ward_id": 89,
+        "official_number": 166,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 3.6190467267552305e-08,
+        "old_zone": "XII",
+        "new_zone": "XII",
+        "old_zone_name": "ALANDUR",
+        "new_zone_name": "ALANDUR"
+      },
+      {
+        "ward_id": 90,
+        "official_number": 165,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 3.572979836440906e-08,
+        "old_zone": "XII",
+        "new_zone": "XII",
+        "old_zone_name": "ALANDUR",
+        "new_zone_name": "ALANDUR"
+      },
+      {
+        "ward_id": 91,
+        "official_number": 156,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 4.6224861731874534e-08,
+        "old_zone": "XII",
+        "new_zone": "XII",
+        "old_zone_name": "ALANDUR",
+        "new_zone_name": "ALANDUR"
+      },
+      {
+        "ward_id": 92,
+        "official_number": 67,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 2.7711562747260066e-08,
+        "old_zone": "VI",
+        "new_zone": "VI",
+        "old_zone_name": "THIRU-VIKA-NAGAR",
+        "new_zone_name": "THIRU-VIKA-NAGAR"
+      },
+      {
+        "ward_id": 93,
+        "official_number": 70,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 4.153419861389402e-08,
+        "old_zone": "VI",
+        "new_zone": "VI",
+        "old_zone_name": "THIRU-VIKA-NAGAR",
+        "new_zone_name": "THIRU-VIKA-NAGAR"
+      },
+      {
+        "ward_id": 94,
+        "official_number": 71,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 3.639197606622685e-08,
+        "old_zone": "VI",
+        "new_zone": "VI",
+        "old_zone_name": "THIRU-VIKA-NAGAR",
+        "new_zone_name": "THIRU-VIKA-NAGAR"
+      },
+      {
+        "ward_id": 95,
+        "official_number": 74,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 1.3079005026900813e-08,
+        "old_zone": "VI",
+        "new_zone": "VI",
+        "old_zone_name": "THIRU-VIKA-NAGAR",
+        "new_zone_name": "THIRU-VIKA-NAGAR"
+      },
+      {
+        "ward_id": 96,
+        "official_number": 77,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 1.8267562409516886e-08,
+        "old_zone": "VI",
+        "new_zone": "VI",
+        "old_zone_name": "THIRU-VIKA-NAGAR",
+        "new_zone_name": "THIRU-VIKA-NAGAR"
+      },
+      {
+        "ward_id": 97,
+        "official_number": 69,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 7.78921640840568e-05,
+        "old_zone": "VI",
+        "new_zone": "VI",
+        "old_zone_name": "THIRU-VIKA-NAGAR",
+        "new_zone_name": "THIRU-VIKA-NAGAR"
+      },
+      {
+        "ward_id": 98,
+        "official_number": 78,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 2.3574660667104576e-08,
+        "old_zone": "VI",
+        "new_zone": "VI",
+        "old_zone_name": "THIRU-VIKA-NAGAR",
+        "new_zone_name": "THIRU-VIKA-NAGAR"
+      },
+      {
+        "ward_id": 99,
+        "official_number": 76,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 2.763373757417594e-08,
+        "old_zone": "VI",
+        "new_zone": "VI",
+        "old_zone_name": "THIRU-VIKA-NAGAR",
+        "new_zone_name": "THIRU-VIKA-NAGAR"
+      },
+      {
+        "ward_id": 100,
+        "official_number": 64,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 5.962714141328465e-08,
+        "old_zone": "VI",
+        "new_zone": "VI",
+        "old_zone_name": "THIRU-VIKA-NAGAR",
+        "new_zone_name": "THIRU-VIKA-NAGAR"
+      },
+      {
+        "ward_id": 101,
+        "official_number": 75,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 3.902864273518087e-08,
+        "old_zone": "VI",
+        "new_zone": "VI",
+        "old_zone_name": "THIRU-VIKA-NAGAR",
+        "new_zone_name": "THIRU-VIKA-NAGAR"
+      },
+      {
+        "ward_id": 102,
+        "official_number": 66,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 2.442986683120937e-08,
+        "old_zone": "VI",
+        "new_zone": "VI",
+        "old_zone_name": "THIRU-VIKA-NAGAR",
+        "new_zone_name": "THIRU-VIKA-NAGAR"
+      },
+      {
+        "ward_id": 103,
+        "official_number": 73,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 1.8861248393740697e-08,
+        "old_zone": "VI",
+        "new_zone": "VI",
+        "old_zone_name": "THIRU-VIKA-NAGAR",
+        "new_zone_name": "THIRU-VIKA-NAGAR"
+      },
+      {
+        "ward_id": 104,
+        "official_number": 72,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 1.677687923801126e-08,
+        "old_zone": "VI",
+        "new_zone": "VI",
+        "old_zone_name": "THIRU-VIKA-NAGAR",
+        "new_zone_name": "THIRU-VIKA-NAGAR"
+      },
+      {
+        "ward_id": 105,
+        "official_number": 147,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 1.0051762919053035e-07,
+        "old_zone": "XI",
+        "new_zone": "XI",
+        "old_zone_name": "VALASARVAKKAM",
+        "new_zone_name": "VALASARVAKKAM"
+      },
+      {
+        "ward_id": 106,
+        "official_number": 148,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 2.6423496819639872e-08,
+        "old_zone": "XI",
+        "new_zone": "XI",
+        "old_zone_name": "VALASARVAKKAM",
+        "new_zone_name": "VALASARVAKKAM"
+      },
+      {
+        "ward_id": 107,
+        "official_number": 149,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 1.1033806692136458e-08,
+        "old_zone": "XI",
+        "new_zone": "XI",
+        "old_zone_name": "VALASARVAKKAM",
+        "new_zone_name": "VALASARVAKKAM"
+      },
+      {
+        "ward_id": 108,
+        "official_number": 150,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 8.23077901065158e-08,
+        "old_zone": "XI",
+        "new_zone": "XI",
+        "old_zone_name": "VALASARVAKKAM",
+        "new_zone_name": "VALASARVAKKAM"
+      },
+      {
+        "ward_id": 109,
+        "official_number": 151,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 3.3947910740234955e-08,
+        "old_zone": "XI",
+        "new_zone": "XI",
+        "old_zone_name": "VALASARVAKKAM",
+        "new_zone_name": "VALASARVAKKAM"
+      },
+      {
+        "ward_id": 110,
+        "official_number": 146,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 3.4387481376466176e-08,
+        "old_zone": "XI",
+        "new_zone": "XI",
+        "old_zone_name": "VALASARVAKKAM",
+        "new_zone_name": "VALASARVAKKAM"
+      },
+      {
+        "ward_id": 111,
+        "official_number": 155,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 4.0939633222933976e-08,
+        "old_zone": "XI",
+        "new_zone": "XI",
+        "old_zone_name": "VALASARVAKKAM",
+        "new_zone_name": "VALASARVAKKAM"
+      },
+      {
+        "ward_id": 112,
+        "official_number": 145,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 1.5008798774994285e-08,
+        "old_zone": "XI",
+        "new_zone": "XI",
+        "old_zone_name": "VALASARVAKKAM",
+        "new_zone_name": "VALASARVAKKAM"
+      },
+      {
+        "ward_id": 113,
+        "official_number": 154,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 1.9575826984457234e-08,
+        "old_zone": "XI",
+        "new_zone": "XI",
+        "old_zone_name": "VALASARVAKKAM",
+        "new_zone_name": "VALASARVAKKAM"
+      },
+      {
+        "ward_id": 114,
+        "official_number": 144,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 7.876286019699058e-08,
+        "old_zone": "XI",
+        "new_zone": "XI",
+        "old_zone_name": "VALASARVAKKAM",
+        "new_zone_name": "VALASARVAKKAM"
+      },
+      {
+        "ward_id": 115,
+        "official_number": 153,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 5.255889278642657e-08,
+        "old_zone": "XI",
+        "new_zone": "XI",
+        "old_zone_name": "VALASARVAKKAM",
+        "new_zone_name": "VALASARVAKKAM"
+      },
+      {
+        "ward_id": 116,
+        "official_number": 152,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 5.334848776562313e-08,
+        "old_zone": "XI",
+        "new_zone": "XI",
+        "old_zone_name": "VALASARVAKKAM",
+        "new_zone_name": "VALASARVAKKAM"
+      },
+      {
+        "ward_id": 117,
+        "official_number": 49,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 4.184497344863412e-08,
+        "old_zone": "V",
+        "new_zone": "V",
+        "old_zone_name": "ROYAPURAM",
+        "new_zone_name": "ROYAPURAM"
+      },
+      {
+        "ward_id": 118,
+        "official_number": 50,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 8.233233102538696e-08,
+        "old_zone": "V",
+        "new_zone": "V",
+        "old_zone_name": "ROYAPURAM",
+        "new_zone_name": "ROYAPURAM"
+      },
+      {
+        "ward_id": 119,
+        "official_number": 52,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 6.505317886202353e-08,
+        "old_zone": "V",
+        "new_zone": "V",
+        "old_zone_name": "ROYAPURAM",
+        "new_zone_name": "ROYAPURAM"
+      },
+      {
+        "ward_id": 120,
+        "official_number": 54,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 7.904699525867445e-09,
+        "old_zone": "V",
+        "new_zone": "V",
+        "old_zone_name": "ROYAPURAM",
+        "new_zone_name": "ROYAPURAM"
+      },
+      {
+        "ward_id": 121,
+        "official_number": 55,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 7.754203845374615e-09,
+        "old_zone": "V",
+        "new_zone": "V",
+        "old_zone_name": "ROYAPURAM",
+        "new_zone_name": "ROYAPURAM"
+      },
+      {
+        "ward_id": 122,
+        "official_number": 56,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 5.674886050965509e-09,
+        "old_zone": "V",
+        "new_zone": "V",
+        "old_zone_name": "ROYAPURAM",
+        "new_zone_name": "ROYAPURAM"
+      },
+      {
+        "ward_id": 123,
+        "official_number": 57,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 3.11221804303444e-08,
+        "old_zone": "V",
+        "new_zone": "V",
+        "old_zone_name": "ROYAPURAM",
+        "new_zone_name": "ROYAPURAM"
+      },
+      {
+        "ward_id": 124,
+        "official_number": 58,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 3.23610874407865e-08,
+        "old_zone": "V",
+        "new_zone": "V",
+        "old_zone_name": "ROYAPURAM",
+        "new_zone_name": "ROYAPURAM"
+      },
+      {
+        "ward_id": 125,
+        "official_number": 59,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 3.912555736608302e-08,
+        "old_zone": "V",
+        "new_zone": "V",
+        "old_zone_name": "ROYAPURAM",
+        "new_zone_name": "ROYAPURAM"
+      },
+      {
+        "ward_id": 126,
+        "official_number": 60,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 7.730114596037475e-08,
+        "old_zone": "V",
+        "new_zone": "V",
+        "old_zone_name": "ROYAPURAM",
+        "new_zone_name": "ROYAPURAM"
+      },
+      {
+        "ward_id": 127,
+        "official_number": 61,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 3.409966458401976e-08,
+        "old_zone": "V",
+        "new_zone": "V",
+        "old_zone_name": "ROYAPURAM",
+        "new_zone_name": "ROYAPURAM"
+      },
+      {
+        "ward_id": 128,
+        "official_number": 62,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 2.0916891866261075e-08,
+        "old_zone": "V",
+        "new_zone": "V",
+        "old_zone_name": "ROYAPURAM",
+        "new_zone_name": "ROYAPURAM"
+      },
+      {
+        "ward_id": 129,
+        "official_number": 63,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 2.2531866702427876e-08,
+        "old_zone": "V",
+        "new_zone": "V",
+        "old_zone_name": "ROYAPURAM",
+        "new_zone_name": "ROYAPURAM"
+      },
+      {
+        "ward_id": 130,
+        "official_number": 51,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 2.47742864248305e-08,
+        "old_zone": "V",
+        "new_zone": "V",
+        "old_zone_name": "ROYAPURAM",
+        "new_zone_name": "ROYAPURAM"
+      },
+      {
+        "ward_id": 131,
+        "official_number": 53,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 7.981201154243494e-09,
+        "old_zone": "V",
+        "new_zone": "V",
+        "old_zone_name": "ROYAPURAM",
+        "new_zone_name": "ROYAPURAM"
+      },
+      {
+        "ward_id": 132,
+        "official_number": 130,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 2.15395332703948e-08,
+        "old_zone": "X",
+        "new_zone": "X",
+        "old_zone_name": "KODAMBAKKAM",
+        "new_zone_name": "KODAMBAKKAM"
+      },
+      {
+        "ward_id": 133,
+        "official_number": 136,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 2.343202935425003e-08,
+        "old_zone": "X",
+        "new_zone": "X",
+        "old_zone_name": "KODAMBAKKAM",
+        "new_zone_name": "KODAMBAKKAM"
+      },
+      {
+        "ward_id": 134,
+        "official_number": 131,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 3.513938913324034e-08,
+        "old_zone": "X",
+        "new_zone": "X",
+        "old_zone_name": "KODAMBAKKAM",
+        "new_zone_name": "KODAMBAKKAM"
+      },
+      {
+        "ward_id": 135,
+        "official_number": 132,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 2.3870859667856e-08,
+        "old_zone": "X",
+        "new_zone": "X",
+        "old_zone_name": "KODAMBAKKAM",
+        "new_zone_name": "KODAMBAKKAM"
+      },
+      {
+        "ward_id": 136,
+        "official_number": 129,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 4.0722467444315115e-08,
+        "old_zone": "X",
+        "new_zone": "X",
+        "old_zone_name": "KODAMBAKKAM",
+        "new_zone_name": "KODAMBAKKAM"
+      },
+      {
+        "ward_id": 137,
+        "official_number": 138,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 4.488952387211062e-08,
+        "old_zone": "X",
+        "new_zone": "X",
+        "old_zone_name": "KODAMBAKKAM",
+        "new_zone_name": "KODAMBAKKAM"
+      },
+      {
+        "ward_id": 138,
+        "official_number": 128,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 4.637082090499427e-08,
+        "old_zone": "X",
+        "new_zone": "X",
+        "old_zone_name": "KODAMBAKKAM",
+        "new_zone_name": "KODAMBAKKAM"
+      },
+      {
+        "ward_id": 139,
+        "official_number": 137,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 2.651106924439516e-08,
+        "old_zone": "X",
+        "new_zone": "X",
+        "old_zone_name": "KODAMBAKKAM",
+        "new_zone_name": "KODAMBAKKAM"
+      },
+      {
+        "ward_id": 140,
+        "official_number": 127,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 8.83277661838737e-08,
+        "old_zone": "X",
+        "new_zone": "X",
+        "old_zone_name": "KODAMBAKKAM",
+        "new_zone_name": "KODAMBAKKAM"
+      },
+      {
+        "ward_id": 141,
+        "official_number": 133,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 4.797859975917126e-08,
+        "old_zone": "X",
+        "new_zone": "X",
+        "old_zone_name": "KODAMBAKKAM",
+        "new_zone_name": "KODAMBAKKAM"
+      },
+      {
+        "ward_id": 142,
+        "official_number": 141,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 1.688856260535879e-08,
+        "old_zone": "X",
+        "new_zone": "X",
+        "old_zone_name": "KODAMBAKKAM",
+        "new_zone_name": "KODAMBAKKAM"
+      },
+      {
+        "ward_id": 143,
+        "official_number": 134,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 4.595359427526376e-08,
+        "old_zone": "X",
+        "new_zone": "X",
+        "old_zone_name": "KODAMBAKKAM",
+        "new_zone_name": "KODAMBAKKAM"
+      },
+      {
+        "ward_id": 144,
+        "official_number": 41,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 9.718995410482994e-08,
+        "old_zone": "ZONE - IV",
+        "new_zone": "ZONE - IV",
+        "old_zone_name": "TONDIARPET",
+        "new_zone_name": "TONDIARPET"
+      },
+      {
+        "ward_id": 145,
+        "official_number": 40,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 3.436666752777473e-08,
+        "old_zone": "ZONE - IV",
+        "new_zone": "ZONE - IV",
+        "old_zone_name": "TONDIARPET",
+        "new_zone_name": "TONDIARPET"
+      },
+      {
+        "ward_id": 146,
+        "official_number": 38,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 5.328515676144527e-08,
+        "old_zone": "ZONE - IV",
+        "new_zone": "ZONE - IV",
+        "old_zone_name": "TONDIARPET",
+        "new_zone_name": "TONDIARPET"
+      },
+      {
+        "ward_id": 147,
+        "official_number": 37,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 5.445054869276521e-08,
+        "old_zone": "ZONE - IV",
+        "new_zone": "ZONE - IV",
+        "old_zone_name": "TONDIARPET",
+        "new_zone_name": "TONDIARPET"
+      },
+      {
+        "ward_id": 148,
+        "official_number": 44,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 3.674631871443385e-08,
+        "old_zone": "ZONE - IV",
+        "new_zone": "ZONE - IV",
+        "old_zone_name": "TONDIARPET",
+        "new_zone_name": "TONDIARPET"
+      },
+      {
+        "ward_id": 149,
+        "official_number": 48,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 9.751646014580435e-09,
+        "old_zone": "ZONE - IV",
+        "new_zone": "ZONE - IV",
+        "old_zone_name": "TONDIARPET",
+        "new_zone_name": "TONDIARPET"
+      },
+      {
+        "ward_id": 150,
+        "official_number": 42,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 1.7878214485877824e-08,
+        "old_zone": "ZONE - IV",
+        "new_zone": "ZONE - IV",
+        "old_zone_name": "TONDIARPET",
+        "new_zone_name": "TONDIARPET"
+      },
+      {
+        "ward_id": 151,
+        "official_number": 47,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 1.25659612068541e-08,
+        "old_zone": "ZONE - IV",
+        "new_zone": "ZONE - IV",
+        "old_zone_name": "TONDIARPET",
+        "new_zone_name": "TONDIARPET"
+      },
+      {
+        "ward_id": 152,
+        "official_number": 45,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 4.124329991267564e-08,
+        "old_zone": "ZONE - IV",
+        "new_zone": "ZONE - IV",
+        "old_zone_name": "TONDIARPET",
+        "new_zone_name": "TONDIARPET"
+      },
+      {
+        "ward_id": 153,
+        "official_number": 46,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 1.6359023612395158e-08,
+        "old_zone": "ZONE - IV",
+        "new_zone": "ZONE - IV",
+        "old_zone_name": "TONDIARPET",
+        "new_zone_name": "TONDIARPET"
+      },
+      {
+        "ward_id": 154,
+        "official_number": 34,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 0.0,
+        "old_zone": "ZONE - IV",
+        "new_zone": "ZONE - IV",
+        "old_zone_name": "TONDIARPET",
+        "new_zone_name": "TONDIARPET"
+      },
+      {
+        "ward_id": 155,
+        "official_number": 35,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 6.49612328421068e-08,
+        "old_zone": "ZONE - IV",
+        "new_zone": "ZONE - IV",
+        "old_zone_name": "TONDIARPET",
+        "new_zone_name": "TONDIARPET"
+      },
+      {
+        "ward_id": 156,
+        "official_number": 36,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 5.701731361189158e-08,
+        "old_zone": "ZONE - IV",
+        "new_zone": "ZONE - IV",
+        "old_zone_name": "TONDIARPET",
+        "new_zone_name": "TONDIARPET"
+      },
+      {
+        "ward_id": 157,
+        "official_number": 1,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 3.3033321431562865e-08,
+        "old_zone": "I",
+        "new_zone": "I",
+        "old_zone_name": "THIRUVOTTRIYUR",
+        "new_zone_name": "THIRUVOTTRIYUR"
+      },
+      {
+        "ward_id": 158,
+        "official_number": 10,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 3.637807787493355e-08,
+        "old_zone": "I",
+        "new_zone": "I",
+        "old_zone_name": "THIRUVOTTRIYUR",
+        "new_zone_name": "THIRUVOTTRIYUR"
+      },
+      {
+        "ward_id": 159,
+        "official_number": 11,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 2.1317780789596307e-08,
+        "old_zone": "I",
+        "new_zone": "I",
+        "old_zone_name": "THIRUVOTTRIYUR",
+        "new_zone_name": "THIRUVOTTRIYUR"
+      },
+      {
+        "ward_id": 160,
+        "official_number": 2,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 3.7335881926187835e-08,
+        "old_zone": "I",
+        "new_zone": "I",
+        "old_zone_name": "THIRUVOTTRIYUR",
+        "new_zone_name": "THIRUVOTTRIYUR"
+      },
+      {
+        "ward_id": 161,
+        "official_number": 3,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 1.4229786929235522e-07,
+        "old_zone": "I",
+        "new_zone": "I",
+        "old_zone_name": "THIRUVOTTRIYUR",
+        "new_zone_name": "THIRUVOTTRIYUR"
+      },
+      {
+        "ward_id": 162,
+        "official_number": 5,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 4.0795940744817866e-08,
+        "old_zone": "I",
+        "new_zone": "I",
+        "old_zone_name": "THIRUVOTTRIYUR",
+        "new_zone_name": "THIRUVOTTRIYUR"
+      },
+      {
+        "ward_id": 163,
+        "official_number": 7,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 4.729588985245668e-08,
+        "old_zone": "I",
+        "new_zone": "I",
+        "old_zone_name": "THIRUVOTTRIYUR",
+        "new_zone_name": "THIRUVOTTRIYUR"
+      },
+      {
+        "ward_id": 164,
+        "official_number": 8,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 4.200716228515292e-08,
+        "old_zone": "I",
+        "new_zone": "I",
+        "old_zone_name": "THIRUVOTTRIYUR",
+        "new_zone_name": "THIRUVOTTRIYUR"
+      },
+      {
+        "ward_id": 165,
+        "official_number": 9,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 1.501029398297732e-08,
+        "old_zone": "I",
+        "new_zone": "I",
+        "old_zone_name": "THIRUVOTTRIYUR",
+        "new_zone_name": "THIRUVOTTRIYUR"
+      },
+      {
+        "ward_id": 166,
+        "official_number": 12,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 3.120438598451649e-08,
+        "old_zone": "I",
+        "new_zone": "I",
+        "old_zone_name": "THIRUVOTTRIYUR",
+        "new_zone_name": "THIRUVOTTRIYUR"
+      },
+      {
+        "ward_id": 167,
+        "official_number": 13,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 1.5886742757800255e-08,
+        "old_zone": "I",
+        "new_zone": "I",
+        "old_zone_name": "THIRUVOTTRIYUR",
+        "new_zone_name": "THIRUVOTTRIYUR"
+      },
+      {
+        "ward_id": 168,
+        "official_number": 14,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 1.7316950720331747e-08,
+        "old_zone": "I",
+        "new_zone": "I",
+        "old_zone_name": "THIRUVOTTRIYUR",
+        "new_zone_name": "THIRUVOTTRIYUR"
+      },
+      {
+        "ward_id": 169,
+        "official_number": 27,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 1.2310318153205626e-08,
+        "old_zone": "III",
+        "new_zone": "III",
+        "old_zone_name": "MADHAVARAM",
+        "new_zone_name": "MADHAVARAM"
+      },
+      {
+        "ward_id": 170,
+        "official_number": 22,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 2.3443361217337345e-08,
+        "old_zone": "III",
+        "new_zone": "III",
+        "old_zone_name": "MADHAVARAM",
+        "new_zone_name": "MADHAVARAM"
+      },
+      {
+        "ward_id": 171,
+        "official_number": 28,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 4.7904587020924905e-08,
+        "old_zone": "III",
+        "new_zone": "III",
+        "old_zone_name": "MADHAVARAM",
+        "new_zone_name": "MADHAVARAM"
+      },
+      {
+        "ward_id": 172,
+        "official_number": 29,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 3.1023672592132465e-08,
+        "old_zone": "III",
+        "new_zone": "III",
+        "old_zone_name": "MADHAVARAM",
+        "new_zone_name": "MADHAVARAM"
+      },
+      {
+        "ward_id": 173,
+        "official_number": 30,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 4.459980996109357e-08,
+        "old_zone": "III",
+        "new_zone": "III",
+        "old_zone_name": "MADHAVARAM",
+        "new_zone_name": "MADHAVARAM"
+      },
+      {
+        "ward_id": 174,
+        "official_number": 26,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 6.297354252478098e-08,
+        "old_zone": "III",
+        "new_zone": "III",
+        "old_zone_name": "MADHAVARAM",
+        "new_zone_name": "MADHAVARAM"
+      },
+      {
+        "ward_id": 175,
+        "official_number": 25,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 0.0,
+        "old_zone": "III",
+        "new_zone": "III",
+        "old_zone_name": "MADHAVARAM",
+        "new_zone_name": "MADHAVARAM"
+      },
+      {
+        "ward_id": 176,
+        "official_number": 33,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 4.126441684949487e-08,
+        "old_zone": "III",
+        "new_zone": "III",
+        "old_zone_name": "MADHAVARAM",
+        "new_zone_name": "MADHAVARAM"
+      },
+      {
+        "ward_id": 177,
+        "official_number": 24,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 1.2076244609958154e-07,
+        "old_zone": "III",
+        "new_zone": "III",
+        "old_zone_name": "MADHAVARAM",
+        "new_zone_name": "MADHAVARAM"
+      },
+      {
+        "ward_id": 178,
+        "official_number": 32,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 9.737868585946716e-08,
+        "old_zone": "III",
+        "new_zone": "III",
+        "old_zone_name": "MADHAVARAM",
+        "new_zone_name": "MADHAVARAM"
+      },
+      {
+        "ward_id": 179,
+        "official_number": 23,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 1.560983973137106e-07,
+        "old_zone": "III",
+        "new_zone": "III",
+        "old_zone_name": "MADHAVARAM",
+        "new_zone_name": "MADHAVARAM"
+      },
+      {
+        "ward_id": 180,
+        "official_number": 31,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 2.840379782579754e-08,
+        "old_zone": "III",
+        "new_zone": "III",
+        "old_zone_name": "MADHAVARAM",
+        "new_zone_name": "MADHAVARAM"
+      },
+      {
+        "ward_id": 181,
+        "official_number": 142,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 5.793393106179556e-08,
+        "old_zone": "X",
+        "new_zone": "X",
+        "old_zone_name": "KODAMBAKKAM",
+        "new_zone_name": "KODAMBAKKAM"
+      },
+      {
+        "ward_id": 182,
+        "official_number": 139,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 1.6260335821911603e-08,
+        "old_zone": "X",
+        "new_zone": "X",
+        "old_zone_name": "KODAMBAKKAM",
+        "new_zone_name": "KODAMBAKKAM"
+      },
+      {
+        "ward_id": 183,
+        "official_number": 140,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 2.2972448334796164e-08,
+        "old_zone": "X",
+        "new_zone": "X",
+        "old_zone_name": "KODAMBAKKAM",
+        "new_zone_name": "KODAMBAKKAM"
+      },
+      {
+        "ward_id": 184,
+        "official_number": 135,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 2.2158880622919353e-08,
+        "old_zone": "X",
+        "new_zone": "X",
+        "old_zone_name": "KODAMBAKKAM",
+        "new_zone_name": "KODAMBAKKAM"
+      },
+      {
+        "ward_id": 185,
+        "official_number": 188,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 9.749327067699263e-08,
+        "old_zone": "XIV",
+        "new_zone": "XIV",
+        "old_zone_name": "PERUNKUDI",
+        "new_zone_name": "PERUNKUDI"
+      },
+      {
+        "ward_id": 186,
+        "official_number": 187,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 2.3097120605783958e-08,
+        "old_zone": "XIV",
+        "new_zone": "XIV",
+        "old_zone_name": "PERUNKUDI",
+        "new_zone_name": "PERUNKUDI"
+      },
+      {
+        "ward_id": 187,
+        "official_number": 4,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 3.167201164956104e-08,
+        "old_zone": "I",
+        "new_zone": "I",
+        "old_zone_name": "THIRUVOTTRIYUR",
+        "new_zone_name": "THIRUVOTTRIYUR"
+      },
+      {
+        "ward_id": 188,
+        "official_number": 68,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 4.996435233260677e-08,
+        "old_zone": "VI",
+        "new_zone": "VI",
+        "old_zone_name": "THIRU-VIKA-NAGAR",
+        "new_zone_name": "THIRU-VIKA-NAGAR"
+      },
+      {
+        "ward_id": 189,
+        "official_number": 65,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 2.5217897527855056e-08,
+        "old_zone": "VI",
+        "new_zone": "VI",
+        "old_zone_name": "THIRU-VIKA-NAGAR",
+        "new_zone_name": "THIRU-VIKA-NAGAR"
+      },
+      {
+        "ward_id": 190,
+        "official_number": 143,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 5.539564433094192e-08,
+        "old_zone": "XI",
+        "new_zone": "XI",
+        "old_zone_name": "VALASARVAKKAM",
+        "new_zone_name": "VALASARVAKKAM"
+      },
+      {
+        "ward_id": 191,
+        "official_number": 91,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 5.868892726550092e-08,
+        "old_zone": "VII",
+        "new_zone": "VII",
+        "old_zone_name": "AMBATTUR",
+        "new_zone_name": "AMBATTUR"
+      },
+      {
+        "ward_id": 192,
+        "official_number": 6,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 7.527123040404401e-08,
+        "old_zone": "I",
+        "new_zone": "I",
+        "old_zone_name": "THIRUVOTTRIYUR",
+        "new_zone_name": "THIRUVOTTRIYUR"
+      },
+      {
+        "ward_id": 193,
+        "official_number": 39,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 3.8767179079312783e-08,
+        "old_zone": "ZONE - IV",
+        "new_zone": "ZONE - IV",
+        "old_zone_name": "TONDIARPET",
+        "new_zone_name": "TONDIARPET"
+      },
+      {
+        "ward_id": 194,
+        "official_number": 43,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 7.630992561506272e-08,
+        "old_zone": "ZONE - IV",
+        "new_zone": "ZONE - IV",
+        "old_zone_name": "TONDIARPET",
+        "new_zone_name": "TONDIARPET"
+      },
+      {
+        "ward_id": 195,
+        "official_number": 111,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 3.657407236166673e-08,
+        "old_zone": "IX",
+        "new_zone": "IX",
+        "old_zone_name": "TEYNAMPET",
+        "new_zone_name": "TEYNAMPET"
+      },
+      {
+        "ward_id": 196,
+        "official_number": 110,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 5.0112662168136184e-08,
+        "old_zone": "IX",
+        "new_zone": "IX",
+        "old_zone_name": "TEYNAMPET",
+        "new_zone_name": "TEYNAMPET"
+      },
+      {
+        "ward_id": 197,
+        "official_number": 161,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 2.6745550722479666e-08,
+        "old_zone": "XII",
+        "new_zone": "XII",
+        "old_zone_name": "ALANDUR",
+        "new_zone_name": "ALANDUR"
+      },
+      {
+        "ward_id": 198,
+        "official_number": 160,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 4.659595124832373e-08,
+        "old_zone": "XII",
+        "new_zone": "XII",
+        "old_zone_name": "ALANDUR",
+        "new_zone_name": "ALANDUR"
+      },
+      {
+        "ward_id": 199,
+        "official_number": 195,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 1.3723296202419895e-08,
+        "old_zone": "XV",
+        "new_zone": "XV",
+        "old_zone_name": "SHOZHANGANALLUR",
+        "new_zone_name": "SHOZHANGANALLUR"
+      },
+      {
+        "ward_id": 200,
+        "official_number": 196,
+        "geometry_equal": false,
+        "symmetric_difference_m2": 1.4006164945321075e-08,
+        "old_zone": "XV",
+        "new_zone": "XV",
+        "old_zone_name": "SHOZHANGANALLUR",
+        "new_zone_name": "SHOZHANGANALLUR"
+      }
+    ]
+  },
+  "canonical_crosswalk_zone_mismatches": []
+}

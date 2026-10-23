@@ -299,15 +299,16 @@ export const mockApi = {
     wardIds: number[],
     rainfallMm: number,
     language: Language = 'en',
-    channels: AlertChannel[] = ['sms', 'whatsapp']
+    channels: AlertChannel[] = ['sms', 'whatsapp'],
+    durationHours = 3
   ): AlertResponse => {
     const alerts: AlertMessage[] = [];
     for (const wardId of wardIds) {
       const ward = findWard(wardId);
-      const risk = scoreWard(ward, rainfallMm);
+      const risk = scoreWard(ward, rainfallMm, 0, durationHours);
       const fullMessage = language === 'ta'
-        ? `அளவுத்திருத்தம் செய்யப்படாத குறியீடு: ${risk.risk_level}. ${ward.ward_name}. மழை: ${rainfallMm.toFixed(0)}mm. வெள்ள முன்னறிவிப்பு அல்ல.`
-        : `Uncalibrated index: ${risk.risk_level.replace(/_/g, ' ')}. ${ward.ward_name}. Rainfall: ${rainfallMm.toFixed(0)}mm. Not a flood forecast. Follow official advice.`;
+        ? `அளவுத்திருத்தம் செய்யப்படாத குறியீடு: ${risk.risk_level}. மழை: ${rainfallMm}mm/${durationHours}h. ${ward.ward_name}. வெள்ள முன்னறிவிப்பு அல்ல.`
+        : `Uncalibrated index: ${risk.risk_level.replace(/_/g, ' ')}. Rain: ${rainfallMm}mm/${durationHours}h. ${ward.ward_name}. Not a flood forecast. Follow official advice.`;
 
       for (const channel of channels) {
         const message =

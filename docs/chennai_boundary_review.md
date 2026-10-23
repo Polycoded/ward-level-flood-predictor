@@ -1,5 +1,24 @@
 # Chennai 200-ward boundary review
 
+## Current review-completion status (2026-10-23)
+
+Original KMLs, features (200×44) and zonal stats (200×39) are now delivered.
+[mit_artifact_audit.json](mit_artifact_audit.json) records current hashes, required-feature
+ranges/missingness, identity checks and overlap diagnostics. All 200 mappings agree across
+canonical wards/crosswalk/tables and temporary conversion. All zones agree. Feature
+geometries equal canonical wards; zonal stats has no geometry column.
+
+Conversion with explicit --repair-invalid acknowledgement ran only into a new temporary
+review directory. All 200 geometries differ under exact equality; maximum symmetric
+difference is 7.78921640840568e-05 m². Small numerical discrepancies are not exact geometric
+reproduction or certification. No geometry was replaced. Canonical overlaps remain
+448 positive-area pairs / 291 over 1 m². Current feature assembly rejects fabricated zeros;
+conversion retains source-row internal IDs and requires acknowledgement for invalid ward
+AND zone repairs. Original measurements, legal vintage, source authenticity, spatial
+coverage and overlap/hole treatment remain review items, not implementation approvals.
+
+## Archived initial review (6210aba; inventory statements below are historical)
+
 Reviewed 2026-10-23 at local mit-dev 6210aba. Read-only input review; no geometry,
 crosswalk, model, pipeline, API, UI or metrics changed. This is a conditional input
 review, not geographic certification or historical validation.

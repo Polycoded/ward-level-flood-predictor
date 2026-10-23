@@ -268,7 +268,7 @@ async def generate_alerts(request: AlertRequest):
     alerts = []
     for _, row in wards.iterrows():
         risk_score, risk_level, depth_band, peak_window, reasons = compute_risk_score(
-            row, request.rainfall_mm
+            row, request.rainfall_mm, duration_hours=request.duration_hours
         )
         
         for channel in request.channels:
@@ -278,7 +278,8 @@ async def generate_alerts(request: AlertRequest):
                 depth_band=depth_band.value,
                 rainfall_mm=request.rainfall_mm,
                 language=request.language.value,
-                channel=channel.value
+                channel=channel.value,
+                duration_hours=request.duration_hours
             )
             
             alerts.append(AlertMessage(

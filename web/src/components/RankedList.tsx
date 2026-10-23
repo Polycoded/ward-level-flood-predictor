@@ -103,7 +103,7 @@ function EmptyState() {
   return (
     <li className="text-sm text-gray-600 p-4 rounded-lg border border-dashed border-gray-300 bg-gray-50">
       <p className="font-medium text-gray-800 mb-1">No analysis yet</p>
-      Pick a rainfall amount (try 100 mm in 3 h, or 300 mm for the Dec 2023 event) and press <strong>Analyze</strong> to
+      Pick a hypothetical rainfall amount (try 100 or 300 mm in 3 h) and press <strong>Analyze</strong> to
       rank every ward.
     </li>
   );

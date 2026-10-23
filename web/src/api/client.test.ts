@@ -28,6 +28,16 @@ beforeEach(() => {
 });
 
 describe('ApiClient live/mock decision', () => {
+  it('forwards explicitly selected alert duration', async () => {
+    let body: unknown;
+    const { fn } = adapter(c => {
+      if (c.url === '/readyz') return { status: 200, data: READY };
+      body = JSON.parse(c.data as string);
+      return { status: 200, data: { alerts: [], sent_at: '' } };
+    });
+    await new ApiClient({ forceMock: false, adapter: fn }).generateAlerts([1], 100, 'en', ['sms'], 12);
+    expect(body).toEqual({ ward_ids: [1], rainfall_mm: 100, language: 'en', channels: ['sms'], duration_hours: 12 });
+  });
   it('suppresses legacy mock accuracy returned by a live backend', async () => {
     const { fn } = adapter(c => ({ status: 200, data: c.url === '/readyz' ? READY :
       { precision_at_20: 0.65, notes: 'MOCK NUMBERS' } }));

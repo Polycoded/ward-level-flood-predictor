@@ -37,14 +37,14 @@ With the FastAPI backend running (`uvicorn api.main:app --port 8000` from the re
 | Rainfall input: manual amount + duration, CSV upload, Open-Meteo forecast | `RainfallControl` | 4, problem statement §5 "Rainfall input" |
 | Colour-graded ward map, tooltips | `MapView` | 4 |
 | Ranked list with search and High+ filter | `RankedList` | 4 |
-| Ward detail: risk level and score; depth band and peak window labelled *indicative* (display proxies per `docs/model_logic.md`) | `WardDetailPanel` | 4 |
+| Ward detail: uncalibrated index/category and reasons; physical proxies suppressed | `WardDetailPanel` | 4 |
 | "Why this ward?": weighted factor bars beside the model's `reasons[]` | `ExplainabilityPanel` | 5 |
 | English/Tamil SMS and WhatsApp drafts, copy, share link, channel readiness | `AlertPanel`, `ChannelStatus` | 4 |
 | Today vs +15% / +30% built-up, with "N wards get worse" | `FutureScenarioToggle` | 6, stretch goal |
-| Roads and underpasses coloured by risk, "close/divert" hint | `MapView` road layer | 1, 4, stretch goal |
-| Nearest shelters, walking time, OSM directions link | `ShelterPanel` | 1, 4, stretch goal |
+| Roads and underpasses: uncalibrated screening requiring review, no depth/closure instruction | `MapView` road layer | 1, 4, stretch goal |
+| Shelter candidates and directions links, without verified availability/capacity/safe routes | `ShelterPanel` | 1, 4, stretch goal |
 | Live API vs mock, rainfall provider | `ProviderBadge` | honesty in the demo |
-| Dec 2023 validation metrics | `ValidationPanel` | 3 |
+| Evidence status, nullable observed-sample metrics and coverage; mock accuracy suppressed | `ValidationPanel` | 3 |
 
 ## Data flow
 
@@ -57,11 +57,22 @@ RainfallControl ──reading──▶ App.runAnalysis ──▶ api.getScenario
                     MapView        RankedList         WardDetailPanel    FutureScenarioToggle
 ```
 
-All analyses go through `/scenario`, with `builtup_increase_pct: 0` meaning today's land use. `/risk` currently drops `duration_hours` while `/scenario` applies it, so mixing the two made "+15% built-up" look safer than today for long storms. Using one endpoint keeps the comparison honest whichever way `/risk` is fixed.
+Ward analyses go through `/scenario`, with `builtup_increase_pct: 0` meaning baseline land use.
+Both `/risk` and `/scenario` forward duration. AlertPanel passes the analyzed response's
+rainfall/duration (not unsubmitted control edits) to `/alerts`; omitted alert duration
+defaults to 3 hours. Live and mock alert scoring use that interval, and messages identify
+the total accumulation/interval. Alerts remain baseline land use, so built-up scenario
+map categories may differ. Road screening retains its separate endpoint/default interval;
+it is not a duration-aware physical road forecast. Compatibility depth fields remain in
+responses but are not displayed as predictions. Manual 300 mm is explicitly hypothetical.
 
 The rainfall factor follows `model/risk_engine.py`: `(mm / 200) × clamp(sqrt(3 / hours), 0.5, 1.5)`, capped at 1.5. The explainability panel shows it, and `lib/explain.test.ts` checks 27 cases (1–24 h, 0–30% built-up) against outputs recorded from the Python engine.
 
-The **Validation** panel labels metrics as placeholders, with a warning, when the app is in mock mode or the file's `notes` say mock/placeholder/template. The `validation_metrics.json` currently on `main` holds the frontend's mock numbers, so it is flagged.
+The **Validation** panel renders unavailable/partial/evaluated evidence states. Mock,
+unsupported legacy and malformed metrics never become accuracy cards. Schema-2 null
+metrics retain reasons; denominators/coverage and supplied event metadata are shown
+without a hardcoded validated event. Canonical metrics are still mock, so current live
+evidence is unavailable. Evaluated status does not certify the underlying observations.
 
 `api/client.ts` calls `/readyz` once per page load. If the backend answers with `features` and `wards` ready it uses the live API for the whole session; otherwise it uses `api/mock.ts`. The two sources are never mixed, so you never see live wards with mock scores.
 
@@ -85,7 +96,8 @@ If the backend moves somewhere other than `*.onrender.com`, add its origin to `c
 
 ## Tests
 
-`npm test -- --run` runs 85 tests:
+`npm test -- --run` runs the current suite; exact latest counts are recorded in
+`docs/mit_implementation_plan.md` rather than promised as a permanent inventory:
 
 | File | Covers |
 | --- | --- |
@@ -103,10 +115,14 @@ To regenerate the Python parity fixture after changing the model:
 python web/scripts/python_parity_fixture.py   # from the repo root, with the backend's Python deps installed
 ```
 
-## Known gaps (backend side, tracked in the PR)
+## Current evidence and operational limits
 
-- `data/processed/validation_metrics.json` on `main` contains mock numbers; the UI flags them as placeholders until the real evaluation replaces the file.
-- `/risk` ignores `duration_hours` (the dashboard uses `/scenario` instead; see above).
-- `model/alerts.py` "Tamil" templates are Chinese text. The mock's Tamil is correct but still needs a native-speaker review.
-- `/wards` is ~650 KB uncompressed; adding `GZipMiddleware` to `api/main.py` cuts it to ~77 KB. Lighthouse on the production build (offline mode): mobile 91–94 performance / 100 accessibility, desktop 99–100. The uncompressed payload is the main thing slowing the live version on mobile.
-- `risk_engine.py` labels a score of exactly 1.0 (any extreme storm) as `very_low`.
+- Reviewed historical labels and approved event alignment remain absent; station candidates
+  are not adopted ward rainfall. Do not edit canonical mock metrics to simulate evaluation.
+- Tamil live/mock templates require native-speaker review. Message generation, timestamps,
+  copy/share links and channel status cards do not establish notification delivery.
+- Shelter presence/opening/capacity and route safety are unverified; an empty live result
+  is not evidence of no shelters. Mock shelter names are demonstration data.
+- No latency, Lighthouse score, deployment headers or live-browser behavior is promised
+  by a local build. Run and record the relevant measurement before making such claims.
+- Index 1.0 is very_high. Categories are ordinal prototype bins, not validated warnings.

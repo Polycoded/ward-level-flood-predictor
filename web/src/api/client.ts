@@ -140,7 +140,8 @@ export class ApiClient {
     wardIds: number[],
     rainfallMm: number,
     language: 'en' | 'ta' = 'en',
-    channels: ('sms' | 'whatsapp' | 'voice' | 'livekit')[] = ['sms', 'whatsapp']
+    channels: ('sms' | 'whatsapp' | 'voice' | 'livekit')[] = ['sms', 'whatsapp'],
+    durationHours?: number
   ): Promise<AlertResponse> {
     return this.call(
       async () =>
@@ -151,10 +152,11 @@ export class ApiClient {
               rainfall_mm: rainfallMm,
               language,
               channels,
+              ...(durationHours === undefined ? {} : { duration_hours: durationHours }),
             })
           ).data
         ),
-      () => mockApi.generateAlerts(wardIds, rainfallMm, language, channels)
+      () => mockApi.generateAlerts(wardIds, rainfallMm, language, channels, durationHours)
     );
   }
 

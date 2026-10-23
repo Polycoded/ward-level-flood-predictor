@@ -41,7 +41,7 @@ export function AlertPanel({ onClose }: AlertPanelProps) {
     setSending(true);
     setError(null);
     try {
-      const response = await api.generateAlerts(selectedWards, riskData.scenario.rainfall_mm, language, channels);
+      const response = await api.generateAlerts(selectedWards, riskData.scenario.rainfall_mm, language, channels, riskData.scenario.duration_hours);
       setAlerts(response.alerts);
     } catch {
       setError('Could not generate alerts. Check the connection and try again.');
@@ -63,7 +63,7 @@ export function AlertPanel({ onClose }: AlertPanelProps) {
   return (
     <Modal title="Generate alerts" onClose={onClose}>
       <div className="flex-1 overflow-y-auto p-4 space-y-5">
-        <p className="text-sm text-gray-600">Uncalibrated index; these messages are not flood forecasts. Follow official advice.</p>
+        <p className="text-sm text-gray-600">Uncalibrated index; these messages are not flood forecasts. Drafts use baseline land use at {riskData.scenario.rainfall_mm} mm over {riskData.scenario.duration_hours} h. Follow official advice.</p>
         <fieldset>
           <legend className="font-medium text-gray-900 mb-2">Wards</legend>
           <div className="space-y-2 max-h-48 overflow-y-auto">

@@ -24,7 +24,7 @@ async function renderLoaded() {
   return user;
 }
 
-async function analyze(user: ReturnType<typeof userEvent.setup>, preset = /300 · Dec 2023/) {
+async function analyze(user: ReturnType<typeof userEvent.setup>, preset = /300 · Hypothetical/) {
   await user.click(screen.getByRole('button', { name: preset }));
   await user.click(screen.getByRole('button', { name: 'Analyze' }));
   await screen.findByText(/200 wards, highest risk first/);
@@ -53,7 +53,7 @@ describe('official runs a rainfall scenario', () => {
     const user = await renderLoaded();
     await analyze(user, /^50 mm$/);
     const low = new Map(useFloodStore.getState().riskData!.wards.map((w) => [w.ward_id, w.risk_score]));
-    await analyze(user, /300 · Dec 2023/);
+    await analyze(user, /300 · Hypothetical/);
     for (const w of useFloodStore.getState().riskData!.wards) expect(w.risk_score).toBeGreaterThanOrEqual(low.get(w.ward_id)!);
   });
 
