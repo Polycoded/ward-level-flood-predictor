@@ -1,0 +1,5435 @@
+{
+  "claim": "Supplied geometry only; no boundary approval or repair",
+  "derived_copy": "Explicit in-memory force_2d then EPSG:32644, diagnostic only; canonical inputs unchanged",
+  "holed_ward_ids": [
+    25,
+    32,
+    33,
+    37,
+    45,
+    97,
+    120,
+    123,
+    125,
+    136,
+    150,
+    189,
+    191,
+    193,
+    197
+  ],
+  "original_geometry_probe": {
+    "confirmation_required": true,
+    "reason": "Only 2D geometries are supported; explicitly remove Z coordinates first",
+    "status": "unavailable"
+  },
+  "representative_point_lookups": [
+    {
+      "probe_internal_ward_id": 1,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 1,
+            "ward_number": "168"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 1,
+            "ward_number": "168"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 2,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 2,
+            "ward_number": "169"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 2,
+            "ward_number": "169"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 3,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 3,
+            "ward_number": "170"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 3,
+            "ward_number": "170"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 4,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 4,
+            "ward_number": "171"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 4,
+            "ward_number": "171"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 5,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 5,
+            "ward_number": "174"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 5,
+            "ward_number": "174"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 6,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 6,
+            "ward_number": "173"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 6,
+            "ward_number": "173"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 7,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 7,
+            "ward_number": "179"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 7,
+            "ward_number": "179"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 8,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 8,
+            "ward_number": "178"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 8,
+            "ward_number": "178"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 9,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 9,
+            "ward_number": "172"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 9,
+            "ward_number": "172"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 10,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 10,
+            "ward_number": "177"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 10,
+            "ward_number": "177"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 11,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 11,
+            "ward_number": "176"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 11,
+            "ward_number": "176"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 12,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 12,
+            "ward_number": "175"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 12,
+            "ward_number": "175"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 13,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 13,
+            "ward_number": "180"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 13,
+            "ward_number": "180"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 14,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 14,
+            "ward_number": "193"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 14,
+            "ward_number": "193"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 15,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 15,
+            "ward_number": "198"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 15,
+            "ward_number": "198"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 16,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 16,
+            "ward_number": "199"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 16,
+            "ward_number": "199"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 17,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 17,
+            "ward_number": "192"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 17,
+            "ward_number": "192"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 18,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 18,
+            "ward_number": "200"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 18,
+            "ward_number": "200"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 19,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 19,
+            "ward_number": "194"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 19,
+            "ward_number": "194"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 20,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 20,
+            "ward_number": "197"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 20,
+            "ward_number": "197"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 21,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 21,
+            "ward_number": "185"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 21,
+            "ward_number": "185"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 22,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 22,
+            "ward_number": "186"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 22,
+            "ward_number": "186"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 23,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 23,
+            "ward_number": "184"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 23,
+            "ward_number": "184"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 24,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 24,
+            "ward_number": "181"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 24,
+            "ward_number": "181"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 25,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 25,
+            "ward_number": "183"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 25,
+            "ward_number": "183"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 26,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 26,
+            "ward_number": "189"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 26,
+            "ward_number": "189"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 27,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 27,
+            "ward_number": "190"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 27,
+            "ward_number": "190"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 28,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 28,
+            "ward_number": "191"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 28,
+            "ward_number": "191"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 29,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 29,
+            "ward_number": "182"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 29,
+            "ward_number": "182"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 30,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 30,
+            "ward_number": "126"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 30,
+            "ward_number": "126"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 31,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 31,
+            "ward_number": "125"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 31,
+            "ward_number": "125"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 32,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 32,
+            "ward_number": "115"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 32,
+            "ward_number": "115"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 33,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 33,
+            "ward_number": "116"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 33,
+            "ward_number": "116"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 34,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 34,
+            "ward_number": "114"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 34,
+            "ward_number": "114"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 35,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 35,
+            "ward_number": "124"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 35,
+            "ward_number": "124"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 36,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 36,
+            "ward_number": "113"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 36,
+            "ward_number": "113"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 37,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 37,
+            "ward_number": "123"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 37,
+            "ward_number": "123"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 38,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 38,
+            "ward_number": "112"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 38,
+            "ward_number": "112"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 39,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 39,
+            "ward_number": "122"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 39,
+            "ward_number": "122"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 40,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 40,
+            "ward_number": "121"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 40,
+            "ward_number": "121"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 41,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 41,
+            "ward_number": "120"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 41,
+            "ward_number": "120"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 42,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 42,
+            "ward_number": "109"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 42,
+            "ward_number": "109"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 43,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 43,
+            "ward_number": "119"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 43,
+            "ward_number": "119"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 44,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 44,
+            "ward_number": "118"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 44,
+            "ward_number": "118"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 45,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 45,
+            "ward_number": "117"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 45,
+            "ward_number": "117"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 46,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 46,
+            "ward_number": "108"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 46,
+            "ward_number": "108"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 47,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 47,
+            "ward_number": "106"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 47,
+            "ward_number": "106"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 48,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 48,
+            "ward_number": "107"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 48,
+            "ward_number": "107"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 49,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 49,
+            "ward_number": "105"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 49,
+            "ward_number": "105"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 50,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 50,
+            "ward_number": "104"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 50,
+            "ward_number": "104"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 51,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 51,
+            "ward_number": "99"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 51,
+            "ward_number": "99"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 52,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 52,
+            "ward_number": "98"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 52,
+            "ward_number": "98"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 53,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 53,
+            "ward_number": "100"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 53,
+            "ward_number": "100"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 54,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 54,
+            "ward_number": "97"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 54,
+            "ward_number": "97"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 55,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 55,
+            "ward_number": "101"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 55,
+            "ward_number": "101"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 56,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 56,
+            "ward_number": "96"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 56,
+            "ward_number": "96"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 57,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 57,
+            "ward_number": "102"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 57,
+            "ward_number": "102"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 58,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 58,
+            "ward_number": "95"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 58,
+            "ward_number": "95"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 59,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 59,
+            "ward_number": "103"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 59,
+            "ward_number": "103"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 60,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 60,
+            "ward_number": "94"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 60,
+            "ward_number": "94"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 61,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 61,
+            "ward_number": "15"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 61,
+            "ward_number": "15"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 62,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 62,
+            "ward_number": "16"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 62,
+            "ward_number": "16"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 63,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 63,
+            "ward_number": "17"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 63,
+            "ward_number": "17"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 64,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 64,
+            "ward_number": "18"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 64,
+            "ward_number": "18"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 65,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 65,
+            "ward_number": "19"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 65,
+            "ward_number": "19"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 66,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 66,
+            "ward_number": "20"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 66,
+            "ward_number": "20"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 67,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 67,
+            "ward_number": "21"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 67,
+            "ward_number": "21"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 68,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 68,
+            "ward_number": "79"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 68,
+            "ward_number": "79"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 69,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 69,
+            "ward_number": "80"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 69,
+            "ward_number": "80"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 70,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 70,
+            "ward_number": "81"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 70,
+            "ward_number": "81"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 71,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 71,
+            "ward_number": "82"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 71,
+            "ward_number": "82"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 72,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 72,
+            "ward_number": "83"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 72,
+            "ward_number": "83"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 73,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 73,
+            "ward_number": "84"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 73,
+            "ward_number": "84"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 74,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 74,
+            "ward_number": "85"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 74,
+            "ward_number": "85"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 75,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 75,
+            "ward_number": "86"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 75,
+            "ward_number": "86"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 76,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 76,
+            "ward_number": "87"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 76,
+            "ward_number": "87"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 77,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 77,
+            "ward_number": "88"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 77,
+            "ward_number": "88"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 78,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 78,
+            "ward_number": "90"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 78,
+            "ward_number": "90"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 79,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 79,
+            "ward_number": "92"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 79,
+            "ward_number": "92"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 80,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 80,
+            "ward_number": "93"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 80,
+            "ward_number": "93"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 81,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 81,
+            "ward_number": "89"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 81,
+            "ward_number": "89"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 82,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 82,
+            "ward_number": "162"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 82,
+            "ward_number": "162"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 83,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 83,
+            "ward_number": "163"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 83,
+            "ward_number": "163"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 84,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 84,
+            "ward_number": "164"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 84,
+            "ward_number": "164"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 85,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 85,
+            "ward_number": "158"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 85,
+            "ward_number": "158"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 86,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 86,
+            "ward_number": "159"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 86,
+            "ward_number": "159"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 87,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 87,
+            "ward_number": "167"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 87,
+            "ward_number": "167"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 88,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 88,
+            "ward_number": "157"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 88,
+            "ward_number": "157"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 89,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 89,
+            "ward_number": "166"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 89,
+            "ward_number": "166"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 90,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 90,
+            "ward_number": "165"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 90,
+            "ward_number": "165"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 91,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 91,
+            "ward_number": "156"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 91,
+            "ward_number": "156"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 92,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 92,
+            "ward_number": "67"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 92,
+            "ward_number": "67"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 93,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 93,
+            "ward_number": "70"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 93,
+            "ward_number": "70"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 94,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 94,
+            "ward_number": "71"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 94,
+            "ward_number": "71"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 95,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 95,
+            "ward_number": "74"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 95,
+            "ward_number": "74"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 96,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 96,
+            "ward_number": "77"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 96,
+            "ward_number": "77"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 97,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 97,
+            "ward_number": "69"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 97,
+            "ward_number": "69"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 98,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 98,
+            "ward_number": "78"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 98,
+            "ward_number": "78"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 99,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 99,
+            "ward_number": "76"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 99,
+            "ward_number": "76"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 100,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 100,
+            "ward_number": "64"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 100,
+            "ward_number": "64"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 101,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 101,
+            "ward_number": "75"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 101,
+            "ward_number": "75"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 102,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 102,
+            "ward_number": "66"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 102,
+            "ward_number": "66"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 103,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 103,
+            "ward_number": "73"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 103,
+            "ward_number": "73"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 104,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 104,
+            "ward_number": "72"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 104,
+            "ward_number": "72"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 105,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 105,
+            "ward_number": "147"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 105,
+            "ward_number": "147"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 106,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 106,
+            "ward_number": "148"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 106,
+            "ward_number": "148"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 107,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 107,
+            "ward_number": "149"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 107,
+            "ward_number": "149"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 108,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 108,
+            "ward_number": "150"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 108,
+            "ward_number": "150"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 109,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 109,
+            "ward_number": "151"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 109,
+            "ward_number": "151"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 110,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 110,
+            "ward_number": "146"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 110,
+            "ward_number": "146"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 111,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 111,
+            "ward_number": "155"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 111,
+            "ward_number": "155"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 112,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 112,
+            "ward_number": "145"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 112,
+            "ward_number": "145"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 113,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 113,
+            "ward_number": "154"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 113,
+            "ward_number": "154"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 114,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 114,
+            "ward_number": "144"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 114,
+            "ward_number": "144"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 115,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 115,
+            "ward_number": "153"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 115,
+            "ward_number": "153"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 116,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 116,
+            "ward_number": "152"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 116,
+            "ward_number": "152"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 117,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 117,
+            "ward_number": "49"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 117,
+            "ward_number": "49"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 118,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 118,
+            "ward_number": "50"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 118,
+            "ward_number": "50"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 119,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 119,
+            "ward_number": "52"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 119,
+            "ward_number": "52"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 120,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 120,
+            "ward_number": "54"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 120,
+            "ward_number": "54"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 121,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 121,
+            "ward_number": "55"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 121,
+            "ward_number": "55"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 122,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 122,
+            "ward_number": "56"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 122,
+            "ward_number": "56"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 123,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 123,
+            "ward_number": "57"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 123,
+            "ward_number": "57"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 124,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 124,
+            "ward_number": "58"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 124,
+            "ward_number": "58"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 125,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 125,
+            "ward_number": "59"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 125,
+            "ward_number": "59"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 126,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 126,
+            "ward_number": "60"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 126,
+            "ward_number": "60"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 127,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 127,
+            "ward_number": "61"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 127,
+            "ward_number": "61"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 128,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 128,
+            "ward_number": "62"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 128,
+            "ward_number": "62"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 129,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 129,
+            "ward_number": "63"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 129,
+            "ward_number": "63"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 130,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 130,
+            "ward_number": "51"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 130,
+            "ward_number": "51"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 131,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 131,
+            "ward_number": "53"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 131,
+            "ward_number": "53"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 132,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 132,
+            "ward_number": "130"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 132,
+            "ward_number": "130"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 133,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 133,
+            "ward_number": "136"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 133,
+            "ward_number": "136"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 134,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 134,
+            "ward_number": "131"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 134,
+            "ward_number": "131"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 135,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 135,
+            "ward_number": "132"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 135,
+            "ward_number": "132"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 136,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 136,
+            "ward_number": "129"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 136,
+            "ward_number": "129"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 137,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 137,
+            "ward_number": "138"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 137,
+            "ward_number": "138"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 138,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 138,
+            "ward_number": "128"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 138,
+            "ward_number": "128"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 139,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 139,
+            "ward_number": "137"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 139,
+            "ward_number": "137"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 140,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 140,
+            "ward_number": "127"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 140,
+            "ward_number": "127"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 141,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 141,
+            "ward_number": "133"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 141,
+            "ward_number": "133"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 142,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 142,
+            "ward_number": "141"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 142,
+            "ward_number": "141"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 143,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 143,
+            "ward_number": "134"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 143,
+            "ward_number": "134"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 144,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 144,
+            "ward_number": "41"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 144,
+            "ward_number": "41"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 145,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 145,
+            "ward_number": "40"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 145,
+            "ward_number": "40"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 146,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 146,
+            "ward_number": "38"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 146,
+            "ward_number": "38"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 147,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 147,
+            "ward_number": "37"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 147,
+            "ward_number": "37"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 148,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 148,
+            "ward_number": "44"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 148,
+            "ward_number": "44"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 149,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 149,
+            "ward_number": "48"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 149,
+            "ward_number": "48"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 150,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 150,
+            "ward_number": "42"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 150,
+            "ward_number": "42"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 151,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 151,
+            "ward_number": "47"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 151,
+            "ward_number": "47"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 152,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 152,
+            "ward_number": "45"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 152,
+            "ward_number": "45"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 153,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 153,
+            "ward_number": "46"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 153,
+            "ward_number": "46"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 154,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 154,
+            "ward_number": "34"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 154,
+            "ward_number": "34"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 155,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 155,
+            "ward_number": "35"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 155,
+            "ward_number": "35"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 156,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 156,
+            "ward_number": "36"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 156,
+            "ward_number": "36"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 157,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 157,
+            "ward_number": "1"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 157,
+            "ward_number": "1"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 158,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 158,
+            "ward_number": "10"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 158,
+            "ward_number": "10"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 159,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 159,
+            "ward_number": "11"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 159,
+            "ward_number": "11"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 160,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 160,
+            "ward_number": "2"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 160,
+            "ward_number": "2"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 161,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 161,
+            "ward_number": "3"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 161,
+            "ward_number": "3"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 162,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 162,
+            "ward_number": "5"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 162,
+            "ward_number": "5"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 163,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 163,
+            "ward_number": "7"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 163,
+            "ward_number": "7"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 164,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 164,
+            "ward_number": "8"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 164,
+            "ward_number": "8"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 165,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 165,
+            "ward_number": "9"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 165,
+            "ward_number": "9"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 166,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 166,
+            "ward_number": "12"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 166,
+            "ward_number": "12"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 167,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 167,
+            "ward_number": "13"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 167,
+            "ward_number": "13"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 168,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 168,
+            "ward_number": "14"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 168,
+            "ward_number": "14"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 169,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 169,
+            "ward_number": "27"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 169,
+            "ward_number": "27"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 170,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 170,
+            "ward_number": "22"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 170,
+            "ward_number": "22"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 171,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 171,
+            "ward_number": "28"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 171,
+            "ward_number": "28"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 172,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 172,
+            "ward_number": "29"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 172,
+            "ward_number": "29"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 173,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 173,
+            "ward_number": "30"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 173,
+            "ward_number": "30"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 174,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 174,
+            "ward_number": "26"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 174,
+            "ward_number": "26"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 175,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 175,
+            "ward_number": "25"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 175,
+            "ward_number": "25"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 176,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 176,
+            "ward_number": "33"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 176,
+            "ward_number": "33"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 177,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 177,
+            "ward_number": "24"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 177,
+            "ward_number": "24"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 178,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 178,
+            "ward_number": "32"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 178,
+            "ward_number": "32"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 179,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 179,
+            "ward_number": "23"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 179,
+            "ward_number": "23"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 180,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 180,
+            "ward_number": "31"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 180,
+            "ward_number": "31"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 181,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 181,
+            "ward_number": "142"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 181,
+            "ward_number": "142"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 182,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 182,
+            "ward_number": "139"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 182,
+            "ward_number": "139"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 183,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 183,
+            "ward_number": "140"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 183,
+            "ward_number": "140"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 184,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 184,
+            "ward_number": "135"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 184,
+            "ward_number": "135"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 185,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 185,
+            "ward_number": "188"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 185,
+            "ward_number": "188"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 186,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 186,
+            "ward_number": "187"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 186,
+            "ward_number": "187"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 187,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 187,
+            "ward_number": "4"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 187,
+            "ward_number": "4"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 188,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 188,
+            "ward_number": "68"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 188,
+            "ward_number": "68"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 189,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 189,
+            "ward_number": "65"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 189,
+            "ward_number": "65"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 190,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 190,
+            "ward_number": "143"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 190,
+            "ward_number": "143"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 191,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 191,
+            "ward_number": "91"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 191,
+            "ward_number": "91"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 192,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 192,
+            "ward_number": "6"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 192,
+            "ward_number": "6"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 193,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 193,
+            "ward_number": "39"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 193,
+            "ward_number": "39"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 194,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 194,
+            "ward_number": "43"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 194,
+            "ward_number": "43"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 195,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 195,
+            "ward_number": "111"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 195,
+            "ward_number": "111"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 196,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 196,
+            "ward_number": "110"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 196,
+            "ward_number": "110"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 197,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 197,
+            "ward_number": "161"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 197,
+            "ward_number": "161"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 198,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 198,
+            "ward_number": "160"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 198,
+            "ward_number": "160"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 199,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 199,
+            "ward_number": "195"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 199,
+            "ward_number": "195"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    },
+    {
+      "probe_internal_ward_id": 200,
+      "result": {
+        "confirmation_required": false,
+        "matches": [
+          {
+            "ward_id": 200,
+            "ward_number": "196"
+          }
+        ],
+        "note": "Outside means outside supplied polygons; source coverage/authenticity not certified.",
+        "possible_wards": [
+          {
+            "ward_id": 200,
+            "ward_number": "196"
+          }
+        ],
+        "reference": "supplied_full_geometry",
+        "status": "unique"
+      }
+    }
+  ],
+  "simplification_10m": {
+    "comparisons": [
+      {
+        "hausdorff_m": 9.46751167707084,
+        "symmetric_difference_m2": 19670.52362112505,
+        "ward_id": 1,
+        "ward_number": "168"
+      },
+      {
+        "hausdorff_m": 8.992195286317493,
+        "symmetric_difference_m2": 17711.932539943464,
+        "ward_id": 2,
+        "ward_number": "169"
+      },
+      {
+        "hausdorff_m": 9.28651281719263,
+        "symmetric_difference_m2": 20421.066141615443,
+        "ward_id": 3,
+        "ward_number": "170"
+      },
+      {
+        "hausdorff_m": 9.702006724488797,
+        "symmetric_difference_m2": 14726.447553289709,
+        "ward_id": 4,
+        "ward_number": "171"
+      },
+      {
+        "hausdorff_m": 9.702006724021992,
+        "symmetric_difference_m2": 15532.16332375767,
+        "ward_id": 5,
+        "ward_number": "174"
+      },
+      {
+        "hausdorff_m": 9.83883695099072,
+        "symmetric_difference_m2": 22679.656592695,
+        "ward_id": 6,
+        "ward_number": "173"
+      },
+      {
+        "hausdorff_m": 7.98807732910333,
+        "symmetric_difference_m2": 14364.276805044181,
+        "ward_id": 7,
+        "ward_number": "179"
+      },
+      {
+        "hausdorff_m": 11.781354060710525,
+        "symmetric_difference_m2": 21988.359277975585,
+        "ward_id": 8,
+        "ward_number": "178"
+      },
+      {
+        "hausdorff_m": 8.657034559388599,
+        "symmetric_difference_m2": 20794.7005843723,
+        "ward_id": 9,
+        "ward_number": "172"
+      },
+      {
+        "hausdorff_m": 8.871844279047666,
+        "symmetric_difference_m2": 17292.609203219978,
+        "ward_id": 10,
+        "ward_number": "177"
+      },
+      {
+        "hausdorff_m": 9.194200616924626,
+        "symmetric_difference_m2": 8149.788380058928,
+        "ward_id": 11,
+        "ward_number": "176"
+      },
+      {
+        "hausdorff_m": 9.677209036163688,
+        "symmetric_difference_m2": 9696.04924920718,
+        "ward_id": 12,
+        "ward_number": "175"
+      },
+      {
+        "hausdorff_m": 9.35690569967789,
+        "symmetric_difference_m2": 9806.337482634322,
+        "ward_id": 13,
+        "ward_number": "180"
+      },
+      {
+        "hausdorff_m": 10.404318893068433,
+        "symmetric_difference_m2": 20592.1053833103,
+        "ward_id": 14,
+        "ward_number": "193"
+      },
+      {
+        "hausdorff_m": 9.618814242123083,
+        "symmetric_difference_m2": 16778.846138321656,
+        "ward_id": 15,
+        "ward_number": "198"
+      },
+      {
+        "hausdorff_m": 8.523604557109293,
+        "symmetric_difference_m2": 18243.481213299696,
+        "ward_id": 16,
+        "ward_number": "199"
+      },
+      {
+        "hausdorff_m": 9.281845049960824,
+        "symmetric_difference_m2": 13874.925231725103,
+        "ward_id": 17,
+        "ward_number": "192"
+      },
+      {
+        "hausdorff_m": 9.529410169616066,
+        "symmetric_difference_m2": 21389.82242730173,
+        "ward_id": 18,
+        "ward_number": "200"
+      },
+      {
+        "hausdorff_m": 8.657641403931022,
+        "symmetric_difference_m2": 17789.372563585923,
+        "ward_id": 19,
+        "ward_number": "194"
+      },
+      {
+        "hausdorff_m": 8.586331236302646,
+        "symmetric_difference_m2": 25724.292724399904,
+        "ward_id": 20,
+        "ward_number": "197"
+      },
+      {
+        "hausdorff_m": 9.672976554418682,
+        "symmetric_difference_m2": 7656.31468747932,
+        "ward_id": 21,
+        "ward_number": "185"
+      },
+      {
+        "hausdorff_m": 9.218972750374066,
+        "symmetric_difference_m2": 12415.682378603744,
+        "ward_id": 22,
+        "ward_number": "186"
+      },
+      {
+        "hausdorff_m": 9.872278293723648,
+        "symmetric_difference_m2": 16864.701109818372,
+        "ward_id": 23,
+        "ward_number": "184"
+      },
+      {
+        "hausdorff_m": 9.904884272919917,
+        "symmetric_difference_m2": 9290.89736788187,
+        "ward_id": 24,
+        "ward_number": "181"
+      },
+      {
+        "hausdorff_m": 9.218888625656653,
+        "symmetric_difference_m2": 4149.551513803635,
+        "ward_id": 25,
+        "ward_number": "183"
+      },
+      {
+        "hausdorff_m": 9.748731430789958,
+        "symmetric_difference_m2": 30122.377705718034,
+        "ward_id": 26,
+        "ward_number": "189"
+      },
+      {
+        "hausdorff_m": 9.897262426816212,
+        "symmetric_difference_m2": 21209.385532558612,
+        "ward_id": 27,
+        "ward_number": "190"
+      },
+      {
+        "hausdorff_m": 9.204961834099343,
+        "symmetric_difference_m2": 9534.068228174816,
+        "ward_id": 28,
+        "ward_number": "191"
+      },
+      {
+        "hausdorff_m": 9.887415817138669,
+        "symmetric_difference_m2": 23949.528621078407,
+        "ward_id": 29,
+        "ward_number": "182"
+      },
+      {
+        "hausdorff_m": 9.622671342586397,
+        "symmetric_difference_m2": 13501.797461540571,
+        "ward_id": 30,
+        "ward_number": "126"
+      },
+      {
+        "hausdorff_m": 7.108799842238286,
+        "symmetric_difference_m2": 10059.494570640914,
+        "ward_id": 31,
+        "ward_number": "125"
+      },
+      {
+        "hausdorff_m": 9.747038380422216,
+        "symmetric_difference_m2": 10942.097361372718,
+        "ward_id": 32,
+        "ward_number": "115"
+      },
+      {
+        "hausdorff_m": 9.441089809007813,
+        "symmetric_difference_m2": 6879.394291159645,
+        "ward_id": 33,
+        "ward_number": "116"
+      },
+      {
+        "hausdorff_m": 9.987200034365802,
+        "symmetric_difference_m2": 12429.780980603144,
+        "ward_id": 34,
+        "ward_number": "114"
+      },
+      {
+        "hausdorff_m": 9.329336571876071,
+        "symmetric_difference_m2": 17335.64408304318,
+        "ward_id": 35,
+        "ward_number": "124"
+      },
+      {
+        "hausdorff_m": 9.869078651802287,
+        "symmetric_difference_m2": 18051.11407856122,
+        "ward_id": 36,
+        "ward_number": "113"
+      },
+      {
+        "hausdorff_m": 9.511454858177204,
+        "symmetric_difference_m2": 23159.55865714419,
+        "ward_id": 37,
+        "ward_number": "123"
+      },
+      {
+        "hausdorff_m": 9.681540694287955,
+        "symmetric_difference_m2": 13934.440373821537,
+        "ward_id": 38,
+        "ward_number": "112"
+      },
+      {
+        "hausdorff_m": 9.60812153636762,
+        "symmetric_difference_m2": 16985.73105400798,
+        "ward_id": 39,
+        "ward_number": "122"
+      },
+      {
+        "hausdorff_m": 9.511454858177204,
+        "symmetric_difference_m2": 10399.891138366027,
+        "ward_id": 40,
+        "ward_number": "121"
+      },
+      {
+        "hausdorff_m": 8.706285546544594,
+        "symmetric_difference_m2": 7301.085386990021,
+        "ward_id": 41,
+        "ward_number": "120"
+      },
+      {
+        "hausdorff_m": 9.129594255481107,
+        "symmetric_difference_m2": 11025.40482885574,
+        "ward_id": 42,
+        "ward_number": "109"
+      },
+      {
+        "hausdorff_m": 10.74892543328861,
+        "symmetric_difference_m2": 21473.872735067995,
+        "ward_id": 43,
+        "ward_number": "119"
+      },
+      {
+        "hausdorff_m": 9.252901753715312,
+        "symmetric_difference_m2": 19043.529144979024,
+        "ward_id": 44,
+        "ward_number": "118"
+      },
+      {
+        "hausdorff_m": 9.608121537103791,
+        "symmetric_difference_m2": 17686.309669168917,
+        "ward_id": 45,
+        "ward_number": "117"
+      },
+      {
+        "hausdorff_m": 9.814466686199017,
+        "symmetric_difference_m2": 19105.848339715598,
+        "ward_id": 46,
+        "ward_number": "108"
+      },
+      {
+        "hausdorff_m": 8.89675380501826,
+        "symmetric_difference_m2": 7907.869727885381,
+        "ward_id": 47,
+        "ward_number": "106"
+      },
+      {
+        "hausdorff_m": 12.794958179934952,
+        "symmetric_difference_m2": 13297.889862223155,
+        "ward_id": 48,
+        "ward_number": "107"
+      },
+      {
+        "hausdorff_m": 9.833587935776093,
+        "symmetric_difference_m2": 11465.308662103589,
+        "ward_id": 49,
+        "ward_number": "105"
+      },
+      {
+        "hausdorff_m": 9.906939565373827,
+        "symmetric_difference_m2": 12584.607217820347,
+        "ward_id": 50,
+        "ward_number": "104"
+      },
+      {
+        "hausdorff_m": 9.465039981735872,
+        "symmetric_difference_m2": 14295.744454273192,
+        "ward_id": 51,
+        "ward_number": "99"
+      },
+      {
+        "hausdorff_m": 9.781112424383252,
+        "symmetric_difference_m2": 15185.175563646679,
+        "ward_id": 52,
+        "ward_number": "98"
+      },
+      {
+        "hausdorff_m": 9.46503998152614,
+        "symmetric_difference_m2": 15846.628215034661,
+        "ward_id": 53,
+        "ward_number": "100"
+      },
+      {
+        "hausdorff_m": 9.637426731109255,
+        "symmetric_difference_m2": 9433.028419670301,
+        "ward_id": 54,
+        "ward_number": "97"
+      },
+      {
+        "hausdorff_m": 9.970827047529472,
+        "symmetric_difference_m2": 19218.06429158689,
+        "ward_id": 55,
+        "ward_number": "101"
+      },
+      {
+        "hausdorff_m": 9.07311477941025,
+        "symmetric_difference_m2": 12475.408877660851,
+        "ward_id": 56,
+        "ward_number": "96"
+      },
+      {
+        "hausdorff_m": 9.970827047529472,
+        "symmetric_difference_m2": 16231.911028039336,
+        "ward_id": 57,
+        "ward_number": "102"
+      },
+      {
+        "hausdorff_m": 9.900079436280096,
+        "symmetric_difference_m2": 13976.010013067546,
+        "ward_id": 58,
+        "ward_number": "95"
+      },
+      {
+        "hausdorff_m": 8.729433640566109,
+        "symmetric_difference_m2": 13497.532203589379,
+        "ward_id": 59,
+        "ward_number": "103"
+      },
+      {
+        "hausdorff_m": 9.803772251852738,
+        "symmetric_difference_m2": 12276.270842982492,
+        "ward_id": 60,
+        "ward_number": "94"
+      },
+      {
+        "hausdorff_m": 9.942753205157198,
+        "symmetric_difference_m2": 7146.87374476908,
+        "ward_id": 61,
+        "ward_number": "15"
+      },
+      {
+        "hausdorff_m": 9.735913008288032,
+        "symmetric_difference_m2": 31493.742741392693,
+        "ward_id": 62,
+        "ward_number": "16"
+      },
+      {
+        "hausdorff_m": 9.989189414381501,
+        "symmetric_difference_m2": 35718.67055727918,
+        "ward_id": 63,
+        "ward_number": "17"
+      },
+      {
+        "hausdorff_m": 9.923088308538297,
+        "symmetric_difference_m2": 22987.95567513021,
+        "ward_id": 64,
+        "ward_number": "18"
+      },
+      {
+        "hausdorff_m": 9.923088306478906,
+        "symmetric_difference_m2": 11861.771253091772,
+        "ward_id": 65,
+        "ward_number": "19"
+      },
+      {
+        "hausdorff_m": 9.05394372974694,
+        "symmetric_difference_m2": 15340.186424336543,
+        "ward_id": 66,
+        "ward_number": "20"
+      },
+      {
+        "hausdorff_m": 9.676730476659838,
+        "symmetric_difference_m2": 16853.0095873076,
+        "ward_id": 67,
+        "ward_number": "21"
+      },
+      {
+        "hausdorff_m": 9.323204523058767,
+        "symmetric_difference_m2": 10925.946102874492,
+        "ward_id": 68,
+        "ward_number": "79"
+      },
+      {
+        "hausdorff_m": 9.493505259867064,
+        "symmetric_difference_m2": 12276.952187483517,
+        "ward_id": 69,
+        "ward_number": "80"
+      },
+      {
+        "hausdorff_m": 7.80367885037402,
+        "symmetric_difference_m2": 11691.737347377662,
+        "ward_id": 70,
+        "ward_number": "81"
+      },
+      {
+        "hausdorff_m": 9.928530032460886,
+        "symmetric_difference_m2": 26639.722313808474,
+        "ward_id": 71,
+        "ward_number": "82"
+      },
+      {
+        "hausdorff_m": 10.52678977748109,
+        "symmetric_difference_m2": 22700.469698216482,
+        "ward_id": 72,
+        "ward_number": "83"
+      },
+      {
+        "hausdorff_m": 9.902257372754374,
+        "symmetric_difference_m2": 22237.04617040312,
+        "ward_id": 73,
+        "ward_number": "84"
+      },
+      {
+        "hausdorff_m": 9.830768748486008,
+        "symmetric_difference_m2": 22788.91897122544,
+        "ward_id": 74,
+        "ward_number": "85"
+      },
+      {
+        "hausdorff_m": 9.95003320768737,
+        "symmetric_difference_m2": 22932.87860439052,
+        "ward_id": 75,
+        "ward_number": "86"
+      },
+      {
+        "hausdorff_m": 9.664798103678976,
+        "symmetric_difference_m2": 11738.348449259085,
+        "ward_id": 76,
+        "ward_number": "87"
+      },
+      {
+        "hausdorff_m": 9.906939565373827,
+        "symmetric_difference_m2": 6911.80759871086,
+        "ward_id": 77,
+        "ward_number": "88"
+      },
+      {
+        "hausdorff_m": 9.560624921454357,
+        "symmetric_difference_m2": 7887.0752240700585,
+        "ward_id": 78,
+        "ward_number": "90"
+      },
+      {
+        "hausdorff_m": 9.515329881665632,
+        "symmetric_difference_m2": 7636.894122229406,
+        "ward_id": 79,
+        "ward_number": "92"
+      },
+      {
+        "hausdorff_m": 9.779840300077193,
+        "symmetric_difference_m2": 15391.129596220406,
+        "ward_id": 80,
+        "ward_number": "93"
+      },
+      {
+        "hausdorff_m": 9.351648245054545,
+        "symmetric_difference_m2": 8425.020548307111,
+        "ward_id": 81,
+        "ward_number": "89"
+      },
+      {
+        "hausdorff_m": 8.19451619338032,
+        "symmetric_difference_m2": 8656.199722824267,
+        "ward_id": 82,
+        "ward_number": "162"
+      },
+      {
+        "hausdorff_m": 8.772933921930173,
+        "symmetric_difference_m2": 8861.310807882483,
+        "ward_id": 83,
+        "ward_number": "163"
+      },
+      {
+        "hausdorff_m": 13.036623519540905,
+        "symmetric_difference_m2": 8187.442605530245,
+        "ward_id": 84,
+        "ward_number": "164"
+      },
+      {
+        "hausdorff_m": 9.496000780141085,
+        "symmetric_difference_m2": 19616.319506464337,
+        "ward_id": 85,
+        "ward_number": "158"
+      },
+      {
+        "hausdorff_m": 7.94334158671619,
+        "symmetric_difference_m2": 10981.53784005904,
+        "ward_id": 86,
+        "ward_number": "159"
+      },
+      {
+        "hausdorff_m": 9.1889021033215,
+        "symmetric_difference_m2": 10161.621694156953,
+        "ward_id": 87,
+        "ward_number": "167"
+      },
+      {
+        "hausdorff_m": 9.86420205085157,
+        "symmetric_difference_m2": 15420.741743822147,
+        "ward_id": 88,
+        "ward_number": "157"
+      },
+      {
+        "hausdorff_m": 9.78327627058406,
+        "symmetric_difference_m2": 12353.278372835728,
+        "ward_id": 89,
+        "ward_number": "166"
+      },
+      {
+        "hausdorff_m": 7.965344741526528,
+        "symmetric_difference_m2": 10653.346844372474,
+        "ward_id": 90,
+        "ward_number": "165"
+      },
+      {
+        "hausdorff_m": 9.979079273397701,
+        "symmetric_difference_m2": 15127.167016697385,
+        "ward_id": 91,
+        "ward_number": "156"
+      },
+      {
+        "hausdorff_m": 8.468443486696083,
+        "symmetric_difference_m2": 12332.028981679596,
+        "ward_id": 92,
+        "ward_number": "67"
+      },
+      {
+        "hausdorff_m": 9.941005135304497,
+        "symmetric_difference_m2": 17971.479507871616,
+        "ward_id": 93,
+        "ward_number": "70"
+      },
+      {
+        "hausdorff_m": 9.647309852260035,
+        "symmetric_difference_m2": 15715.429882845452,
+        "ward_id": 94,
+        "ward_number": "71"
+      },
+      {
+        "hausdorff_m": 9.970667437409006,
+        "symmetric_difference_m2": 11606.973276037803,
+        "ward_id": 95,
+        "ward_number": "74"
+      },
+      {
+        "hausdorff_m": 8.377384583634953,
+        "symmetric_difference_m2": 7290.20076865903,
+        "ward_id": 96,
+        "ward_number": "77"
+      },
+      {
+        "hausdorff_m": 8.924266402398235,
+        "symmetric_difference_m2": 10875.208307851426,
+        "ward_id": 97,
+        "ward_number": "69"
+      },
+      {
+        "hausdorff_m": 10.405843778864442,
+        "symmetric_difference_m2": 10461.459602622688,
+        "ward_id": 98,
+        "ward_number": "78"
+      },
+      {
+        "hausdorff_m": 8.558017352805994,
+        "symmetric_difference_m2": 9228.857791360846,
+        "ward_id": 99,
+        "ward_number": "76"
+      },
+      {
+        "hausdorff_m": 9.815571801135457,
+        "symmetric_difference_m2": 22589.728705284877,
+        "ward_id": 100,
+        "ward_number": "64"
+      },
+      {
+        "hausdorff_m": 9.970667437409006,
+        "symmetric_difference_m2": 11163.271100494494,
+        "ward_id": 101,
+        "ward_number": "75"
+      },
+      {
+        "hausdorff_m": 8.175166020248737,
+        "symmetric_difference_m2": 11441.495449630487,
+        "ward_id": 102,
+        "ward_number": "66"
+      },
+      {
+        "hausdorff_m": 9.74607471438099,
+        "symmetric_difference_m2": 8779.548274843912,
+        "ward_id": 103,
+        "ward_number": "73"
+      },
+      {
+        "hausdorff_m": 6.923589576035105,
+        "symmetric_difference_m2": 9696.570061480601,
+        "ward_id": 104,
+        "ward_number": "72"
+      },
+      {
+        "hausdorff_m": 9.759049463064848,
+        "symmetric_difference_m2": 17975.037649941565,
+        "ward_id": 105,
+        "ward_number": "147"
+      },
+      {
+        "hausdorff_m": 9.982359667096379,
+        "symmetric_difference_m2": 12949.49179385455,
+        "ward_id": 106,
+        "ward_number": "148"
+      },
+      {
+        "hausdorff_m": 9.929751306925176,
+        "symmetric_difference_m2": 11173.610444924174,
+        "ward_id": 107,
+        "ward_number": "149"
+      },
+      {
+        "hausdorff_m": 9.75601911553041,
+        "symmetric_difference_m2": 30943.312310420686,
+        "ward_id": 108,
+        "ward_number": "150"
+      },
+      {
+        "hausdorff_m": 9.230063820433358,
+        "symmetric_difference_m2": 10195.072567867945,
+        "ward_id": 109,
+        "ward_number": "151"
+      },
+      {
+        "hausdorff_m": 9.801856619415094,
+        "symmetric_difference_m2": 15139.34993904356,
+        "ward_id": 110,
+        "ward_number": "146"
+      },
+      {
+        "hausdorff_m": 9.86420205085157,
+        "symmetric_difference_m2": 6562.29074340683,
+        "ward_id": 111,
+        "ward_number": "155"
+      },
+      {
+        "hausdorff_m": 9.95715624713218,
+        "symmetric_difference_m2": 10131.080995324879,
+        "ward_id": 112,
+        "ward_number": "145"
+      },
+      {
+        "hausdorff_m": 9.975487049667203,
+        "symmetric_difference_m2": 7235.904403411481,
+        "ward_id": 113,
+        "ward_number": "154"
+      },
+      {
+        "hausdorff_m": 9.982359667096379,
+        "symmetric_difference_m2": 13881.003120235791,
+        "ward_id": 114,
+        "ward_number": "144"
+      },
+      {
+        "hausdorff_m": 9.889567232906128,
+        "symmetric_difference_m2": 11616.012882893163,
+        "ward_id": 115,
+        "ward_number": "153"
+      },
+      {
+        "hausdorff_m": 9.929751307440405,
+        "symmetric_difference_m2": 13842.9949890474,
+        "ward_id": 116,
+        "ward_number": "152"
+      },
+      {
+        "hausdorff_m": 9.396031857626125,
+        "symmetric_difference_m2": 12926.737259479622,
+        "ward_id": 117,
+        "ward_number": "49"
+      },
+      {
+        "hausdorff_m": 9.425926623382894,
+        "symmetric_difference_m2": 11080.174785957679,
+        "ward_id": 118,
+        "ward_number": "50"
+      },
+      {
+        "hausdorff_m": 9.884417838321852,
+        "symmetric_difference_m2": 18579.724959750543,
+        "ward_id": 119,
+        "ward_number": "52"
+      },
+      {
+        "hausdorff_m": 9.063973684579603,
+        "symmetric_difference_m2": 10047.155925181502,
+        "ward_id": 120,
+        "ward_number": "54"
+      },
+      {
+        "hausdorff_m": 8.5061288719282,
+        "symmetric_difference_m2": 5625.480203475796,
+        "ward_id": 121,
+        "ward_number": "55"
+      },
+      {
+        "hausdorff_m": 8.5061288719282,
+        "symmetric_difference_m2": 7281.8804058234,
+        "ward_id": 122,
+        "ward_number": "56"
+      },
+      {
+        "hausdorff_m": 9.381356806045622,
+        "symmetric_difference_m2": 9191.949906348109,
+        "ward_id": 123,
+        "ward_number": "57"
+      },
+      {
+        "hausdorff_m": 9.618574063808467,
+        "symmetric_difference_m2": 16987.548041772265,
+        "ward_id": 124,
+        "ward_number": "58"
+      },
+      {
+        "hausdorff_m": 9.81296628673091,
+        "symmetric_difference_m2": 17264.816911154638,
+        "ward_id": 125,
+        "ward_number": "59"
+      },
+      {
+        "hausdorff_m": 9.69802474248736,
+        "symmetric_difference_m2": 13095.544152265486,
+        "ward_id": 126,
+        "ward_number": "60"
+      },
+      {
+        "hausdorff_m": 9.618574063808467,
+        "symmetric_difference_m2": 14915.778581276334,
+        "ward_id": 127,
+        "ward_number": "61"
+      },
+      {
+        "hausdorff_m": 9.81296628673091,
+        "symmetric_difference_m2": 6644.628877253027,
+        "ward_id": 128,
+        "ward_number": "62"
+      },
+      {
+        "hausdorff_m": 9.987200039858505,
+        "symmetric_difference_m2": 11844.485404277386,
+        "ward_id": 129,
+        "ward_number": "63"
+      },
+      {
+        "hausdorff_m": 8.874531736448617,
+        "symmetric_difference_m2": 9989.517453012633,
+        "ward_id": 130,
+        "ward_number": "51"
+      },
+      {
+        "hausdorff_m": 9.875449156065564,
+        "symmetric_difference_m2": 10749.724118002829,
+        "ward_id": 131,
+        "ward_number": "53"
+      },
+      {
+        "hausdorff_m": 9.946864671123027,
+        "symmetric_difference_m2": 7978.936474366348,
+        "ward_id": 132,
+        "ward_number": "130"
+      },
+      {
+        "hausdorff_m": 6.940848127480088,
+        "symmetric_difference_m2": 9278.4641809152,
+        "ward_id": 133,
+        "ward_number": "136"
+      },
+      {
+        "hausdorff_m": 9.170557093046892,
+        "symmetric_difference_m2": 14358.904221433839,
+        "ward_id": 134,
+        "ward_number": "131"
+      },
+      {
+        "hausdorff_m": 9.015525666363951,
+        "symmetric_difference_m2": 7076.247173179596,
+        "ward_id": 135,
+        "ward_number": "132"
+      },
+      {
+        "hausdorff_m": 9.247424334600066,
+        "symmetric_difference_m2": 11038.233446933207,
+        "ward_id": 136,
+        "ward_number": "129"
+      },
+      {
+        "hausdorff_m": 9.481397943000369,
+        "symmetric_difference_m2": 8118.452097539732,
+        "ward_id": 137,
+        "ward_number": "138"
+      },
+      {
+        "hausdorff_m": 9.645591742526918,
+        "symmetric_difference_m2": 9142.425033379288,
+        "ward_id": 138,
+        "ward_number": "128"
+      },
+      {
+        "hausdorff_m": 9.859842812374547,
+        "symmetric_difference_m2": 10881.693354397157,
+        "ward_id": 139,
+        "ward_number": "137"
+      },
+      {
+        "hausdorff_m": 9.983004406765325,
+        "symmetric_difference_m2": 19982.057696678592,
+        "ward_id": 140,
+        "ward_number": "127"
+      },
+      {
+        "hausdorff_m": 9.042489799121086,
+        "symmetric_difference_m2": 11808.643498084988,
+        "ward_id": 141,
+        "ward_number": "133"
+      },
+      {
+        "hausdorff_m": 8.582787300954262,
+        "symmetric_difference_m2": 4769.1771392291685,
+        "ward_id": 142,
+        "ward_number": "141"
+      },
+      {
+        "hausdorff_m": 9.078116779680418,
+        "symmetric_difference_m2": 6011.648776808971,
+        "ward_id": 143,
+        "ward_number": "134"
+      },
+      {
+        "hausdorff_m": 8.116450817321871,
+        "symmetric_difference_m2": 8370.801449617098,
+        "ward_id": 144,
+        "ward_number": "41"
+      },
+      {
+        "hausdorff_m": 9.894094888497657,
+        "symmetric_difference_m2": 17310.77276607467,
+        "ward_id": 145,
+        "ward_number": "40"
+      },
+      {
+        "hausdorff_m": 6.9983136249130355,
+        "symmetric_difference_m2": 9341.042957627975,
+        "ward_id": 146,
+        "ward_number": "38"
+      },
+      {
+        "hausdorff_m": 8.998819033737792,
+        "symmetric_difference_m2": 23458.374024745717,
+        "ward_id": 147,
+        "ward_number": "37"
+      },
+      {
+        "hausdorff_m": 9.647309852260035,
+        "symmetric_difference_m2": 9002.153945532575,
+        "ward_id": 148,
+        "ward_number": "44"
+      },
+      {
+        "hausdorff_m": 8.439871911695041,
+        "symmetric_difference_m2": 7964.6266324715025,
+        "ward_id": 149,
+        "ward_number": "48"
+      },
+      {
+        "hausdorff_m": 9.894094888497657,
+        "symmetric_difference_m2": 6070.6777556700745,
+        "ward_id": 150,
+        "ward_number": "42"
+      },
+      {
+        "hausdorff_m": 6.6222863428969125,
+        "symmetric_difference_m2": 6513.761498153937,
+        "ward_id": 151,
+        "ward_number": "47"
+      },
+      {
+        "hausdorff_m": 6.379896083258025,
+        "symmetric_difference_m2": 7924.196304738293,
+        "ward_id": 152,
+        "ward_number": "45"
+      },
+      {
+        "hausdorff_m": 9.004971660318565,
+        "symmetric_difference_m2": 13448.809165093791,
+        "ward_id": 153,
+        "ward_number": "46"
+      },
+      {
+        "hausdorff_m": 9.444661442333205,
+        "symmetric_difference_m2": 19325.454950880467,
+        "ward_id": 154,
+        "ward_number": "34"
+      },
+      {
+        "hausdorff_m": 9.855253139596416,
+        "symmetric_difference_m2": 12981.880852474162,
+        "ward_id": 155,
+        "ward_number": "35"
+      },
+      {
+        "hausdorff_m": 9.907698930452327,
+        "symmetric_difference_m2": 11619.076295521403,
+        "ward_id": 156,
+        "ward_number": "36"
+      },
+      {
+        "hausdorff_m": 7.871987243105356,
+        "symmetric_difference_m2": 5230.141286428675,
+        "ward_id": 157,
+        "ward_number": "1"
+      },
+      {
+        "hausdorff_m": 9.673927450619985,
+        "symmetric_difference_m2": 9706.40162436742,
+        "ward_id": 158,
+        "ward_number": "10"
+      },
+      {
+        "hausdorff_m": 9.115393659550008,
+        "symmetric_difference_m2": 7633.95716207812,
+        "ward_id": 159,
+        "ward_number": "11"
+      },
+      {
+        "hausdorff_m": 7.95411704143269,
+        "symmetric_difference_m2": 6902.98532166539,
+        "ward_id": 160,
+        "ward_number": "2"
+      },
+      {
+        "hausdorff_m": 9.412305449346572,
+        "symmetric_difference_m2": 13193.732232714028,
+        "ward_id": 161,
+        "ward_number": "3"
+      },
+      {
+        "hausdorff_m": 9.702170553615277,
+        "symmetric_difference_m2": 14247.83426294854,
+        "ward_id": 162,
+        "ward_number": "5"
+      },
+      {
+        "hausdorff_m": 9.354957004102193,
+        "symmetric_difference_m2": 16165.03420001485,
+        "ward_id": 163,
+        "ward_number": "7"
+      },
+      {
+        "hausdorff_m": 9.702170551277696,
+        "symmetric_difference_m2": 7695.718055974946,
+        "ward_id": 164,
+        "ward_number": "8"
+      },
+      {
+        "hausdorff_m": 8.545871821031227,
+        "symmetric_difference_m2": 8452.76044023001,
+        "ward_id": 165,
+        "ward_number": "9"
+      },
+      {
+        "hausdorff_m": 8.535845953008904,
+        "symmetric_difference_m2": 3543.364276813812,
+        "ward_id": 166,
+        "ward_number": "12"
+      },
+      {
+        "hausdorff_m": 8.535845953008904,
+        "symmetric_difference_m2": 2623.198946111197,
+        "ward_id": 167,
+        "ward_number": "13"
+      },
+      {
+        "hausdorff_m": 8.367371468232687,
+        "symmetric_difference_m2": 5205.8272556341,
+        "ward_id": 168,
+        "ward_number": "14"
+      },
+      {
+        "hausdorff_m": 9.444608687154618,
+        "symmetric_difference_m2": 13225.419663742303,
+        "ward_id": 169,
+        "ward_number": "27"
+      },
+      {
+        "hausdorff_m": 9.586008865850378,
+        "symmetric_difference_m2": 11700.598249583718,
+        "ward_id": 170,
+        "ward_number": "22"
+      },
+      {
+        "hausdorff_m": 9.873678280151958,
+        "symmetric_difference_m2": 8494.00176183372,
+        "ward_id": 171,
+        "ward_number": "28"
+      },
+      {
+        "hausdorff_m": 9.860614491658874,
+        "symmetric_difference_m2": 16376.491197291649,
+        "ward_id": 172,
+        "ward_number": "29"
+      },
+      {
+        "hausdorff_m": 9.932514698794403,
+        "symmetric_difference_m2": 22470.136684531964,
+        "ward_id": 173,
+        "ward_number": "30"
+      },
+      {
+        "hausdorff_m": 9.610157907652454,
+        "symmetric_difference_m2": 16575.194997272392,
+        "ward_id": 174,
+        "ward_number": "26"
+      },
+      {
+        "hausdorff_m": 9.982622766669385,
+        "symmetric_difference_m2": 19992.616749195156,
+        "ward_id": 175,
+        "ward_number": "25"
+      },
+      {
+        "hausdorff_m": 9.881307326941462,
+        "symmetric_difference_m2": 8282.933828691266,
+        "ward_id": 176,
+        "ward_number": "33"
+      },
+      {
+        "hausdorff_m": 9.77373942554376,
+        "symmetric_difference_m2": 14471.863414658063,
+        "ward_id": 177,
+        "ward_number": "24"
+      },
+      {
+        "hausdorff_m": 12.701950307943035,
+        "symmetric_difference_m2": 24568.41519579058,
+        "ward_id": 178,
+        "ward_number": "32"
+      },
+      {
+        "hausdorff_m": 10.839239294264909,
+        "symmetric_difference_m2": 21749.369158814297,
+        "ward_id": 179,
+        "ward_number": "23"
+      },
+      {
+        "hausdorff_m": 9.244686199303837,
+        "symmetric_difference_m2": 8774.687821067642,
+        "ward_id": 180,
+        "ward_number": "31"
+      },
+      {
+        "hausdorff_m": 9.199272341411387,
+        "symmetric_difference_m2": 9833.876557143576,
+        "ward_id": 181,
+        "ward_number": "142"
+      },
+      {
+        "hausdorff_m": 6.406150929567869,
+        "symmetric_difference_m2": 6887.888919260142,
+        "ward_id": 182,
+        "ward_number": "139"
+      },
+      {
+        "hausdorff_m": 6.810149547787603,
+        "symmetric_difference_m2": 5159.3072198743475,
+        "ward_id": 183,
+        "ward_number": "140"
+      },
+      {
+        "hausdorff_m": 7.592403136713599,
+        "symmetric_difference_m2": 10819.993905976045,
+        "ward_id": 184,
+        "ward_number": "135"
+      },
+      {
+        "hausdorff_m": 9.866037594977483,
+        "symmetric_difference_m2": 18988.69946549455,
+        "ward_id": 185,
+        "ward_number": "188"
+      },
+      {
+        "hausdorff_m": 9.96117725318517,
+        "symmetric_difference_m2": 12014.600881674669,
+        "ward_id": 186,
+        "ward_number": "187"
+      },
+      {
+        "hausdorff_m": 9.003304870670206,
+        "symmetric_difference_m2": 9092.293951853704,
+        "ward_id": 187,
+        "ward_number": "4"
+      },
+      {
+        "hausdorff_m": 9.447223424750334,
+        "symmetric_difference_m2": 13416.04252930515,
+        "ward_id": 188,
+        "ward_number": "68"
+      },
+      {
+        "hausdorff_m": 9.938373384185274,
+        "symmetric_difference_m2": 9590.201852794222,
+        "ward_id": 189,
+        "ward_number": "65"
+      },
+      {
+        "hausdorff_m": 9.657989917110607,
+        "symmetric_difference_m2": 8583.965140258915,
+        "ward_id": 190,
+        "ward_number": "143"
+      },
+      {
+        "hausdorff_m": 9.781339327852523,
+        "symmetric_difference_m2": 10080.504646046445,
+        "ward_id": 191,
+        "ward_number": "91"
+      },
+      {
+        "hausdorff_m": 7.313578374796657,
+        "symmetric_difference_m2": 9473.676278695559,
+        "ward_id": 192,
+        "ward_number": "6"
+      },
+      {
+        "hausdorff_m": 9.649140577296357,
+        "symmetric_difference_m2": 5584.916577406205,
+        "ward_id": 193,
+        "ward_number": "39"
+      },
+      {
+        "hausdorff_m": 12.74363087629082,
+        "symmetric_difference_m2": 13798.202676316238,
+        "ward_id": 194,
+        "ward_number": "43"
+      },
+      {
+        "hausdorff_m": 9.59523767183221,
+        "symmetric_difference_m2": 20236.41419211065,
+        "ward_id": 195,
+        "ward_number": "111"
+      },
+      {
+        "hausdorff_m": 9.8690786513382,
+        "symmetric_difference_m2": 15492.104591670599,
+        "ward_id": 196,
+        "ward_number": "110"
+      },
+      {
+        "hausdorff_m": 7.9128044334787395,
+        "symmetric_difference_m2": 11340.587014632543,
+        "ward_id": 197,
+        "ward_number": "161"
+      },
+      {
+        "hausdorff_m": 9.076905756711364,
+        "symmetric_difference_m2": 6445.5603327638155,
+        "ward_id": 198,
+        "ward_number": "160"
+      },
+      {
+        "hausdorff_m": 9.856424483702677,
+        "symmetric_difference_m2": 12595.66871033605,
+        "ward_id": 199,
+        "ward_number": "195"
+      },
+      {
+        "hausdorff_m": 9.618814242953801,
+        "symmetric_difference_m2": 13322.560528275662,
+        "ward_id": 200,
+        "ward_number": "196"
+      }
+    ],
+    "handoff": "Within tolerance is not acceptance. Near simplified boundaries, overlaps, holes or positional uncertainty: use full geometry and require confirmation. Identity mismatch or missing polygons: unavailable.",
+    "membership_guaranteed": false,
+    "status": "exceeds_tolerance"
+  }
+}

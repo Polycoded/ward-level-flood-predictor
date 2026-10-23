@@ -1,0 +1,211 @@
+{
+  "cases": {
+    "canonical_synthetic_dry": {
+      "candidate_count": 0,
+      "escalation_count": 0,
+      "escalation_transition_count": 0,
+      "interpretation": "Existing canonical features; hypothetical uniform rainfall at fixed artificial clock. 230/250 mm are station-candidate sensitivity totals only, not adopted ward rainfall. 0/5 mm are synthetic controls, not observed dry days. No labels or historical validation.",
+      "overflow_count": 0,
+      "release_count": 0,
+      "suppression_count": 200
+    },
+    "canonical_synthetic_low": {
+      "candidate_count": 0,
+      "escalation_count": 0,
+      "escalation_transition_count": 0,
+      "interpretation": "Existing canonical features; hypothetical uniform rainfall at fixed artificial clock. 230/250 mm are station-candidate sensitivity totals only, not adopted ward rainfall. 0/5 mm are synthetic controls, not observed dry days. No labels or historical validation.",
+      "overflow_count": 0,
+      "release_count": 0,
+      "suppression_count": 200
+    },
+    "cooldown": {
+      "candidate_count": 0,
+      "escalation_count": 0,
+      "escalation_transition_count": 0,
+      "interpretation": "Synthetic mechanics scenario; not an observed dry day or historical validation",
+      "overflow_count": 0,
+      "release_count": 0,
+      "suppression_count": 1
+    },
+    "cooldown_elapsed": {
+      "candidate_count": 1,
+      "escalation_count": 0,
+      "escalation_transition_count": 0,
+      "interpretation": "Synthetic mechanics scenario; not an observed dry day or historical validation",
+      "overflow_count": 0,
+      "release_count": 0,
+      "suppression_count": 0
+    },
+    "deduplicated": {
+      "candidate_count": 0,
+      "escalation_count": 0,
+      "escalation_transition_count": 0,
+      "interpretation": "Synthetic mechanics scenario; not an observed dry day or historical validation",
+      "overflow_count": 0,
+      "release_count": 0,
+      "suppression_count": 1
+    },
+    "dry": {
+      "candidate_count": 0,
+      "escalation_count": 0,
+      "escalation_transition_count": 0,
+      "interpretation": "Synthetic mechanics scenario; not an observed dry day or historical validation",
+      "overflow_count": 0,
+      "release_count": 0,
+      "suppression_count": 1
+    },
+    "escalation_bypasses_cooldown": {
+      "candidate_count": 1,
+      "escalation_count": 1,
+      "escalation_transition_count": 1,
+      "interpretation": "Synthetic mechanics scenario; not an observed dry day or historical validation",
+      "overflow_count": 0,
+      "release_count": 0,
+      "suppression_count": 0
+    },
+    "exact_forecast": {
+      "candidate_count": 1,
+      "escalation_count": 0,
+      "escalation_transition_count": 0,
+      "interpretation": "Synthetic mechanics scenario; not an observed dry day or historical validation",
+      "overflow_count": 0,
+      "release_count": 0,
+      "suppression_count": 0
+    },
+    "expired_below_trigger": {
+      "candidate_count": 0,
+      "escalation_count": 0,
+      "escalation_transition_count": 0,
+      "interpretation": "Synthetic mechanics scenario; not an observed dry day or historical validation",
+      "overflow_count": 0,
+      "release_count": 0,
+      "suppression_count": 1
+    },
+    "expired_reentry": {
+      "candidate_count": 1,
+      "escalation_count": 0,
+      "escalation_transition_count": 0,
+      "interpretation": "Synthetic mechanics scenario; not an observed dry day or historical validation",
+      "overflow_count": 0,
+      "release_count": 0,
+      "suppression_count": 0
+    },
+    "heavy": {
+      "candidate_count": 1,
+      "escalation_count": 1,
+      "escalation_transition_count": 0,
+      "interpretation": "Synthetic mechanics scenario; not an observed dry day or historical validation",
+      "overflow_count": 0,
+      "release_count": 0,
+      "suppression_count": 0
+    },
+    "hypothetical_uniform_station_230mm_24h": {
+      "candidate_count": 2,
+      "escalation_count": 0,
+      "escalation_transition_count": 0,
+      "interpretation": "Existing canonical features; hypothetical uniform rainfall at fixed artificial clock. 230/250 mm are station-candidate sensitivity totals only, not adopted ward rainfall. 0/5 mm are synthetic controls, not observed dry days. No labels or historical validation.",
+      "overflow_count": 198,
+      "release_count": 0,
+      "suppression_count": 0
+    },
+    "hypothetical_uniform_station_250mm_24h": {
+      "candidate_count": 2,
+      "escalation_count": 0,
+      "escalation_transition_count": 0,
+      "interpretation": "Existing canonical features; hypothetical uniform rainfall at fixed artificial clock. 230/250 mm are station-candidate sensitivity totals only, not adopted ward rainfall. 0/5 mm are synthetic controls, not observed dry days. No labels or historical validation.",
+      "overflow_count": 198,
+      "release_count": 0,
+      "suppression_count": 0
+    },
+    "hysteresis": {
+      "candidate_count": 0,
+      "escalation_count": 0,
+      "escalation_transition_count": 0,
+      "interpretation": "Synthetic mechanics scenario; not an observed dry day or historical validation",
+      "overflow_count": 0,
+      "release_count": 0,
+      "suppression_count": 1
+    },
+    "long_duration": {
+      "candidate_count": 0,
+      "escalation_count": 0,
+      "escalation_transition_count": 0,
+      "interpretation": "Synthetic mechanics scenario; not an observed dry day or historical validation",
+      "overflow_count": 0,
+      "release_count": 0,
+      "suppression_count": 1
+    },
+    "low": {
+      "candidate_count": 0,
+      "escalation_count": 0,
+      "escalation_transition_count": 0,
+      "interpretation": "Synthetic mechanics scenario; not an observed dry day or historical validation",
+      "overflow_count": 0,
+      "release_count": 0,
+      "suppression_count": 1
+    },
+    "overflow": {
+      "candidate_count": 2,
+      "escalation_count": 0,
+      "escalation_transition_count": 0,
+      "interpretation": "Synthetic mechanics scenario; not an observed dry day or historical validation",
+      "overflow_count": 1,
+      "release_count": 0,
+      "suppression_count": 0
+    },
+    "overflow_retry": {
+      "candidate_count": 1,
+      "escalation_count": 0,
+      "escalation_transition_count": 0,
+      "interpretation": "Synthetic mechanics scenario; not an observed dry day or historical validation",
+      "overflow_count": 0,
+      "release_count": 0,
+      "suppression_count": 2
+    },
+    "release": {
+      "candidate_count": 0,
+      "escalation_count": 0,
+      "escalation_transition_count": 0,
+      "interpretation": "Synthetic mechanics scenario; not an observed dry day or historical validation",
+      "overflow_count": 0,
+      "release_count": 1,
+      "suppression_count": 1
+    },
+    "released_reentry": {
+      "candidate_count": 1,
+      "escalation_count": 0,
+      "escalation_transition_count": 0,
+      "interpretation": "Synthetic mechanics scenario; not an observed dry day or historical validation",
+      "overflow_count": 0,
+      "release_count": 0,
+      "suppression_count": 0
+    },
+    "short_duration": {
+      "candidate_count": 1,
+      "escalation_count": 0,
+      "escalation_transition_count": 0,
+      "interpretation": "Synthetic mechanics scenario; not an observed dry day or historical validation",
+      "overflow_count": 0,
+      "release_count": 0,
+      "suppression_count": 0
+    },
+    "trigger": {
+      "candidate_count": 1,
+      "escalation_count": 0,
+      "escalation_transition_count": 0,
+      "interpretation": "Synthetic mechanics scenario; not an observed dry day or historical validation",
+      "overflow_count": 0,
+      "release_count": 0,
+      "suppression_count": 0
+    }
+  },
+  "claim": "Scenario counts only; no observed negatives, false-alarm rates or historical metrics",
+  "count_definitions": {
+    "candidate_count": "Selected pending candidates",
+    "escalation_count": "Selected plus overflow candidates at escalation policy level",
+    "escalation_transition_count": "Selected plus overflow candidates bypassing cooldown on active escalation",
+    "overflow_count": "Eligible candidates deferred without state advancement",
+    "release_count": "Released prior-state lifecycle events, not all-clears",
+    "suppression_count": "Ward suppression decisions"
+  }
+}
