@@ -216,6 +216,18 @@ class PushSubscription(BaseModel):
     endpoint: str = Field(..., min_length=1, max_length=2048)
     keys: PushKeys
 
+    @field_validator("endpoint")
+    @classmethod
+    def _endpoint_is_safe(cls, value: str) -> str:
+        # Reject non-https URLs and endpoints aimed at internal addresses so the
+        # stored endpoint cannot be used for SSRF. A deeper DNS check runs again
+        # at send time; this is the fast, no-DNS gate at the input boundary.
+        from api.security import is_safe_push_endpoint
+
+        if not is_safe_push_endpoint(value):
+            raise ValueError("endpoint must be an https URL to a public push service")
+        return value
+
 
 class SubscriptionCreate(BaseModel):
     ward_id: int = Field(..., ge=1, le=100000)

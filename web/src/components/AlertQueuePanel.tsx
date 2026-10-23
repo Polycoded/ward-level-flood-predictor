@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
-import { api } from '../api/client';
+import { api, isAuthError } from '../api/client';
+import { getOperatorKey, setOperatorKey } from '../lib/operatorKey';
 import { useFloodStore } from '../lib/store';
 import { cn, getRiskLabel } from '../lib/utils';
 import type { BroadcastAlert } from '../types';
@@ -10,13 +11,20 @@ import { Modal } from './Modal';
  * exact EN/TA text and approves or cancels each one. Nothing reaches phones without approval.
  */
 export function AlertQueuePanel({ onClose }: { onClose: () => void }) {
-  const { riskData, alertsPreview } = useFloodStore();
+  const { riskData, alertsPreview, setSimulation } = useFloodStore();
+  const [animate, setAnimate] = useState(true);
   const [pending, setPending] = useState<BroadcastAlert[]>([]);
   const [sent, setSent] = useState<BroadcastAlert[]>([]);
   const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading');
   const [busyId, setBusyId] = useState<string | null>(null);
   const [checking, setChecking] = useState(false);
   const [note, setNote] = useState<string | null>(null);
+  const [operatorKey, setKey] = useState(getOperatorKey);
+
+  const saveOperatorKey = (value: string) => {
+    setKey(value);
+    setOperatorKey(value);
+  };
 
   const refresh = useCallback(() => {
     api
@@ -39,7 +47,13 @@ export function AlertQueuePanel({ onClose }: { onClose: () => void }) {
         rainfall_mm: riskData.scenario.rainfall_mm,
         duration_hours: riskData.scenario.duration_hours,
       });
-      setNote(created.length ? `${created.length} new alert(s) proposed.` : 'No new alerts: no ward newly reached the alert threshold.');
+      setNote(
+        created === null
+          ? 'This server proposes alerts automatically every 15 minutes from the live forecast. Showing its current queue.'
+          : created.length
+            ? `${created.length} new alert(s) proposed.`
+            : 'No new alerts: no ward newly reached the alert threshold.'
+      );
       refresh();
     } catch {
       setNote('Could not run the alert check.');
@@ -48,14 +62,33 @@ export function AlertQueuePanel({ onClose }: { onClose: () => void }) {
     }
   };
 
+  const simulate = (alerts: BroadcastAlert[]) => {
+    if (!alerts.length) return;
+    const warning = alerts.some((a) => a.level === 'warning');
+    setSimulation({
+      wardIds: alerts.map((a) => a.ward_id),
+      level: warning ? 'warning' : 'watch',
+      title: alerts.length === 1
+        ? `${alerts[0].level.toUpperCase()} · ${alerts[0].ward_name}${alerts[0].exercise ? ' (exercise)' : ''}`
+        : `${alerts.length} wards · ${warning ? 'WARNING' : 'WATCH'} (exercise)`,
+    });
+  };
+
   const decide = async (alert: BroadcastAlert, action: 'approve' | 'cancel') => {
     setBusyId(alert.id);
     try {
       const updated = action === 'approve' ? await api.approveAlert(alert.id) : await api.cancelAlert(alert.id);
       setPending((list) => list.filter((a) => a.id !== alert.id));
-      if (updated.status === 'approved') setSent((list) => [updated, ...list]);
-    } catch {
-      setNote(`Could not ${action} the alert for ${alert.ward_name}. It may already have been handled.`);
+      if (updated.status === 'approved') {
+        setSent((list) => [updated, ...list]);
+        if (animate) simulate([updated]);
+      }
+    } catch (e) {
+      setNote(
+        isAuthError(e)
+          ? `${action === 'approve' ? 'Approving' : 'Cancelling'} needs a valid operator key. Enter it above, then try again.`
+          : `Could not ${action} the alert for ${alert.ward_name}. It may already have been handled.`
+      );
       refresh();
     } finally {
       setBusyId(null);
@@ -70,6 +103,19 @@ export function AlertQueuePanel({ onClose }: { onClose: () => void }) {
           {alertsPreview && <p>Preview: delivery is simulated in this browser until the backend alert endpoints are live.</p>}
         </div>
 
+        <label className="block text-sm">
+          <span className="font-medium text-gray-900">Operator key</span>
+          <input
+            type="password"
+            value={operatorKey}
+            onChange={(e) => saveOperatorKey(e.target.value)}
+            autoComplete="off"
+            placeholder="Required to approve or cancel"
+            className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-flood-600 focus:outline-none focus:ring-1 focus:ring-flood-600"
+          />
+          <span className="text-xs text-gray-600">Kept on this device only and sent with approvals. Ask the server admin for the key (ADMIN_API_TOKEN).</span>
+        </label>
+
         <div className="flex flex-wrap items-center gap-2">
           <button onClick={check} disabled={!riskData || checking} className="btn-primary">
             {checking ? 'Checking…' : 'Check wards for alerts'}
@@ -81,6 +127,10 @@ export function AlertQueuePanel({ onClose }: { onClose: () => void }) {
           </span>
         </div>
         {note && <p role="status" className="text-sm text-gray-800">{note}</p>}
+        <label className="flex items-center gap-2 text-sm text-gray-800">
+          <input type="checkbox" className="w-4 h-4 accent-flood-600" checked={animate} onChange={(e) => setAnimate(e.target.checked)} />
+          Show the delivery simulation after approving
+        </label>
 
         <section aria-labelledby="pending-title">
           <h3 id="pending-title" className="font-semibold text-gray-900 mb-2">Waiting for approval ({pending.length})</h3>
@@ -117,12 +167,20 @@ export function AlertQueuePanel({ onClose }: { onClose: () => void }) {
 
         {sent.length > 0 && (
           <section aria-labelledby="sent-title" className="border-t border-gray-200 pt-4">
-            <h3 id="sent-title" className="font-semibold text-gray-900 mb-2">Sent this session</h3>
+            <div className="flex items-center justify-between gap-2 mb-2">
+              <h3 id="sent-title" className="font-semibold text-gray-900">Sent this session</h3>
+              {sent.length > 1 && (
+                <button onClick={() => simulate(sent)} className="btn-secondary text-xs">▶ Simulate all {sent.length}</button>
+              )}
+            </div>
             <ul className="space-y-1 text-sm text-gray-800">
               {sent.map((a) => (
-                <li key={a.id}>
-                  ✓ {a.ward_name} ({a.level}): {a.delivery?.push_sent ?? 0} phone notification(s),{' '}
-                  {a.delivery?.whatsapp_queued ?? 0} WhatsApp message(s) queued
+                <li key={a.id} className="flex items-center justify-between gap-2">
+                  <span>
+                    ✓ {a.ward_name} ({a.level}): {a.delivery?.push_sent ?? 0} phone notification(s),{' '}
+                    {a.delivery?.whatsapp_queued ?? 0} WhatsApp message(s) queued
+                  </span>
+                  <button onClick={() => simulate([a])} className="text-xs font-medium text-flood-700 underline flex-shrink-0">▶ Simulate</button>
                 </li>
               ))}
             </ul>

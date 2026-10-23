@@ -1,7 +1,10 @@
 import os
+
 import structlog
+from dotenv import load_dotenv
 from livekit import api
-from typing import Optional
+
+load_dotenv()
 
 logger = structlog.get_logger()
 
@@ -9,14 +12,14 @@ LIVEKIT_API_KEY = os.getenv("LIVEKIT_API_KEY")
 LIVEKIT_API_SECRET = os.getenv("LIVEKIT_API_SECRET")
 LIVEKIT_URL = os.getenv("LIVEKIT_URL", "wss://your-project.livekit.cloud")
 
-_token_cache: Optional[str] = None
+_token_cache: str | None = None
 
 
 def create_access_token(identity: str, room: str, metadata: str = "") -> str:
     if not LIVEKIT_API_KEY or not LIVEKIT_API_SECRET:
         logger.warning("LiveKit credentials not configured, returning mock token")
         return "mock_token"
-    
+
     token = api.AccessToken(LIVEKIT_API_KEY, LIVEKIT_API_SECRET) \
         .with_identity(identity) \
         .with_name(f"Family Alert - {identity}") \
@@ -28,14 +31,14 @@ def create_access_token(identity: str, room: str, metadata: str = "") -> str:
             can_publish_data=True,
         )) \
         .with_metadata(metadata)
-    
+
     return token.to_jwt()
 
 
 def create_agent_token(agent_name: str, room: str) -> str:
     if not LIVEKIT_API_KEY or not LIVEKIT_API_SECRET:
         return "mock_agent_token"
-    
+
     token = api.AccessToken(LIVEKIT_API_KEY, LIVEKIT_API_SECRET) \
         .with_identity(f"agent-{agent_name}") \
         .with_name(f"Flood Alert Agent - {agent_name}") \
@@ -45,14 +48,14 @@ def create_agent_token(agent_name: str, room: str) -> str:
             can_publish=True,
             can_subscribe=True,
         ))
-    
+
     return token.to_jwt()
 
 
 async def create_room(room_name: str, metadata: str = "") -> dict:
     if not LIVEKIT_API_KEY or not LIVEKIT_API_SECRET:
         return {"name": room_name, "sid": "mock_room_sid"}
-    
+
     lk_api = api.LiveKitAPI(LIVEKIT_URL, LIVEKIT_API_KEY, LIVEKIT_API_SECRET)
     try:
         room = await lk_api.room.create_room(api.CreateRoomRequest(
@@ -72,7 +75,7 @@ async def create_room(room_name: str, metadata: str = "") -> dict:
 async def delete_room(room_name: str) -> bool:
     if not LIVEKIT_API_KEY or not LIVEKIT_API_SECRET:
         return True
-    
+
     lk_api = api.LiveKitAPI(LIVEKIT_URL, LIVEKIT_API_KEY, LIVEKIT_API_SECRET)
     try:
         await lk_api.room.delete_room(api.DeleteRoomRequest(room=room_name))
@@ -87,7 +90,7 @@ async def delete_room(room_name: str) -> bool:
 async def list_rooms() -> list:
     if not LIVEKIT_API_KEY or not LIVEKIT_API_SECRET:
         return []
-    
+
     lk_api = api.LiveKitAPI(LIVEKIT_URL, LIVEKIT_API_KEY, LIVEKIT_API_SECRET)
     try:
         rooms = await lk_api.room.list_rooms(api.ListRoomsRequest())

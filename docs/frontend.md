@@ -105,7 +105,7 @@ responses but are not displayed as predictions. Manual 300 mm is explicitly hypo
 
 The rainfall factor follows `model/risk_engine.py`: `(mm / 200) × clamp(sqrt(3 / hours), 0.5, 1.5)`, capped at 1.5. The explainability panel shows it, and `lib/explain.test.ts` checks 27 cases (1–24 h, 0–30% built-up) against outputs recorded from the Python engine.
 
-The **Validation** panel renders unavailable/partial/evaluated evidence states. Mock,
+The **Validation** panel (`ValidationPanel.tsx`) is no longer shown in the dashboard's top bar; the component and its tests are kept so it can be re-attached. It renders unavailable/partial/evaluated evidence states. Mock,
 unsupported legacy and malformed metrics never become accuracy cards. Schema-2 null
 metrics retain reasons; denominators/coverage and supplied event metadata are shown
 without a hardcoded validated event. Canonical metrics are still mock, so current live

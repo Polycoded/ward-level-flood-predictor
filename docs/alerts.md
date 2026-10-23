@@ -34,10 +34,34 @@ POST   /api/v1/whatsapp/webhook
 GET    /api/v1/alerts/pending
 GET    /api/v1/alerts/active?ward_id=
 GET    /api/v1/alerts/{id}
-POST   /api/v1/alerts/{id}/approve
-POST   /api/v1/alerts/{id}/cancel
+POST   /api/v1/alerts/{id}/approve     header X-Admin-Token required
+POST   /api/v1/alerts/{id}/cancel      header X-Admin-Token required
 GET    /api/v1/alerts/cap.xml
 ```
+
+### Operator authentication
+
+Approving an alert broadcasts it to every subscriber in a ward, and cancelling
+one suppresses a warning, so both require the operator token:
+
+- Set `ADMIN_API_TOKEN` on the server to a long random value
+  (`python -c "import secrets; print(secrets.token_urlsafe(32))"`).
+- Officials paste it once into **Approve alerts → Operator key** in the
+  dashboard. It stays in that browser only and is sent as `X-Admin-Token` on
+  approve/cancel — it is never built into the website.
+- Missing or wrong token: `401`. No token configured on the server: `503`
+  (fails closed — approvals are refused, never left open).
+
+### Push endpoint SSRF guard
+
+The server makes outbound requests to each subscription's push `endpoint`, so
+`POST /subscriptions` only accepts `https` endpoints that cannot point inside
+the network: private, loopback, link-local (cloud metadata `169.254.169.254`)
+and reserved IPs, obfuscated forms such as `2130706433` or `0x7f000001`, and
+`localhost`/`metadata.google.internal` are rejected with `422`. Before every
+real send the endpoint is checked again with DNS, so a public name that
+resolves to an internal address (or an old row stored before this check) is
+blocked and deactivated instead of contacted.
 
 ## Local run
 
@@ -78,7 +102,9 @@ If the chosen fork uses different paths, adapt the two URLs in
 
 Covers: lite-shape size/ETag, scenario cache, road index, subscription CRUD and
 rate limiting, webhook JOIN/STOP/HELP + HMAC, encrypted identifiers, approval
-dispatch logging, active feed, CAP XML, hysteresis, and the scheduler cycle.
+dispatch logging, active feed, CAP XML, hysteresis, the scheduler cycle,
+operator-token checks on approve/cancel (401/503, fail closed), and the push
+endpoint SSRF guard at input and send time.
 
 ## Limits and risks
 

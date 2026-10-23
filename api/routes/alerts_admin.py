@@ -7,6 +7,7 @@ from sqlmodel import Session, select
 
 from api.db import Alert, get_session, utcnow
 from api.schemas import AlertOut, DispatchResult
+from api.security import require_admin
 from api.settings import settings
 from services.dispatcher import dispatch_alert
 
@@ -60,7 +61,8 @@ def get_alert(alert_id: str, session: Session = Depends(get_session)) -> AlertOu
     return _out(alert)
 
 
-@router.post("/alerts/{alert_id}/approve", response_model=DispatchResult)
+@router.post("/alerts/{alert_id}/approve", response_model=DispatchResult,
+             dependencies=[Depends(require_admin)])
 async def approve_alert(alert_id: str, session: Session = Depends(get_session)) -> DispatchResult:
     alert = session.get(Alert, alert_id)
     if alert is None:
@@ -78,7 +80,8 @@ async def approve_alert(alert_id: str, session: Session = Depends(get_session)) 
                           status="sent")
 
 
-@router.post("/alerts/{alert_id}/cancel", response_model=AlertOut)
+@router.post("/alerts/{alert_id}/cancel", response_model=AlertOut,
+             dependencies=[Depends(require_admin)])
 def cancel_alert(alert_id: str, session: Session = Depends(get_session)) -> AlertOut:
     alert = session.get(Alert, alert_id)
     if alert is None:

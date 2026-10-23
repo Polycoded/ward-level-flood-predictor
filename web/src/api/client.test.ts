@@ -1,6 +1,7 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 import type { AxiosAdapter, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
-import { ApiClient } from './client';
+import { ApiClient, isAuthError } from './client';
+import { getOperatorKey, setOperatorKey } from '../lib/operatorKey';
 import { useFloodStore } from '../lib/store';
 
 type Route = (config: InternalAxiosRequestConfig) => { status: number; data: unknown } | Error;
@@ -170,18 +171,99 @@ describe('offline phones', () => {
   });
 });
 
-describe('alert preview on a live backend', () => {
-  it('proposes alerts for the live wards, not the synthetic demo wards', async () => {
-    const { resetMockAlerts } = await import('./mockAlerts');
+describe('alert check on a live backend', () => {
+  it('returns null (server schedules alerts itself) instead of inventing alerts in the browser', async () => {
+    const { resetMockAlerts, listPending } = await import('./mockAlerts');
     resetMockAlerts();
-    const live = {
-      scenario: { rainfall_mm: 300, duration_hours: 3 }, generated_at: '2026-10-23T00:00:00Z', model_version: '1',
-      wards: [{ ward_id: 77, ward_number: '168', ward_name: 'Ward 168', risk_score: 0.95, risk_level: 'very_high', depth_band: 'none', peak_window_hours: 4, reasons: [], features: {} }],
-    };
-    const { fn } = adapter((c) =>
-      c.url === '/readyz' ? { status: 200, data: READY } : c.url === '/scenario' ? { status: 200, data: live } : { status: 404, data: {} }
-    );
+    const { fn } = adapter((c) => (c.url === '/readyz' ? { status: 200, data: READY } : { status: 405, data: {} }));
     const created = await new ApiClient({ forceMock: false, adapter: fn }).runAlertCheck({ rainfall_mm: 300, duration_hours: 3 });
-    expect(created.map((a) => [a.ward_id, a.ward_name, a.level])).toEqual([[77, 'Ward 168', 'warning']]);
+    expect(created).toBeNull();
+    expect(listPending()).toEqual([]);
+  });
+
+  it('reads the backend alert shape and approval dispatch summary', async () => {
+    const alertOut = {
+      id: 'a-1', ward_id: 77, ward_name: 'Ward 168', risk_level: 'very_high', risk_score: 0.95, alert_type: 'warning',
+      status: 'pending', rainfall_mm: 300, duration_hours: 3, message_en: 'EN text', message_ta: 'TA text',
+      created_at: '2026-10-23T08:00:00Z', approved_at: null, sent_at: null, exercise: true,
+    };
+    let approved = false;
+    const { fn } = adapter((c) => {
+      if (c.url === '/readyz') return { status: 200, data: READY };
+      if (c.url === '/alerts/pending') return { status: 200, data: [alertOut] };
+      if (c.url === '/alerts/a-1/approve') { approved = true; return { status: 200, data: { alert_id: 'a-1', ward_id: 77, webpush: 4, whatsapp: 2, sms: 0, failed: 0, status: 'sent' } }; }
+      if (c.url === '/alerts/a-1') return { status: 200, data: { ...alertOut, status: approved ? 'sent' : 'pending' } };
+      return { status: 404, data: {} };
+    });
+    const client = new ApiClient({ forceMock: false, adapter: fn });
+    const [pending] = await client.getPendingAlerts();
+    expect(pending).toMatchObject({ level: 'warning', messages: { en: 'EN text', ta: 'TA text' }, status: 'pending' });
+    const done = await client.approveAlert('a-1');
+    expect(done).toMatchObject({ status: 'approved', delivery: { push_sent: 4, whatsapp_queued: 2 } });
+  });
+
+  it('reads /wards/lite as the GeoJSON FeatureCollection the backend serves', async () => {
+    const square = { type: 'Polygon', coordinates: [[[80, 13, 0], [80.1, 13, 0], [80.1, 13.1, 0], [80, 13.1, 0], [80, 13, 0]]] };
+    const { fn } = adapter((c) =>
+      c.url === '/readyz' ? { status: 200, data: READY }
+        : { status: 200, data: { type: 'FeatureCollection', features: [{ type: 'Feature', properties: { ward_id: 1, ward_number: '168' }, geometry: square }] } }
+    );
+    const wards = await new ApiClient({ forceMock: false, adapter: fn }).getWardsLite();
+    expect(wards).toEqual([expect.objectContaining({ ward_id: 1, ward_number: '168', ward_name: 'Ward 168' })]);
+  });
+});
+
+describe('operator key on approve / cancel', () => {
+  beforeEach(() => {
+    localStorage.clear();
+    useFloodStore.setState({ alertsPreview: false });
+  });
+
+  const alertOut = { id: 'a-1', ward_id: 77, ward_name: 'W', risk_level: 'high', risk_score: 0.8, alert_type: 'warning',
+    status: 'pending', rainfall_mm: 200, duration_hours: 3, message_en: 'EN', message_ta: 'TA', created_at: '2026-01-01T00:00:00Z' };
+
+  it('sends X-Admin-Token only on approve and cancel, never on reads', async () => {
+    setOperatorKey('  s3cret  ');
+    const seen: Record<string, string | undefined> = {};
+    const { fn } = adapter((c) => {
+      seen[`${c.method} ${c.url}`] = c.headers.get('X-Admin-Token') as string | undefined;
+      if (c.url === '/readyz') return { status: 200, data: READY };
+      if (c.url === '/alerts/a-1/approve') return { status: 200, data: { alert_id: 'a-1', ward_id: 77, webpush: 1, whatsapp: 0, sms: 0, failed: 0, status: 'sent' } };
+      if (c.url === '/alerts/a-1/cancel') return { status: 200, data: { ...alertOut, status: 'cancelled' } };
+      return { status: 200, data: { ...alertOut, status: 'sent' } };
+    });
+    const client = new ApiClient({ forceMock: false, adapter: fn });
+    await client.approveAlert('a-1');
+    await client.cancelAlert('a-1');
+    expect(seen['post /alerts/a-1/approve']).toBe('s3cret');
+    expect(seen['post /alerts/a-1/cancel']).toBe('s3cret');
+    expect(seen['get /alerts/a-1']).toBeUndefined();
+    expect(seen['get /readyz']).toBeUndefined();
+  });
+
+  it('sends no header without a key, and a 401 is reported, not hidden behind the preview', async () => {
+    let header: unknown = 'unset';
+    const { fn } = adapter((c) => {
+      if (c.url === '/readyz') return { status: 200, data: READY };
+      header = c.headers.get('X-Admin-Token');
+      return { status: 401, data: { detail: 'A valid operator token is required for this action.' } };
+    });
+    const client = new ApiClient({ forceMock: false, adapter: fn });
+    const error = await client.approveAlert('a-1').catch((e) => e);
+    expect(header).toBeUndefined();
+    expect(isAuthError(error)).toBe(true);
+    expect(useFloodStore.getState().alertsPreview).toBe(false);
+  });
+
+  it('treats a server with no token configured (503) as an auth problem', async () => {
+    const { fn } = adapter((c) => (c.url === '/readyz' ? { status: 200, data: READY } : { status: 503, data: {} }));
+    const error = await new ApiClient({ forceMock: false, adapter: fn }).cancelAlert('a-1').catch((e) => e);
+    expect(isAuthError(error)).toBe(true);
+    expect(isAuthError(new Error('Network Error'))).toBe(false);
+  });
+
+  it('ignores a corrupt stored key', () => {
+    localStorage.setItem('flood-operator-key', '{"not":"a string"}');
+    expect(getOperatorKey()).toBe('');
   });
 });

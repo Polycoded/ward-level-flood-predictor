@@ -19,6 +19,7 @@ import type {
 import * as mockAlerts from './mockAlerts';
 import { mockApi } from './mock';
 import { parseValidation, unavailableValidation } from '../lib/validation';
+import { getOperatorKey } from '../lib/operatorKey';
 import {
   validateAlerts,
   validateRiskResponse,
@@ -28,6 +29,7 @@ import {
   validateWards,
   validateBroadcastAlert,
   validateBroadcastAlerts,
+  validateDispatch,
   validateSubscription,
   validateWardsLite,
 } from './validate';
@@ -60,7 +62,15 @@ export class ApiClient {
     });
 
     this.client.interceptors.request.use(
-      (config: InternalAxiosRequestConfig) => config,
+      (config: InternalAxiosRequestConfig) => {
+        // Attach the operator key only to the two actions that need it, so ordinary
+        // GETs stay simple requests (no extra CORS preflight) and the key is not sent around.
+        if (config.url && /\/(approve|cancel)$/.test(config.url)) {
+          const key = getOperatorKey();
+          if (key) config.headers.set('X-Admin-Token', key);
+        }
+        return config;
+      },
       (error) => Promise.reject(error)
     );
 
@@ -238,13 +248,33 @@ export class ApiClient {
     }
   }
 
-  async runAlertCheck(input: { rainfall_mm: number; duration_hours: number }): Promise<BroadcastAlert[]> {
-    return this.callContract(
-      async () => validateBroadcastAlerts((await this.client.post('/alerts/check', input)).data),
-      // the preview engine must score the same wards the user sees: live scores when the
-      // backend is up (only /alerts/check is missing), demo scores only in demo mode
-      async () => mockAlerts.runAlertCheck(await this.getScenarioRisk({ ...input, builtup_increase_pct: 0 }))
-    );
+  /**
+   * Ask for alert proposals now. Returns null when the live server has no manual trigger:
+   * its scheduler proposes alerts every 15 minutes, and mixing in browser-made alerts would
+   * put fake alerts next to real ones.
+   */
+  async runAlertCheck(input: { rainfall_mm: number; duration_hours: number }): Promise<BroadcastAlert[] | null> {
+    if ((await this.resolveSource()) === 'mock') {
+      return mockAlerts.runAlertCheck(mockApi.getScenarioRisk({ ...input, builtup_increase_pct: 0 }));
+    }
+    try {
+      return validateBroadcastAlerts((await this.client.post('/alerts/check', input)).data);
+    } catch (error) {
+      const status = (error as { response?: { status?: number } }).response?.status;
+      if (status === 404 || status === 405 || status === 501) return null;
+      throw error;
+    }
+  }
+
+  /** Server's Web Push key; empty when the backend hasn't configured VAPID yet. */
+  async getVapidPublicKey(): Promise<string> {
+    if ((await this.resolveSource()) === 'mock') return '';
+    try {
+      const { data } = await this.client.get('/push/vapid-public-key');
+      return typeof data?.key === 'string' && data.configured !== false ? data.key.slice(0, 200) : '';
+    } catch {
+      return '';
+    }
   }
 
   async getPendingAlerts(): Promise<BroadcastAlert[]> {
@@ -256,7 +286,12 @@ export class ApiClient {
 
   async approveAlert(id: string): Promise<BroadcastAlert> {
     return this.callContract(
-      async () => validateBroadcastAlert((await this.client.post(`/alerts/${encodeURIComponent(id)}/approve`)).data),
+      async () => {
+        const path = `/alerts/${encodeURIComponent(id)}`;
+        const delivery = validateDispatch((await this.client.post(`${path}/approve`)).data);
+        const alert = validateBroadcastAlert((await this.client.get(path)).data);
+        return { ...alert, delivery };
+      },
       () => mockAlerts.approveAlert(id)
     );
   }
@@ -307,3 +342,9 @@ export class ApiClient {
 }
 
 export const api = new ApiClient();
+
+/** True when a request failed because the operator key was missing, wrong, or not configured server-side. */
+export function isAuthError(error: unknown): boolean {
+  const status = (error as { response?: { status?: number } })?.response?.status;
+  return status === 401 || status === 403 || status === 503;
+}

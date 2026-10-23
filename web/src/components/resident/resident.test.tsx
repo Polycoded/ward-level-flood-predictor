@@ -207,6 +207,22 @@ describe('alerts end to end (in-browser preview)', () => {
     expect(mockAlerts.subscriberCount(mockApi.getWards()[3].ward_id)).toBe(0);
   });
 
+  it('on a live server without push keys, says so instead of sending a subscription it would reject', async () => {
+    openMeteo(0);
+    grantNotifications();
+    vi.spyOn(api, 'getVapidPublicKey').mockResolvedValue('');
+    const create = vi.spyOn(api, 'createSubscription');
+    const user = userEvent.setup();
+    render(<App />);
+    await chooseWardFromList(user, mockApi.getWards()[3].ward_name);
+    useFloodStore.setState({ dataSource: 'live' });
+    await user.click(screen.getByRole('button', { name: /Get alerts/ }));
+    const sheet = await screen.findByRole('dialog');
+    await user.click(within(sheet).getByRole('button', { name: 'Turn on alerts' }));
+    expect(await within(sheet).findByRole('alert')).toHaveTextContent(/aren't switched on for this service yet/);
+    expect(create).not.toHaveBeenCalled();
+  });
+
   it('explains blocked notifications instead of failing silently', async () => {
     openMeteo(0);
     vi.stubGlobal('Notification', Object.assign(vi.fn(), { permission: 'default', requestPermission: vi.fn().mockResolvedValue('denied') }));
@@ -261,5 +277,33 @@ describe('official approval queue', () => {
     const dialog = await screen.findByRole('dialog');
     expect(await within(dialog).findByText('<img src=x onerror=alert(1)>')).toBeInTheDocument();
     expect(dialog.querySelector('img, b, script')).toBeNull();
+  });
+
+  it('asks for the operator key when the server refuses an approval, and keeps the alert pending', async () => {
+    useFloodStore.setState({ ui: { ...useFloodStore.getState().ui, mode: 'official' } });
+    const pending: BroadcastAlert = {
+      id: 'k1', ward_id: 1, ward_name: 'Ward 168', level: 'warning', risk_level: 'very_high', risk_score: 0.9,
+      rainfall_mm: 100, duration_hours: 3, created_at: '', status: 'pending', exercise: true,
+      messages: { en: 'EN', ta: 'TA' },
+    };
+    vi.spyOn(api, 'getPendingAlerts').mockResolvedValue([pending]);
+    const approve = vi.spyOn(api, 'approveAlert').mockRejectedValue({ response: { status: 401 } });
+    const user = userEvent.setup();
+    render(<App />);
+    await screen.findByText(/200 wards loaded/);
+    await user.click(screen.getByRole('button', { name: 'Approve alerts' }));
+    const dialog = await screen.findByRole('dialog', { name: 'Approve alerts' });
+
+    await user.click(await within(dialog).findByRole('button', { name: 'Approve & send' }));
+    expect(await within(dialog).findByText(/needs a valid operator key/)).toBeInTheDocument();
+    expect(approve).toHaveBeenCalledWith('k1');
+    // nothing was sent and no simulation pretended it was
+    expect(within(dialog).queryByText(/Sent this session/)).toBeNull();
+    expect(screen.queryByRole('dialog', { name: 'Alert delivery simulation' })).toBeNull();
+
+    const key = within(dialog).getByLabelText(/Operator key/);
+    expect(key).toHaveAttribute('type', 'password');
+    await user.type(key, 'op-key');
+    expect(localStorage.getItem('flood-operator-key')).toBe('"op-key"');
   });
 });

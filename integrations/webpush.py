@@ -35,6 +35,15 @@ def send_push(subscription: dict[str, Any], payload: dict[str, Any]) -> dict[str
         return {"success": False, "expired": True, "status": "failed",
                 "error": "incomplete subscription"}
 
+    # SSRF guard: never POST to an internal address, even for a row that was
+    # stored before this check existed or by a path that bypassed validation.
+    from api.security import is_safe_push_endpoint
+
+    if not is_safe_push_endpoint(endpoint, resolve=True):
+        logger.warning("Web push blocked unsafe endpoint", endpoint=endpoint[:60])
+        return {"success": False, "simulated": False, "expired": True,
+                "status": "failed", "error": "blocked endpoint"}
+
     try:
         from pywebpush import webpush
 

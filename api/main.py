@@ -76,7 +76,7 @@ app.add_middleware(
     allow_origins=[o.strip() for o in os.getenv("CORS_ORIGINS", "*").split(",") if o.strip()],
     allow_credentials=False,
     allow_methods=["GET", "POST", "OPTIONS"],
-    allow_headers=["Content-Type"],
+    allow_headers=["Content-Type", "X-Admin-Token"],
 )
 # /wards is ~2.9 MB of GeoJSON; gzip takes it to a few hundred KB.
 app.add_middleware(GZipMiddleware, minimum_size=1000)

@@ -3,7 +3,6 @@ import { getRiskLabel, getRiskColor } from '../lib/utils';
 import type { RiskResponse } from '../types';
 import { ProviderBadge } from './ProviderBadge';
 import { CROWD_REPORTS_ENABLED } from '../lib/features';
-import { parseValidation } from '../lib/validation';
 
 interface HeaderProps {
   onClear: () => void;
@@ -11,8 +10,20 @@ interface HeaderProps {
 }
 
 export function Header({ onClear, onOpenReports }: HeaderProps) {
-  const { ui, riskData, validationData, setAlertsOpen, setValidationOpen, setAlertQueueOpen, setMode, toggleSidebar } = useFloodStore();
-  const validationUnavailable = validationData ? parseValidation(validationData).status === 'unavailable' : false;
+  const { ui, riskData, setAlertsOpen, setAlertQueueOpen, setMode, setSimulation, toggleSidebar } = useFloodStore();
+
+  // Simulate an alert to every high / very-high ward in the current analysis (or the top 5).
+  const simulateFromAnalysis = () => {
+    if (!riskData) return;
+    // same cap as the alert rules: at most the 25 highest-risk wards per broadcast
+    const high = riskData.wards.filter((w) => w.risk_level === 'high' || w.risk_level === 'very_high').slice(0, 25);
+    const chosen = high.length ? high : riskData.wards.slice(0, 5);
+    setSimulation({
+      wardIds: chosen.map((w) => w.ward_id),
+      level: chosen.some((w) => w.risk_level === 'very_high') ? 'warning' : 'watch',
+      title: `Simulated alert to ${chosen.length} ward${chosen.length === 1 ? '' : 's'} at ${riskData.scenario.rainfall_mm} mm / ${riskData.scenario.duration_hours} h`,
+    });
+  };
 
   return (
     <header className="bg-white border-b border-gray-200 z-20">
@@ -36,13 +47,16 @@ export function Header({ onClear, onOpenReports }: HeaderProps) {
 
         <nav className="flex flex-wrap items-center gap-2 ml-auto" aria-label="Dashboard actions">
           <button onClick={() => setAlertQueueOpen(true)} className="btn-primary">Approve alerts</button>
+          <button
+            onClick={simulateFromAnalysis}
+            disabled={!riskData}
+            title={riskData ? 'Animate how an alert would reach phones' : 'Run an analysis first'}
+            className="btn-secondary"
+          >
+            Simulate delivery
+          </button>
           {riskData && (
             <button onClick={() => setAlertsOpen(true)} className="btn-secondary">Draft messages</button>
-          )}
-          {validationData && (
-            <button onClick={() => setValidationOpen(!ui.validationOpen)} aria-pressed={ui.validationOpen} className="btn-secondary">
-              {validationUnavailable ? 'Validation (unavailable)' : 'Validation'}
-            </button>
           )}
           {CROWD_REPORTS_ENABLED && (
             <button onClick={onOpenReports} className="btn-secondary">Report flooding</button>
