@@ -28,6 +28,7 @@ import {
   validateWards,
   validateBroadcastAlert,
   validateBroadcastAlerts,
+  validateDispatch,
   validateSubscription,
   validateWardsLite,
 } from './validate';
@@ -238,13 +239,33 @@ export class ApiClient {
     }
   }
 
-  async runAlertCheck(input: { rainfall_mm: number; duration_hours: number }): Promise<BroadcastAlert[]> {
-    return this.callContract(
-      async () => validateBroadcastAlerts((await this.client.post('/alerts/check', input)).data),
-      // the preview engine must score the same wards the user sees: live scores when the
-      // backend is up (only /alerts/check is missing), demo scores only in demo mode
-      async () => mockAlerts.runAlertCheck(await this.getScenarioRisk({ ...input, builtup_increase_pct: 0 }))
-    );
+  /**
+   * Ask for alert proposals now. Returns null when the live server has no manual trigger:
+   * its scheduler proposes alerts every 15 minutes, and mixing in browser-made alerts would
+   * put fake alerts next to real ones.
+   */
+  async runAlertCheck(input: { rainfall_mm: number; duration_hours: number }): Promise<BroadcastAlert[] | null> {
+    if ((await this.resolveSource()) === 'mock') {
+      return mockAlerts.runAlertCheck(mockApi.getScenarioRisk({ ...input, builtup_increase_pct: 0 }));
+    }
+    try {
+      return validateBroadcastAlerts((await this.client.post('/alerts/check', input)).data);
+    } catch (error) {
+      const status = (error as { response?: { status?: number } }).response?.status;
+      if (status === 404 || status === 405 || status === 501) return null;
+      throw error;
+    }
+  }
+
+  /** Server's Web Push key; empty when the backend hasn't configured VAPID yet. */
+  async getVapidPublicKey(): Promise<string> {
+    if ((await this.resolveSource()) === 'mock') return '';
+    try {
+      const { data } = await this.client.get('/push/vapid-public-key');
+      return typeof data?.key === 'string' && data.configured !== false ? data.key.slice(0, 200) : '';
+    } catch {
+      return '';
+    }
   }
 
   async getPendingAlerts(): Promise<BroadcastAlert[]> {
@@ -256,7 +277,12 @@ export class ApiClient {
 
   async approveAlert(id: string): Promise<BroadcastAlert> {
     return this.callContract(
-      async () => validateBroadcastAlert((await this.client.post(`/alerts/${encodeURIComponent(id)}/approve`)).data),
+      async () => {
+        const path = `/alerts/${encodeURIComponent(id)}`;
+        const delivery = validateDispatch((await this.client.post(`${path}/approve`)).data);
+        const alert = validateBroadcastAlert((await this.client.get(path)).data);
+        return { ...alert, delivery };
+      },
       () => mockAlerts.approveAlert(id)
     );
   }

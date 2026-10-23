@@ -273,10 +273,12 @@ function broadcastAlert(raw: unknown): BroadcastAlert | null {
   if (!isObj(raw)) return null;
   const id = text(raw.id, 80);
   const ward = wardIdentity(raw);
-  const level = oneOf(raw.level, BROADCAST_LEVELS);
-  const status = oneOf(raw.status, BROADCAST_STATUS);
+  // backend (api/routes/alerts_admin.py AlertOut) uses alert_type + message_en/message_ta
+  const level = oneOf(raw.level ?? raw.alert_type, BROADCAST_LEVELS);
+  const rawStatus = raw.status === 'sent' || raw.status === 'sending' ? 'approved' : raw.status;
+  const status = oneOf(rawStatus, BROADCAST_STATUS);
   const score = finite(raw.risk_score);
-  const messages = isObj(raw.messages) ? raw.messages : {};
+  const messages = isObj(raw.messages) ? raw.messages : { en: raw.message_en, ta: raw.message_ta };
   const en = text(messages.en, MAX_MESSAGE);
   if (!id || !ward || !level || !status || score === null || !en) return null;
   const risk_score = clamp(score, 0, 1);
@@ -315,6 +317,13 @@ export function validateBroadcastAlert(data: unknown): BroadcastAlert {
   return alert;
 }
 
+/** POST /alerts/{id}/approve answers what was dispatched, not the alert. */
+export function validateDispatch(data: unknown): { push_sent: number; whatsapp_queued: number } {
+  if (!isObj(data)) throw new ApiDataError('dispatch result');
+  const n = (v: unknown) => Math.max(0, Math.round(finite(v) ?? 0));
+  return { push_sent: n(data.webpush ?? data.push_sent), whatsapp_queued: n(data.whatsapp ?? data.whatsapp_queued) };
+}
+
 export function validateSubscription(data: unknown): Subscription {
   if (!isObj(data)) throw new ApiDataError('subscription is not an object');
   const id = text(data.id, 80);
@@ -328,10 +337,15 @@ export function validateSubscription(data: unknown): Subscription {
 
 /** Lite wards for on-device lookup: shapes are required (a ward without one can't be matched). */
 export function validateWardsLite(data: unknown): WardLite[] {
+  // /wards/lite answers a FeatureCollection of {properties: {ward_id, ward_number}, geometry}
+  const rows =
+    isObj(data) && data.type === 'FeatureCollection' && Array.isArray(data.features)
+      ? data.features.map((f) => (isObj(f) && isObj(f.properties) ? { ...f.properties, geometry: f.geometry } : null))
+      : data;
   const wards = uniqueById(
-    list(data, 'ward list').map((raw) => {
+    list(rows, 'ward list').map((raw) => {
       if (!isObj(raw)) return null;
-      const id = wardIdentity(raw);
+      const id = wardIdentity({ ...raw, ward_name: raw.ward_name ?? (raw.ward_number ? `Ward ${raw.ward_number}` : undefined) });
       const geometry = polygonGeometry(raw.geometry);
       return id && geometry ? { ...id, geometry: geometry as WardLite['geometry'] } : null;
     })

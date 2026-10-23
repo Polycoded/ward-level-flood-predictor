@@ -7,6 +7,11 @@ import { parseValidation } from './validation';
 export type DataSource = 'unknown' | 'live' | 'mock';
 export type AppMode = 'resident' | 'official';
 export type Language = 'en' | 'ta';
+export interface SimulationRequest {
+  wardIds: number[];
+  level: 'watch' | 'warning';
+  title: string;
+}
 
 const KEYS = { mode: 'flood-mode', language: 'flood-language', ward: 'flood-my-ward', subscription: 'flood-subscription' };
 
@@ -52,6 +57,8 @@ interface FloodState {
     alertQueueOpen: boolean;
     /** alert shown full-screen (from a notification, ?alert=… or a new alert for my ward) */
     openAlertId: string | null;
+    /** alert-delivery simulation to show (synthetic towers and phones) */
+    simulation: SimulationRequest | null;
     language: Language;
     mode: AppMode;
   };
@@ -74,6 +81,7 @@ interface FloodState {
   setSubscription: (subscription: Subscription | null) => void;
   setAlertQueueOpen: (open: boolean) => void;
   setOpenAlert: (id: string | null) => void;
+  setSimulation: (sim: SimulationRequest | null) => void;
   setScenario: (scenario: Partial<FloodState['scenario']>) => void;
   setMapView: (view: FloodState['ui']['mapView']) => void;
   toggleSidebar: () => void;
@@ -116,6 +124,7 @@ export const useFloodStore = create<FloodState>((set) => ({
     validationOpen: false,
     alertQueueOpen: false,
     openAlertId: null,
+    simulation: null,
     language: initialLanguage(),
     mode: initialMode(),
   },
@@ -147,6 +156,7 @@ export const useFloodStore = create<FloodState>((set) => ({
   },
   setAlertQueueOpen: (alertQueueOpen) => set((state) => ({ ui: { ...state.ui, alertQueueOpen } })),
   setOpenAlert: (openAlertId) => set((state) => ({ ui: { ...state.ui, openAlertId } })),
+  setSimulation: (simulation) => set((state) => ({ ui: { ...state.ui, simulation } })),
   setScenario: (scenario) => set((state) => ({ scenario: { ...state.scenario, ...scenario } })),
   setMapView: (mapView) => set((state) => ({ ui: { ...state.ui, mapView } })),
   toggleSidebar: () => set((state) => ({ ui: { ...state.ui, sidebarOpen: !state.ui.sidebarOpen } })),

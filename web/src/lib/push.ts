@@ -42,15 +42,16 @@ export interface EnableResult {
   subscription: { endpoint: string; keys?: Record<string, string> } | null;
 }
 
-export async function enablePush(): Promise<EnableResult> {
+/** vapidKey: the backend's key (GET /push/vapid-public-key); falls back to VITE_VAPID_PUBLIC_KEY. */
+export async function enablePush(vapidKey: string = VAPID_KEY ?? ''): Promise<EnableResult> {
   if (pushSupport() !== 'supported') return { permission: 'unsupported', subscription: null };
   const permission = Notification.permission === 'granted' ? 'granted' : await Notification.requestPermission();
-  if (permission !== 'granted' || !VAPID_KEY) return { permission, subscription: null };
+  if (permission !== 'granted' || !vapidKey) return { permission, subscription: null };
   const reg = await registration();
   if (!reg || !('pushManager' in reg)) return { permission, subscription: null };
   const sub =
     (await reg.pushManager.getSubscription()) ??
-    (await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: urlBase64ToBuffer(VAPID_KEY) }));
+    (await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: urlBase64ToBuffer(vapidKey) }));
   const json = sub.toJSON();
   return { permission, subscription: json.endpoint ? { endpoint: json.endpoint, keys: json.keys } : null };
 }

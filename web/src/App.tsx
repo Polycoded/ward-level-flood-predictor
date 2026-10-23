@@ -5,6 +5,7 @@ import { AlertScreen } from './components/AlertScreen';
 // Each screen downloads only its own code: phones never load the map library unless asked.
 const ResidentView = lazy(() => import('./components/resident/ResidentView').then((m) => ({ default: m.ResidentView })));
 const OfficialDashboard = lazy(() => import('./components/OfficialDashboard').then((m) => ({ default: m.OfficialDashboard })));
+const BroadcastSimulation = lazy(() => import('./components/simulation/BroadcastSimulation').then((m) => ({ default: m.BroadcastSimulation })));
 
 const ALERT_PARAM = 'alert';
 
@@ -13,6 +14,9 @@ function App() {
   const language = useFloodStore((s) => s.ui.language);
   const openAlertId = useFloodStore((s) => s.ui.openAlertId);
   const setOpenAlert = useFloodStore((s) => s.setOpenAlert);
+  const simulation = useFloodStore((s) => s.ui.simulation);
+  const setSimulation = useFloodStore((s) => s.setSimulation);
+  const closeSimulation = useCallback(() => setSimulation(null), [setSimulation]);
 
   // Notification taps open /?alert=<id>
   useEffect(() => {
@@ -39,6 +43,11 @@ function App() {
         {mode === 'resident' ? <ResidentView /> : <OfficialDashboard />}
       </Suspense>
       {openAlertId && <AlertScreen alertId={openAlertId} onClose={closeAlert} />}
+      {simulation && (
+        <Suspense fallback={null}>
+          <BroadcastSimulation request={simulation} onClose={closeSimulation} />
+        </Suspense>
+      )}
     </>
   );
 }

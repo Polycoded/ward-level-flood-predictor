@@ -8,14 +8,13 @@ import { Modal } from '../Modal';
 import { readFollowPreference, writeFollowPreference } from './hooks';
 
 const WHATSAPP_NUMBER = (import.meta.env.VITE_WHATSAPP_NUMBER ?? '').replace(/\D/g, '');
-const HAS_VAPID = Boolean(import.meta.env.VITE_VAPID_PUBLIC_KEY);
 
 /** Turn alerts on/off for this phone: push notifications and/or WhatsApp opt-in. */
 export function SubscribeSheet({ ward, onClose }: { ward: WardLite; onClose: () => void }) {
   const t = useT();
-  const { ui, resident, setSubscription } = useFloodStore();
+  const { ui, resident, dataSource, setSubscription } = useFloodStore();
   const [busy, setBusy] = useState(false);
-  const [problem, setProblem] = useState<'denied' | 'unsupported' | 'error' | null>(null);
+  const [problem, setProblem] = useState<'denied' | 'unsupported' | 'notconfigured' | 'error' | null>(null);
   const [follow, setFollow] = useState(readFollowPreference());
   const support = pushSupport();
   const subscribed = resident.subscription?.ward_id === ward.ward_id;
@@ -24,7 +23,8 @@ export function SubscribeSheet({ ward, onClose }: { ward: WardLite; onClose: () 
     setBusy(true);
     setProblem(null);
     try {
-      const result = await enablePush();
+      const vapidKey = import.meta.env.VITE_VAPID_PUBLIC_KEY || (await api.getVapidPublicKey());
+      const result = await enablePush(vapidKey);
       if (result.permission === 'denied') {
         setProblem('denied');
         return;
@@ -33,8 +33,15 @@ export function SubscribeSheet({ ward, onClose }: { ward: WardLite; onClose: () 
         setProblem('unsupported');
         return;
       }
-      // Without VAPID keys (alert preview) the page shows notifications itself while open.
-      const push = result.subscription ?? (!HAS_VAPID && result.permission === 'granted' ? { endpoint: 'local-preview' } : null);
+      let push = result.subscription;
+      if (!push) {
+        // A real server needs a real push subscription; in demo mode the page shows notifications itself.
+        if (dataSource === 'live') {
+          setProblem('notconfigured');
+          return;
+        }
+        push = { endpoint: 'local-preview' };
+      }
       if (resident.subscription) await api.deleteSubscription(resident.subscription.id).catch(() => undefined);
       const sub = await api.createSubscription({ ward_id: ward.ward_id, language: ui.language, push });
       setSubscription(sub);
@@ -85,7 +92,13 @@ export function SubscribeSheet({ ward, onClose }: { ward: WardLite; onClose: () 
           )}
           {problem && (
             <p role="alert" className="text-sm text-red-800 bg-red-50 border border-red-200 rounded-lg p-2.5">
-              {problem === 'denied' ? t('sub.denied') : problem === 'unsupported' ? t('sub.unsupported') : t('sub.error')}
+              {problem === 'denied'
+                ? t('sub.denied')
+                : problem === 'unsupported'
+                  ? t('sub.unsupported')
+                  : problem === 'notconfigured'
+                    ? t('sub.notConfigured')
+                    : t('sub.error')}
             </p>
           )}
           <label className="flex items-start gap-2 text-sm text-gray-800 pt-1">

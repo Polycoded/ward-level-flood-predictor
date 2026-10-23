@@ -207,6 +207,22 @@ describe('alerts end to end (in-browser preview)', () => {
     expect(mockAlerts.subscriberCount(mockApi.getWards()[3].ward_id)).toBe(0);
   });
 
+  it('on a live server without push keys, says so instead of sending a subscription it would reject', async () => {
+    openMeteo(0);
+    grantNotifications();
+    vi.spyOn(api, 'getVapidPublicKey').mockResolvedValue('');
+    const create = vi.spyOn(api, 'createSubscription');
+    const user = userEvent.setup();
+    render(<App />);
+    await chooseWardFromList(user, mockApi.getWards()[3].ward_name);
+    useFloodStore.setState({ dataSource: 'live' });
+    await user.click(screen.getByRole('button', { name: /Get alerts/ }));
+    const sheet = await screen.findByRole('dialog');
+    await user.click(within(sheet).getByRole('button', { name: 'Turn on alerts' }));
+    expect(await within(sheet).findByRole('alert')).toHaveTextContent(/aren't switched on for this service yet/);
+    expect(create).not.toHaveBeenCalled();
+  });
+
   it('explains blocked notifications instead of failing silently', async () => {
     openMeteo(0);
     vi.stubGlobal('Notification', Object.assign(vi.fn(), { permission: 'default', requestPermission: vi.fn().mockResolvedValue('denied') }));
