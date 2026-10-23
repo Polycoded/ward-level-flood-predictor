@@ -1,11 +1,17 @@
-"""LiveKit voice agent (livekit-agents 1.x) that delivers a ward flood alert.
+"""LiveKit voice agent that delivers a ward flood alert.
 
-Run (after `uv sync --extra voice` and setting LiveKit + OpenAI env vars):
+Providers:
+- LLM: DeepSeek (OpenAI-compatible) when DEEPSEEK_API_KEY is set.
+- STT: local faster-whisper (DeepSeek has no audio endpoints).
+- TTS: Microsoft Edge TTS (free, Tamil + English).
+- Unless OPENAI_API_KEY is set and DeepSeek is absent, in which case the
+  original OpenAI STT/LLM/TTS path is used.
+
+Run (after `uv sync --extra voice`):
 
     python voice/family_agent.py dev
 
-The worker uses automatic dispatch: it joins a room when a participant joins it.
-Create the room and a listener token with `python voice/demo.py`.
+Create a room + listener token with `python voice/demo.py`.
 """
 
 from __future__ import annotations
@@ -22,6 +28,7 @@ from livekit.agents import (
     RoomInputOptions,
     WorkerOptions,
     cli,
+    stt,
 )
 from livekit.plugins import openai, silero
 
@@ -29,10 +36,61 @@ load_dotenv()
 
 logger = structlog.get_logger()
 
+# OpenAI path (fallback)
 STT_MODEL = os.getenv("VOICE_STT_MODEL", "gpt-4o-mini-transcribe")
 LLM_MODEL = os.getenv("VOICE_LLM_MODEL", "gpt-4.1-mini")
 TTS_MODEL = os.getenv("VOICE_TTS_MODEL", "gpt-4o-mini-tts")
 TTS_VOICE = os.getenv("VOICE_TTS_VOICE", "alloy")
+
+# DeepSeek + local audio path
+DEEPSEEK_BASE_URL = os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com")
+DEEPSEEK_MODEL = os.getenv("DEEPSEEK_MODEL", "deepseek-chat")
+WHISPER_MODEL = os.getenv("VOICE_WHISPER_MODEL", "small")
+WHISPER_DEVICE = os.getenv("VOICE_WHISPER_DEVICE", "auto")
+WHISPER_COMPUTE = os.getenv("VOICE_WHISPER_COMPUTE", "int8")
+EDGE_TTS_VOICE = os.getenv("EDGE_TTS_VOICE") or None
+
+
+def provider_name() -> str:
+    if os.getenv("DEEPSEEK_API_KEY", "").strip():
+        return "deepseek"
+    if os.getenv("OPENAI_API_KEY", "").strip():
+        return "openai"
+    raise RuntimeError(
+        "Set DEEPSEEK_API_KEY (recommended) or OPENAI_API_KEY in .env before "
+        "starting the voice worker."
+    )
+
+
+def build_llm():
+    if provider_name() == "deepseek":
+        return openai.LLM(
+            model=DEEPSEEK_MODEL,
+            api_key=os.environ["DEEPSEEK_API_KEY"],
+            base_url=DEEPSEEK_BASE_URL,
+        )
+    return openai.LLM(model=LLM_MODEL)
+
+
+def build_stt(language: str):
+    if provider_name() == "deepseek":
+        from voice.plugins.faster_whisper_stt import FasterWhisperSTT
+
+        return FasterWhisperSTT(
+            model_size=WHISPER_MODEL,
+            device=WHISPER_DEVICE,
+            compute_type=WHISPER_COMPUTE,
+            language=language,
+        )
+    return openai.STT(model=STT_MODEL, language=language)
+
+
+def build_tts(language: str):
+    if provider_name() == "deepseek":
+        from voice.plugins.edge_tts import EdgeTTS
+
+        return EdgeTTS(language=language, voice=EDGE_TTS_VOICE)
+    return openai.TTS(model=TTS_MODEL, voice=TTS_VOICE)
 
 
 class FloodAlertAgent:
@@ -81,12 +139,6 @@ def _job_data(ctx: JobContext) -> dict:
 
 
 async def entrypoint(ctx: JobContext) -> None:
-    if not os.getenv("OPENAI_API_KEY"):
-        raise RuntimeError(
-            "OPENAI_API_KEY is required for speech-to-text, LLM and text-to-speech. "
-            "Set it in .env before starting the voice worker."
-        )
-
     data = _job_data(ctx)
     agent = FloodAlertAgent(
         ward_name=data.get("ward_name", "Ward 168"),
@@ -99,11 +151,16 @@ async def entrypoint(ctx: JobContext) -> None:
 
     await ctx.connect()
 
+    vad = silero.VAD.load()
+    stt_impl = build_stt(agent.language)
+    if not getattr(stt_impl.capabilities, "streaming", False):
+        stt_impl = stt.StreamAdapter(stt=stt_impl, vad=vad)
+
     session = AgentSession(
-        vad=silero.VAD.load(),
-        stt=openai.STT(model=STT_MODEL, language=agent.language),
-        llm=openai.LLM(model=LLM_MODEL),
-        tts=openai.TTS(model=TTS_MODEL, voice=TTS_VOICE),
+        vad=vad,
+        stt=stt_impl,
+        llm=build_llm(),
+        tts=build_tts(agent.language),
     )
 
     await session.start(
@@ -113,7 +170,12 @@ async def entrypoint(ctx: JobContext) -> None:
     )
 
     await session.say(agent.script(), allow_interruptions=True)
-    logger.info("Voice alert delivered", ward=agent.ward_name, language=agent.language)
+    logger.info(
+        "Voice alert delivered",
+        ward=agent.ward_name,
+        language=agent.language,
+        provider=provider_name(),
+    )
 
 
 if __name__ == "__main__":
