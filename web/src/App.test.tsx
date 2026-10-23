@@ -206,7 +206,7 @@ describe('alerts', () => {
   it('counts Tamil SMS in 70-character parts', async () => {
     const user = await renderLoaded();
     await analyze(user);
-    await user.click(screen.getByRole('button', { name: 'Alerts' }));
+    await user.click(screen.getByRole('button', { name: 'Draft messages' }));
     const dialog = await screen.findByRole('dialog');
     await user.click(within(dialog).getByRole('button', { name: 'Select top 10' }));
     await user.click(within(dialog).getByRole('button', { name: /Tamil/ }));
@@ -225,7 +225,7 @@ describe('alerts', () => {
         { ward_id: 1, ward_name: 'W', channel: 'whatsapp', language: 'en', message: 'm2', whatsapp_deeplink: 'https://wa.me/919876543210?text=m2' },
       ],
     });
-    await user.click(screen.getByRole('button', { name: 'Alerts' }));
+    await user.click(screen.getByRole('button', { name: 'Draft messages' }));
     const dialog = await screen.findByRole('dialog');
     await user.click(within(dialog).getByRole('button', { name: 'Select top 10' }));
     await user.click(within(dialog).getByRole('button', { name: /Generate alerts for 10 wards/ }));
@@ -244,7 +244,7 @@ describe('alerts', () => {
     const user = await renderLoaded();
     await analyze(user);
     vi.spyOn(api, 'generateAlerts').mockRejectedValue(new Error('500'));
-    await user.click(screen.getByRole('button', { name: 'Alerts' }));
+    await user.click(screen.getByRole('button', { name: 'Draft messages' }));
     const dialog = await screen.findByRole('dialog');
     await user.click(within(dialog).getByRole('button', { name: 'Select top 10' }));
     await user.click(within(dialog).getByRole('button', { name: /Generate alerts/ }));

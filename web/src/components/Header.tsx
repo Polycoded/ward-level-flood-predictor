@@ -11,7 +11,7 @@ interface HeaderProps {
 }
 
 export function Header({ onClear, onOpenReports }: HeaderProps) {
-  const { ui, riskData, validationData, setAlertsOpen, setValidationOpen, toggleSidebar } = useFloodStore();
+  const { ui, riskData, validationData, setAlertsOpen, setValidationOpen, setAlertQueueOpen, setMode, toggleSidebar } = useFloodStore();
   const validationUnavailable = validationData ? parseValidation(validationData).status === 'unavailable' : false;
 
   return (
@@ -35,8 +35,9 @@ export function Header({ onClear, onOpenReports }: HeaderProps) {
         </div>
 
         <nav className="flex flex-wrap items-center gap-2 ml-auto" aria-label="Dashboard actions">
+          <button onClick={() => setAlertQueueOpen(true)} className="btn-primary">Approve alerts</button>
           {riskData && (
-            <button onClick={() => setAlertsOpen(true)} className="btn-primary">Alerts</button>
+            <button onClick={() => setAlertsOpen(true)} className="btn-secondary">Draft messages</button>
           )}
           {validationData && (
             <button onClick={() => setValidationOpen(!ui.validationOpen)} aria-pressed={ui.validationOpen} className="btn-secondary">
@@ -49,6 +50,7 @@ export function Header({ onClear, onOpenReports }: HeaderProps) {
           {riskData && (
             <button onClick={onClear} className="btn-ghost text-red-700 hover:text-red-800">Clear</button>
           )}
+          <button onClick={() => setMode('resident')} className="btn-ghost text-sm">Resident view</button>
         </nav>
       </div>
 

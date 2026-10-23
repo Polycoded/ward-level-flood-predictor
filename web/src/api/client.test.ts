@@ -117,3 +117,71 @@ describe('ApiClient live/mock decision', () => {
     expect(calls).toEqual([]);
   });
 });
+
+describe('phone-alert endpoints before the backend has them', () => {
+  it('falls back to the in-browser preview on 404 and says so', async () => {
+    useFloodStore.setState({ alertsPreview: false });
+    const { fn } = adapter((c) => (c.url === '/readyz' ? { status: 200, data: READY } : { status: 404, data: { detail: 'Not Found' } }));
+    const client = new ApiClient({ forceMock: false, adapter: fn });
+    expect(await client.getPendingAlerts()).toEqual(expect.any(Array));
+    expect(useFloodStore.getState().alertsPreview).toBe(true);
+  });
+
+  it('does not hide real server failures behind the preview', async () => {
+    const { fn } = adapter((c) => (c.url === '/readyz' ? { status: 200, data: READY } : { status: 500, data: {} }));
+    const client = new ApiClient({ forceMock: false, adapter: fn });
+    await expect(client.getPendingAlerts()).rejects.toThrow();
+  });
+
+  it('uses the full /wards for ward lookup until /wards/lite exists', async () => {
+    const square = { type: 'Polygon', coordinates: [[[80, 13], [80.1, 13], [80.1, 13.1], [80, 13.1], [80, 13]]] };
+    const { fn, calls } = adapter((c) =>
+      c.url === '/readyz' ? { status: 200, data: READY }
+        : c.url === '/wards/lite' ? { status: 422, data: { detail: [{ loc: ['path', 'ward_id'] }] } }
+          : { status: 200, data: [{ ward_id: 7, ward_number: '7', ward_name: 'Live Ward', area_sqkm: 1, geometry: square }] }
+    );
+    const wards = await new ApiClient({ forceMock: false, adapter: fn }).getWardsLite();
+    expect(wards.map((w) => w.ward_name)).toEqual(['Live Ward']);
+    expect(calls).toEqual(expect.arrayContaining(['GET /wards/lite', 'GET /wards']));
+  });
+
+  it('sends only the ward number and push address when subscribing, never coordinates', async () => {
+    let body: Record<string, unknown> = {};
+    const { fn } = adapter((c) => {
+      if (c.url === '/readyz') return { status: 200, data: READY };
+      body = JSON.parse(c.data as string);
+      return { status: 200, data: { id: 's1', ward_id: 12, language: 'ta', channels: ['push'] } };
+    });
+    await new ApiClient({ forceMock: false, adapter: fn }).createSubscription({ ward_id: 12, language: 'ta', push: { endpoint: 'https://push.example/x' } });
+    expect(Object.keys(body).sort()).toEqual(['language', 'push', 'ward_id']);
+    expect(JSON.stringify(body)).not.toMatch(/lat|lng|longitude|latitude/);
+  });
+});
+
+describe('offline phones', () => {
+  it('stay on real (cached) data instead of switching to the synthetic demo', async () => {
+    const onLine = vi.spyOn(navigator, 'onLine', 'get').mockReturnValue(false);
+    const { fn, calls } = adapter((c) => (c.url === '/wards' ? { status: 200, data: LIVE_WARD } : new Error('Network Error')));
+    const client = new ApiClient({ forceMock: false, adapter: fn });
+    expect(await client.getWards()).toEqual(LIVE_WARD);
+    expect(calls).not.toContain('GET /readyz');
+    expect(useFloodStore.getState().dataSource).toBe('live');
+    onLine.mockRestore();
+  });
+});
+
+describe('alert preview on a live backend', () => {
+  it('proposes alerts for the live wards, not the synthetic demo wards', async () => {
+    const { resetMockAlerts } = await import('./mockAlerts');
+    resetMockAlerts();
+    const live = {
+      scenario: { rainfall_mm: 300, duration_hours: 3 }, generated_at: '2026-10-23T00:00:00Z', model_version: '1',
+      wards: [{ ward_id: 77, ward_number: '168', ward_name: 'Ward 168', risk_score: 0.95, risk_level: 'very_high', depth_band: 'none', peak_window_hours: 4, reasons: [], features: {} }],
+    };
+    const { fn } = adapter((c) =>
+      c.url === '/readyz' ? { status: 200, data: READY } : c.url === '/scenario' ? { status: 200, data: live } : { status: 404, data: {} }
+    );
+    const created = await new ApiClient({ forceMock: false, adapter: fn }).runAlertCheck({ rainfall_mm: 300, duration_hours: 3 });
+    expect(created.map((a) => [a.ward_id, a.ward_name, a.level])).toEqual([[77, 'Ward 168', 'warning']]);
+  });
+});

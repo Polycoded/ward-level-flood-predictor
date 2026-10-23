@@ -46,6 +46,43 @@ With the FastAPI backend running (`uvicorn api.main:app --port 8000` from the re
 | Live API vs mock, rainfall provider | `ProviderBadge` | honesty in the demo |
 | Evidence status, nullable observed-sample metrics and coverage; mock accuracy suppressed | `ValidationPanel` | 3 |
 
+## Resident app and phone alerts (docs/ACTION_PLAN_ALERTS.md, Ronit's part)
+
+Phones open the **Resident** screen by default; laptops open the **Official** dashboard. Both can switch, and the choice is remembered on the device.
+
+| Piece | Where | Notes |
+| --- | --- | --- |
+| Resident screen | `components/resident/ResidentView.tsx` | My ward, plain-language estimate from the live Open-Meteo forecast, Where do I go? (shelters), Get alerts, call 1913 / 112 |
+| On-device ward lookup | `lib/wardLookup.ts` | Point-in-polygon on cached ward shapes; only the ward ID ever leaves the phone. Points up to 150 m outside a ward (gaps, GPS error) snap to the nearest ward; further away = "outside Chennai" |
+| Tamil / English | `lib/i18n.ts` | Every key has a Tamil string (enforced by TypeScript and `i18n.test.ts`); native-speaker review still needed |
+| Subscribe flow | `components/resident/SubscribeSheet.tsx`, `lib/push.ts` | Web Push when `VITE_VAPID_PUBLIC_KEY` is set; otherwise the page shows notifications itself (preview). WhatsApp opt-in via a `JOIN <ward>` deep link to `VITE_WHATSAPP_NUMBER` |
+| Follow location | `components/resident/hooks.ts` | While the app is open, two readings in a new ward move the subscription (max once a minute). Browsers can't do this in the background |
+| Alert page | `components/AlertScreen.tsx` | Full screen; opened by a notification (`/?alert=<id>`), a new alert for my ward, or the banner. Drill banner on exercise alerts; general safety tips only |
+| Official approval | `components/AlertQueuePanel.tsx` | "Check wards for alerts" → pending EN/TA texts → Approve & send / Cancel. Nothing reaches phones without approval |
+| PWA | `public/manifest.webmanifest`, `public/sw.js`, `public/icons/` | Installable; offline app shell; ward shapes cached (stale-while-revalidate); last known alerts cached; push and notification-click handlers |
+
+### Endpoints from the plan that the backend doesn't have yet
+
+`api/client.ts` calls the planned endpoints (`/wards/lite`, `/subscriptions`, `/alerts/check`, `/alerts/pending`, `/alerts/{id}/approve|cancel`, `/alerts/active`, `/alerts/{id}`). If the live server answers 404/405/501, the call falls back to `api/mockAlerts.ts`, an in-browser stand-in stored in localStorage (so an official tab and a resident tab on one laptop see the same alerts in a demo), and the UI shows a **Preview** note. `/wards/lite` falls back to the full `/wards` (also on the 422 FastAPI currently returns for it). Once John's endpoints exist, the same UI uses them with no code change.
+
+The preview's alert rule (high → Watch, very high → Warning, no repeat within 6 h unless it worsens, max 25 wards per run) is a placeholder for Mit's `model/alert_rules.py`.
+
+### Offline and demo data
+- Offline phones stay on real data and use the service worker's cached copies; they never switch to the synthetic demo.
+- When the backend is unreachable while online, residents see an amber **"Demo data"** notice.
+
+### New environment variables
+| Variable | Purpose |
+| --- | --- |
+| `VITE_VAPID_PUBLIC_KEY` | Public key for Web Push subscriptions (matches the backend's private key) |
+| `VITE_WHATSAPP_NUMBER` | The OpenWA alert number residents message with `JOIN <ward>` |
+| `VITE_ENABLE_SW` | `true` to register the service worker in `npm run dev` (it always registers in production builds) |
+
+### Measured
+- Phone path: about 98 KB gzipped JS (the map library loads only for officials).
+- Lighthouse mobile on the resident screen: performance 99, accessibility 100, best practices 96, SEO 100.
+- Real headless Chrome: the service worker installs and takes control; with the network off, the app opens and shows the saved real ward.
+
 ## Data flow
 
 ```

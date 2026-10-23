@@ -5,6 +5,7 @@
 import type {
   AlertChannel,
   AlertMessage,
+  BroadcastAlert,
   AlertResponse,
   DepthBand,
   Language,
@@ -12,8 +13,11 @@ import type {
   RiskResponse,
   RoadRisk,
   Shelter,
+  Subscription,
+  SubscriptionChannel,
   ValidationMetrics,
   Ward,
+  WardLite,
   WardFeature,
   WardRisk,
 } from '../types';
@@ -258,4 +262,80 @@ export function validateRoads(data: unknown): RoadRisk[] {
       geometry,
     }];
   });
+}
+
+// --- phone alerts -----------------------------------------------------------
+
+const BROADCAST_LEVELS = ['watch', 'warning'] as const;
+const BROADCAST_STATUS = ['pending', 'approved', 'cancelled'] as const;
+
+function broadcastAlert(raw: unknown): BroadcastAlert | null {
+  if (!isObj(raw)) return null;
+  const id = text(raw.id, 80);
+  const ward = wardIdentity(raw);
+  const level = oneOf(raw.level, BROADCAST_LEVELS);
+  const status = oneOf(raw.status, BROADCAST_STATUS);
+  const score = finite(raw.risk_score);
+  const messages = isObj(raw.messages) ? raw.messages : {};
+  const en = text(messages.en, MAX_MESSAGE);
+  if (!id || !ward || !level || !status || score === null || !en) return null;
+  const risk_score = clamp(score, 0, 1);
+  const delivery = isObj(raw.delivery)
+    ? {
+        push_sent: Math.max(0, Math.round(finite(raw.delivery.push_sent) ?? 0)),
+        whatsapp_queued: Math.max(0, Math.round(finite(raw.delivery.whatsapp_queued) ?? 0)),
+      }
+    : null;
+  return {
+    id,
+    ward_id: ward.ward_id,
+    ward_name: ward.ward_name,
+    level,
+    risk_level: (risk_score === score && oneOf(raw.risk_level, LEVELS)) || classifyRisk(risk_score),
+    risk_score,
+    rainfall_mm: clamp(finite(raw.rainfall_mm) ?? 0, 0, 500),
+    duration_hours: clamp(finite(raw.duration_hours) ?? 3, 1, 24),
+    created_at: text(raw.created_at, 40) ?? '',
+    status,
+    // anything that does not explicitly say exercise=false is treated as a drill
+    exercise: raw.exercise !== false,
+    messages: { en, ta: text(messages.ta, MAX_MESSAGE) ?? en },
+    approved_at: text(raw.approved_at, 40),
+    delivery,
+  };
+}
+
+export function validateBroadcastAlerts(data: unknown): BroadcastAlert[] {
+  return list(data, 'alerts').map(broadcastAlert).filter((a): a is BroadcastAlert => a !== null);
+}
+
+export function validateBroadcastAlert(data: unknown): BroadcastAlert {
+  const alert = broadcastAlert(data);
+  if (!alert) throw new ApiDataError('alert');
+  return alert;
+}
+
+export function validateSubscription(data: unknown): Subscription {
+  if (!isObj(data)) throw new ApiDataError('subscription is not an object');
+  const id = text(data.id, 80);
+  const wardId = finite(data.ward_id);
+  if (!id || wardId === null || !Number.isInteger(wardId)) throw new ApiDataError('subscription');
+  const channels = Array.isArray(data.channels)
+    ? data.channels.filter((c): c is SubscriptionChannel => c === 'push' || c === 'whatsapp')
+    : [];
+  return { id, ward_id: wardId, language: oneOf(data.language, LANGUAGES) ?? 'en', channels };
+}
+
+/** Lite wards for on-device lookup: shapes are required (a ward without one can't be matched). */
+export function validateWardsLite(data: unknown): WardLite[] {
+  const wards = uniqueById(
+    list(data, 'ward list').map((raw) => {
+      if (!isObj(raw)) return null;
+      const id = wardIdentity(raw);
+      const geometry = polygonGeometry(raw.geometry);
+      return id && geometry ? { ...id, geometry: geometry as WardLite['geometry'] } : null;
+    })
+  );
+  if (wards.length === 0) throw new ApiDataError('no valid ward shapes');
+  return wards;
 }

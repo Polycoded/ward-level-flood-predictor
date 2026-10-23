@@ -149,3 +149,49 @@ export const DEPTH_BAND_COLORS: Record<DepthBand, string> = {
   '0.5-1.0m': '#f97316',
   '1.0m+': '#ef4444',
 };
+
+// --- phone alerts (docs/ACTION_PLAN_ALERTS.md contracts) --------------------
+
+/** Watch = be prepared; Warning = act now. Thresholds belong to the alert rules (Mit). */
+export type BroadcastLevel = 'watch' | 'warning';
+export type BroadcastStatus = 'pending' | 'approved' | 'cancelled';
+export type SubscriptionChannel = 'push' | 'whatsapp';
+
+export interface BroadcastAlert {
+  id: string;
+  ward_id: number;
+  ward_name: string;
+  level: BroadcastLevel;
+  risk_level: RiskLevel;
+  risk_score: number;
+  rainfall_mm: number;
+  duration_hours: number;
+  created_at: string;
+  status: BroadcastStatus;
+  /** Exercise alerts are drills; every screen must say so. */
+  exercise: boolean;
+  messages: Record<Language, string>;
+  approved_at?: string | null;
+  delivery?: { push_sent: number; whatsapp_queued: number } | null;
+}
+
+export interface Subscription {
+  id: string;
+  ward_id: number;
+  language: Language;
+  channels: SubscriptionChannel[];
+}
+
+export interface SubscriptionRequest {
+  ward_id: number;
+  language: Language;
+  /** PushSubscription.toJSON(); null when the browser has no push support */
+  push: { endpoint: string; keys?: Record<string, string> } | null;
+}
+
+export interface WardLite {
+  ward_id: number;
+  ward_number: string;
+  ward_name: string;
+  geometry: GeoJSON.Polygon | GeoJSON.MultiPolygon;
+}
