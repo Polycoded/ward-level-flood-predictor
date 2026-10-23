@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import App from './App';
 import { api } from './api/client';
 import { useFloodStore } from './lib/store';
+import { validateRiskResponse } from './api/validate';
 
 // Leaflet needs a real layout engine; the map is covered by the browser test pass instead.
 vi.mock('./components/MapView', () => ({ MapView: () => <div data-testid="map" /> }));
@@ -82,7 +83,7 @@ describe('official runs a rainfall scenario', () => {
 
   it('runs one analysis when Analyze is hammered by an auto-clicker', async () => {
     await renderLoaded();
-    const spy = vi.spyOn(api, 'getRisk');
+    const spy = vi.spyOn(api, 'getScenarioRisk');
     const button = screen.getByRole('button', { name: 'Analyze' });
     for (let i = 0; i < 20; i++) fireEvent.click(button);
     await screen.findByText(/200 wards, highest risk first/);
@@ -112,6 +113,29 @@ describe('official runs a rainfall scenario', () => {
     expect(useFloodStore.getState().scenario.builtup_increase_pct).toBe(30);
   });
 
+  it('uses one duration-aware formula for today and the built-up scenarios', async () => {
+    const user = await renderLoaded();
+    const spy = vi.spyOn(api, 'getScenarioRisk');
+    const risk = vi.spyOn(api, 'getRisk');
+    await user.selectOptions(screen.getByLabelText('Over'), '12');
+    await user.click(screen.getByRole('button', { name: /^150$|^200 mm$/ }));
+    await user.click(screen.getByRole('button', { name: 'Analyze' }));
+    await screen.findByText(/200 wards, highest risk first/);
+    expect(spy).toHaveBeenLastCalledWith({ rainfall_mm: 200, duration_hours: 3, builtup_increase_pct: 0 });
+    expect(risk).not.toHaveBeenCalled();
+
+    // a long storm: more paving must never look safer than today
+    await user.selectOptions(screen.getByLabelText('Over'), '12');
+    await user.click(screen.getByRole('button', { name: 'Analyze' }));
+    await screen.findByText(/200 mm \/ 12 h/);
+    const today = new Map(useFloodStore.getState().riskData!.wards.map((w) => [w.ward_id, w.risk_score]));
+    await user.click(screen.getByRole('button', { name: '+15% built-up' }));
+    await screen.findByText(/move up a risk level/);
+    for (const w of useFloodStore.getState().riskData!.wards) expect(w.risk_score).toBeGreaterThanOrEqual(today.get(w.ward_id)!);
+    expect(spy).toHaveBeenCalledWith({ rainfall_mm: 200, duration_hours: 12, builtup_increase_pct: 15 });
+    expect(spy).toHaveBeenCalledWith({ rainfall_mm: 200, duration_hours: 12, builtup_increase_pct: 0 });
+  });
+
   it('clears the analysis', async () => {
     const user = await renderLoaded();
     await analyze(user);
@@ -129,6 +153,11 @@ describe('ward detail and explainability', () => {
     expect(within(panel).getByText('Why this ward?')).toBeInTheDocument();
     expect(within(panel).getAllByRole('row').length).toBeGreaterThanOrEqual(7);
     expect(within(panel).getByText('Model reasons')).toBeInTheDocument();
+    // Unsupported physical outputs remain suppressed after integration.
+    expect(within(panel).queryByText('Indicative depth band')).not.toBeInTheDocument();
+    expect(within(panel).queryByText('Indicative peak window')).not.toBeInTheDocument();
+    expect(within(panel).getByText(/Uncalibrated index, not a prediction/)).toBeInTheDocument();
+    expect(within(panel).queryByText(/from now/)).toBeNull();
     await user.keyboard('{Escape}');
     await waitFor(() => expect(screen.queryByRole('complementary', { name: 'Ward details' })).toBeNull());
   });
@@ -289,11 +318,53 @@ describe('live forecast', () => {
   });
 });
 
+describe('validation panel', () => {
+  it('never presents placeholder metrics as a real result', async () => {
+    const user = await renderLoaded();
+    await user.click(screen.getByRole('button', { name: 'Validation (unavailable)' }));
+    const panel = await screen.findByRole('region', { name: 'Evaluation evidence' });
+    expect(panel).toHaveTextContent('Status: unavailable');
+    expect(panel).not.toHaveTextContent('65.0%');
+  });
+});
+
+describe('hostile or broken backend', () => {
+  it.each([
+    ['an HTML page with status 200', '<!doctype html><html><body>index</body></html>'],
+    ['wards: null', { scenario: { rainfall_mm: 100, duration_hours: 3 }, wards: null, generated_at: 'x', model_version: '1' }],
+  ])('shows an error instead of crashing when /scenario returns %s', async (_, body) => {
+    const user = await renderLoaded();
+    await analyze(user);
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    vi.spyOn(api, 'getScenarioRisk').mockImplementation(async () => validateRiskResponse(body));
+    await user.click(screen.getByRole('button', { name: 'Analyze' }));
+    expect(await screen.findByText(/server returned invalid risk data/)).toBeInTheDocument();
+    expect(rankedItems()).toHaveLength(200); // previous result still on screen
+  });
+
+  it('opens a ward whose reasons and features are corrupt without crashing', async () => {
+    const user = await renderLoaded();
+    vi.spyOn(api, 'getScenarioRisk').mockImplementation(async () =>
+      validateRiskResponse({
+        scenario: { rainfall_mm: 100, duration_hours: 3 }, generated_at: 'not a date', model_version: '1',
+        wards: [{ ward_id: 2, ward_number: '2', ward_name: 'B', risk_score: 57, risk_level: 'catastrophic', depth_band: '9m', peak_window_hours: -3, reasons: null, features: null }],
+      })
+    );
+    await user.click(screen.getByRole('button', { name: 'Analyze' }));
+    await screen.findByText(/1 wards, highest risk first/);
+    expect(rankedItems()[0]).toHaveTextContent('Very High');
+    expect(rankedItems()[0]).toHaveTextContent(/100$/);
+    await user.click(within(rankedItems()[0]).getByRole('button'));
+    expect(await screen.findByText('Why this ward?')).toBeInTheDocument();
+    expect(screen.queryByText(/Something went wrong/)).toBeNull();
+  });
+});
+
 describe('failure handling', () => {
   it('keeps the previous result and shows an error when analysis fails', async () => {
     const user = await renderLoaded();
     await analyze(user);
-    vi.spyOn(api, 'getRisk').mockRejectedValueOnce(new Error('timeout'));
+    vi.spyOn(api, 'getScenarioRisk').mockRejectedValueOnce(new Error('timeout'));
     vi.spyOn(console, 'error').mockImplementation(() => {});
     await user.click(screen.getByRole('button', { name: 'Analyze' }));
     expect(await screen.findByText(/Risk analysis failed/)).toBeInTheDocument();

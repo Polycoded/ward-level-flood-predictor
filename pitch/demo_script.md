@@ -6,7 +6,7 @@ Before going on stage:
 - [ ] Header shows **Live API**
 - [ ] Browser zoom at 100%, window ≥ 1280 px wide, notifications off
 - [ ] Open-Meteo reachable (Forecast tab → Fetch works)
-- [ ] `validation_metrics.json` committed, so the **Validation** button is visible
+- [ ] Real `validation_metrics.json` from Mit's evaluation committed. If the button still says **Validation (placeholder)**, skip Act 3's numbers and show `docs/validation.md` instead.
 - [ ] Phone ready with WhatsApp open, for the share-link moment
 
 ---
@@ -20,12 +20,12 @@ Before going on stage:
 1. Point at the empty map: "This is what an official has before the rain: a city-wide number."
 2. Rainfall panel → **100 mm** preset, **3 hours** → **Analyze**.
 3. The map re-colours and the ranking fills in. Read the top three wards aloud from the list.
-4. "Every ward now has a level, a likely water depth and a peak time. That is the decision we are trying to support."
+4. "Every ward now has a risk level and a score, ranked. That is the decision we are trying to support: where to send pumps and teams first."
 
 ## Act 2: Why this ward? (60 s)
 
 1. Click the top-ranked ward. The detail drawer opens.
-2. Read the risk card: level, *"15–50 cm (knee)"*, *"peak ~4 h from now"*.
+2. Read the risk card: level and score. If asked about the depth and peak bands, say they are *indicative* proxies from the index, not hydraulic predictions.
 3. Scroll to **Why this ward?**: "Each bar is one physical factor, weighted exactly as in our model: low ground, paved surface, flat terrain, distance to the river. Score out of 100, then rainfall scales it."
 4. Point at **Model reasons**: "Plain-language reasons an engineer can check against the ground."
 
@@ -62,6 +62,6 @@ Before going on stage:
 | Problem | Say / do |
 | --- | --- |
 | Header shows **Mock data** | "The backend is offline, so this is our synthetic offline mode; the scoring is identical." Carry on. |
-| Validation button missing | Show `docs/validation.md` on screen. |
+| Validation button missing or says "placeholder" | Do not read numbers; show `docs/validation.md` and explain the evaluation is pending. |
 | Forecast fetch fails | Use the Manual tab; the error message explains it. |
 | Map tiles slow | The ranking and detail drawer work without tiles; keep talking over them. |

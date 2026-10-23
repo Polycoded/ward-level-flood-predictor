@@ -530,3 +530,12 @@ labels, and evidence collectors must establish reviewed ward IDs, observation wi
 both flooded/non-flooded provenance and sampling bias. Exact contracts/examples are
 in docs/validation.md. No real artifacts downloaded, no processed metrics overwritten,
 and no commits or pushes performed; all work remains local for review.
+
+
+## PR #5 integration with Ronit's main branch — 2026-10-23
+
+Scope: resolve the ten merge conflicts in API routes/schemas, API client, AlertPanel, RankedList, ValidationPanel, WardDetailPanel, tooltip, and validation parser/tests. Preserve main's endpoint hardening, map-route ordering, response guards, duration-aware explanations and application flow. Preserve mit-dev's schema-2 evidence contract and suppression of unsupported physical outputs. Adapt web/src/api/validate.ts and its tests to delegate validation to the strict schema-2 parser; update stale integrated comments/caveats in App and WardDetailPanel. Verify combined Python/frontend suites, typecheck, build and whitespace before pushing mit-dev.
+
+Integration follow-up scope: Header and App.test.tsx must use the schema-2 unavailable label instead of the retired placeholder helper. tests/test_api_abuse.py needs isolated shelter fixtures plus an empty-source regression because canonical shelters are absent. No shelter fallback or canonical dataset is added.
+
+Integration verification: 499 Python tests passed (54 dependency deprecation warnings); 202 frontend tests passed; TypeScript and production build passed; git diff --check passed. All ten conflicts resolved while retaining main's safeguards and mit-dev's evidence presentation. Visual browser verification not performed. Historical observations, source/provenance review, and canonical shelter availability remain unresolved.

@@ -62,6 +62,7 @@ export function WardDetailPanel({ wardId }: WardDetailPanelProps) {
             wardDetail={wardDetail}
             riskWard={riskWard}
             rainfallMm={riskData?.scenario.rainfall_mm ?? null}
+            durationHours={riskData?.scenario.duration_hours ?? 3}
             builtupIncreasePct={scenario.builtup_increase_pct}
             onClose={close}
           />
@@ -95,12 +96,14 @@ function DetailContent({
   wardDetail,
   riskWard,
   rainfallMm,
+  durationHours,
   builtupIncreasePct,
   onClose,
 }: {
   wardDetail: WardFeature;
   riskWard: WardRisk | null;
   rainfallMm: number | null;
+  durationHours: number;
   builtupIncreasePct: number;
   onClose: () => void;
 }) {
@@ -116,14 +119,20 @@ function DetailContent({
 
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {riskWard ? (
-          <RiskSummaryCard ward={riskWard} rainfallMm={rainfallMm} />
+          <RiskSummaryCard ward={riskWard} rainfallMm={rainfallMm} durationHours={durationHours} />
         ) : (
           <p className="text-sm text-gray-700 bg-gray-50 border border-gray-200 rounded-lg p-3">
             Run a rainfall analysis to see this ward's flood risk. Its terrain profile is below.
           </p>
         )}
 
-        <ExplainabilityPanel ward={wardDetail} riskWard={riskWard} rainfallMm={rainfallMm} builtupIncreasePct={builtupIncreasePct} />
+        <ExplainabilityPanel
+          ward={wardDetail}
+          riskWard={riskWard}
+          rainfallMm={rainfallMm}
+          durationHours={durationHours}
+          builtupIncreasePct={builtupIncreasePct}
+        />
 
         <OtherFeatures ward={wardDetail} />
 
@@ -133,7 +142,7 @@ function DetailContent({
   );
 }
 
-function RiskSummaryCard({ ward, rainfallMm }: { ward: WardRisk; rainfallMm: number | null }) {
+function RiskSummaryCard({ ward, rainfallMm, durationHours }: { ward: WardRisk; rainfallMm: number | null; durationHours: number }) {
   return (
     <div className="card p-4 border-l-4" style={{ borderLeftColor: getRiskColor(ward.risk_level) }}>
       <div className="flex items-center justify-between mb-3">
@@ -148,10 +157,13 @@ function RiskSummaryCard({ ward, rainfallMm }: { ward: WardRisk; rainfallMm: num
         {rainfallMm !== null && (
           <div className="col-span-2">
             <dt className="text-xs text-gray-600">Scenario</dt>
-            <dd className="font-medium text-gray-900">{rainfallMm} mm rainfall</dd>
+            <dd className="font-medium text-gray-900">{rainfallMm} mm in {durationHours} h</dd>
           </div>
         )}
       </dl>
+      <p className="text-xs text-gray-600 mt-3 border-t border-gray-100 pt-2">
+        Scores summarize relative susceptibility under the selected scenario; historical accuracy is not established.
+      </p>
     </div>
   );
 }

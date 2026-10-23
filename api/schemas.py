@@ -1,4 +1,4 @@
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 from typing import Optional, List, Dict, Any, Literal
 from datetime import datetime
 from enum import Enum
@@ -66,7 +66,7 @@ class WardFeatureResponse(BaseModel):
 class RainfallInput(BaseModel):
     rainfall_mm: float = Field(..., ge=0, le=500, description="Total rainfall accumulation in mm over duration_hours")
     duration_hours: float = Field(default=3.0, ge=1, le=24, description="Duration in hours")
-    scenario_name: Optional[str] = None
+    scenario_name: Optional[str] = Field(default=None, max_length=100)
 
 
 class ScenarioInput(BaseModel):
@@ -94,11 +94,24 @@ class RiskResponse(BaseModel):
     model_version: str
 
 
+def _unique(items: list) -> list:
+    return list(dict.fromkeys(items))
+
+
 class AlertRequest(BaseModel):
-    ward_ids: List[int]
-    rainfall_mm: float
+    # Bounded so one small request cannot make the server build a huge response
+    # (200 wards x 1000 duplicate channels used to return 43 MB).
+    ward_ids: List[int] = Field(..., min_length=1, max_length=200)
+    rainfall_mm: float = Field(..., ge=0, le=500)
     language: Language = Language.ENGLISH
-    channels: List[AlertChannel] = [AlertChannel.SMS, AlertChannel.WHATSAPP]
+    channels: List[AlertChannel] = Field(
+        default=[AlertChannel.SMS, AlertChannel.WHATSAPP], min_length=1, max_length=4
+    )
+
+    @field_validator("ward_ids", "channels")
+    @classmethod
+    def drop_duplicates(cls, v: list) -> list:
+        return _unique(v)
 
 
 class AlertMessage(BaseModel):
@@ -155,10 +168,10 @@ class ShelterResponse(BaseModel):
 
 
 class ShelterRequest(BaseModel):
-    latitude: float
-    longitude: float
-    max_distance_km: float = 5.0
-    max_results: int = 5
+    latitude: float = Field(..., ge=-90, le=90)
+    longitude: float = Field(..., ge=-180, le=180)
+    max_distance_km: float = Field(default=5.0, gt=0, le=50)
+    max_results: int = Field(default=5, ge=1, le=50)
 
 
 class RoadRiskResponse(BaseModel):
