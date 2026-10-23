@@ -18,7 +18,17 @@ import argparse
 import asyncio
 import json
 import os
+import sys
+from pathlib import Path
 from urllib.parse import quote
+
+# Allow `python voice/demo.py` as well as `python -m voice.demo`.
+if __package__ in (None, ""):
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
 
 from dotenv import load_dotenv
 
