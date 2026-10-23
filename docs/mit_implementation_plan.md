@@ -1,5 +1,92 @@
 # Mit implementation plan
 
+## Bounded Mit completion pass — scope before edits (2026-10-23)
+
+Remain on mit-dev; preserve all existing tracked/untracked work and teammate interfaces.
+Edit only model/alerts.py (atomic GSM extension/UTF-16 character multipart packing,
+same text and return fields), model/ward_lookup.py (validate IDs before conversion,
+preserve pandas/NumPy integral IDs, unavailable on invalid input), their existing
+tests/test_alert_evidence.py and tests/test_ward_lookup.py regressions, and
+scripts/review_alert_policy.py (per-scenario candidate/overflow/suppression/release/
+escalation counts, clearly synthetic dry cases, hypothetical uniform 230/250 mm over
+24 h on existing canonical features, reuse exact-forecast candidate for end-to-end
+content/CAP example). Refresh generated files only in data/evidence/mit_alert_policy_review/
+through that script. Preserve historical_status.json, rainfall candidates/source notes
+and all frozen raw/processed/historical inputs. Update docs/mit_alert_policy_handoff.md,
+docs/mit_review_guide.md and this plan with contracts, executable example, read-only
+teammate interface mismatches, actual outcomes and external gates. No scorer/threshold
+changes, historical metrics, labels, endpoints, dispatch/scheduler/UI/provider work.
+Target 15 minutes of bounded implementation then focused/full Python, scoped Ruff,
+whitespace, repeatable bundle/hash and HEAD/index/input-preservation checks. Frontend,
+browser/device/delivery integration testing is explicitly deferred, not claimed.
+
+Completion-pass results: tests first reproduced 11 failures (atomic GSM/UTF-16 boundary
+under-counts, boolean ID acceptance, infinity conversion crashes and NumPy expected-ID
+rejection). Fixed only the scoped implementations; affected suite 81 passed, all five
+Exercise suites 134 passed; full Python 603 passed with 54 existing dependency warnings.
+Scoped Ruff passed (existing config deprecation warning). Existing script now regenerates
+22 cases with explicit counts, synthetic controls and canonical-feature hypothetical
+230/250 mm/24 h sensitivities (each 2 selected/198 overflow, no release/escalation).
+Both synthetic 0/5 mm controls suppress all 200 wards, not observed negatives. Bundle
+regeneration is byte-identical, both forecast-based EN/draft Tamil CAPs are official-XSD
+valid, and the handoff's Python example was executed successfully. Historical blocked
+report unchanged; no metrics calculated. Read-only interface inspection found legacy
+API schema/duration/state/approval mismatch, forward-hour frontend forecast behavior,
+frontend ceil-based SMS under-counts and canonical Z/holed-geometry limitations; exact
+references and external owner gates are in docs/mit_alert_policy_handoff.md. No teammate
+interface, scoring coefficient, canonical input or deployment code was edited.
+
+## Mit Exercise alert-policy package — scope before edits (2026-10-23)
+
+User correction authorizes implementation on clean mit-dev; no branch/index/history writes.
+Reuse score_ward/effective_inputs, evaluator/runner, geographic validation and SMS semantics.
+Add model/alert_rules.py (pure policy/state), model/forecast_input.py (exact UTC interval
+adapter), model/ward_lookup.py (metre-based ambiguity/simplification checks), model/cap.py
+(approved Exercise-only XML with explicit unsupported geometry results), and a small shared
+model/alert_contract.py for time/numeric/JSON validation. Extend model/alerts.py compatibly
+with Exercise rendering and SMS metadata; no truncation of essential content. No endpoints,
+dispatchers, providers, DB, scheduler or resident UI. Existing API signatures remain valid.
+Add focused tests/test_alert_rules.py, test_forecast_input.py, test_ward_lookup.py,
+test_cap.py and Exercise-message cases in tests/test_alert_evidence.py; reuse fixture patterns.
+Vendor unmodified official CAP-v1.2.xsd under data/fixtures/cap/ with source/hash notice;
+use existing /usr/bin/xmllint (no new dependency). Add scripts/review_alert_policy.py to
+produce a new data/evidence/mit_alert_policy_review/ bundle: artificial scenarios, example
+Exercise content/XML, canonical hash/lookup diagnostic, historical blocked report and source
+inspection notes. Add/reference existing local rainfall research without adopting candidates
+or modifying incomplete metadata/labels/mock metrics. Add docs/mit_alert_policy_handoff.md
+and update docs/mit_review_guide.md and this plan with actual verification/dependencies.
+Official sources inspected before interpretation: Open-Meteo hourly precipitation is a
+preceding-hour sum, not a forward hour; CAP 1.2 uses WGS84 lat,lon and Exercise status.
+Keep legacy web rainfall adapter unchanged; document its incompatible semantics as a
+handoff dependency rather than silently adopting it for policy. Full Python and affected
+frontend/TypeScript/build checks, both whitespace checks, frozen canonical hash comparison.
+No scoring coefficients, canonical datasets, geographic acceptance rules, dependencies,
+historical claims or unrelated cleanup. Missing evidence blocks historical evaluation only.
+Shared new Exercise fixtures live in tests/conftest.py (named fixtures, no autouse);
+they do not substitute real data or alter existing test contracts.
+Review discovery before diagnostic extension: canonical polygons contain Z coordinates;
+existing 2D geographic validators reject them. Preserve that rejection in bundle; explicitly
+derive an in-memory force_2d diagnostic copy for simplification/membership comparisons only.
+Do not change canonical files, acceptance rules or claim operational approval of that copy.
+
+Package outcomes (2026-10-23): implemented standalone strict forecast/policy/state,
+Exercise English/draft Tamil rendering and full SMS accounting, approved-content CAP 1.2
+export and ambiguity-aware lookup/simplification diagnostics. Added 18 deterministic
+scenarios and a source/hash/lookup/message/CAP/historical-status bundle outside processed/.
+Primary IMD PDF text inspection confirms station candidates only (250/230 mm over 24 h);
+no reviewed labels, negatives, rainfall adoption or historical metrics were fabricated.
+Both complete offline bundle regenerations are byte-identical. Original canonical Z
+geometry is unavailable under the existing validator; explicit diagnostic-only 2D copy has
+200 unique representative-point lookups, 15 holed wards, and 10 m simplification exceeds
+tolerance (maximum Hausdorff about 13.04 m). This is not boundary acceptance.
+Full Python: 564 passed, 54 dependency deprecation warnings. Full frontend: 202 passed
+across 12 files; TypeScript and production build passed. Scoped Ruff passed after cleanup
+(existing top-level Ruff configuration deprecation warning remains). Both tracked whitespace
+checks passed. Frozen audit confirms all 19 canonical/raw/historical-staging input hashes,
+HEAD and index unchanged. No staging/commits/pushes/branch changes. Browser/device visual
+verification not performed. Handoff and new review guide document remaining forecast issue
+time, 2D boundary approval, historical evidence, Tamil, approval/transport and SACHET gates.
+
 ## ValidationPanel artificial fixture follow-up — scope before edits (2026-10-23)
 
 Edit only web/src/components/ValidationPanel.test.tsx and this plan. Add rainfall_mm:100
