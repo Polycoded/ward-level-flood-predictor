@@ -1,0 +1,13 @@
+{
+  "C": 1,
+  "class_weight": "balanced",
+  "dataset_sha256": "4cbefc87666f22727e4437e3444d9094986b74f89c8a54d4b4765bb9fbe03360",
+  "max_iter": 2000,
+  "numpy": "2.0.2",
+  "pandas": "2.3.3",
+  "python": "3.9.6",
+  "seed": 42,
+  "sklearn": "1.6.1",
+  "solver": "liblinear",
+  "threshold": 0.5
+}

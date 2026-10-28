@@ -13,6 +13,10 @@ A prototype system predicting ward-level flood susceptibility and dynamic risk f
 - **Future Scenario Modeling**: Toggle for +15%/+30% built-up area impact
 - **Historical Validation**: Pending evidence-backed evaluation; see `docs/validation.md`
 
+## Trained logistic-regression experiment
+
+A separate [logistic-regression research package](research/logistic_regression/README.md) includes the frozen proxy dataset, portable fitted model, reproducible training and geographic held-out results. Recall is 71.43%, precision 12.50%, and balanced accuracy 80.55% against seven satellite-proxy positives. These preliminary results do not validate future flood forecasting. The application continues to use its weighted-score engine.
+
 ## Architecture
 
 ```
