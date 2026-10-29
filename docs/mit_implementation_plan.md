@@ -1,5 +1,151 @@
 # Mit implementation plan
 
+## 2026-10-28 authorized fixed XGBoost/five-model extension — scope before edits
+
+Create new files only in ignored data/raw/ml_proxy_experiment_20261028/xgboost_extension/:
+preservation baseline including existing experiment environment; separate venv/lock;
+fixed configuration, training/read-only verification scripts and small contract tests;
+pre-fit fold audit with training-only ND/positive ratios; fold models, OOF predictions,
+diagnostics/warnings, metrics, five-model comparison CSV/figure, RESULTS_REVIEW.md and
+reproduction evidence. Preserve existing scripts/results/models/canonical inputs/HEAD/index.
+Reuse exact 346-row/186-ward dataset, seven proxy positives/339 non-detections, six-feature
+allowlist, .5 threshold and original pooled-event geographic folds. Exact user XGBClassifier
+settings: binary:logistic/gbtree/hist, 100 rounds, depth2, eta.03, child_weight5, gamma.1,
+alpha1/lambda10, full row/column sampling, delta_step1, base_score.5, logloss, seed42,
+n_jobs1/validate_parameters=True; scale_pos_weight=training ND/positive only. Fold-fitted
+median imputation, no additional weights/scaling/eval_set/early stopping/search. Reuse
+prior OOF, identity-check targets/blocks, disclose coverage and use common evaluated rows.
+Report pooled/per-block/per-event null-aware metrics and constant/split-tree diagnostics.
+Independent metric/model reload/fold imputation/ratio tests; second fresh training output;
+preservation and reproducibility checks. No optional full-data refit planned. Separate
+environment only; no system-wide runtime installation without authorization. These
+already-inspected folds are an exploratory benchmark, not an untouched final test set;
+no superiority/calibration/forecast/deployment claims or model selection. This scope/outcome
+entry is the sole tracked edit; no app/API/notification/canonical-label/staging/push work.
+
+XGBoost outcomes: fixed 100-round CPU model evaluated on all 346 rows/186 wards with
+OOF confusion [[309,30],[6,1]]; detects 1/7 proxy positives and flags 30 non-detections.
+Precision .0323/recall .1429/F1 .0526/BA .5272/AP .0387; no improvement over LR primary
+metrics, no tuning or winner selection. Fold ND/positive ratios 196/6,252/7,299/7,270/1;
+all folds feasible. Each model has 100 split trees/0 constant trees; SW test outputs
+are nonetheless constant .06469662487506866; 30 distinct pooled probabilities.
+Separate pinned Python3.9.6/XGBoost2.1.4 venv; absent @rpath/libomp resolved only for
+the process using new sklearn wheel private runtime, no system installation. No fold
+training warnings captured. Initial CSV float32 shortening failed strict reload checks;
+outputs preserved as diagnostics; final results_verified/reproduction_verified retain
+exact probability decimals with unchanged settings/metrics. Nine tests, independent
+all-five pooled/block/event metrics, fresh-process pipeline/native reloads, training-only
+medians/weights, scalar-tree probabilities and common-population checks pass. Twenty-three
+artifacts reproduce byte-for-byte; runtime durations alone differ as expected. Preservation
+verified 17,576 prior regular files/6 symlinks including 17,135 original-venv files,
+canonical/prior model outputs, previous plan entries, HEAD/index. Consolidated CSV/figure
+and RESULTS_REVIEW.md explicitly label exploratory already-inspected folds, not a final
+test/generalization/forecast claim. No app change, notification, label promotion or push.
+
+## 2026-10-28 fixed interpretable tree extension — scope before edits
+
+Create new files only under ignored data/raw/ml_proxy_experiment_20261028/tree_extension/:
+training/verification script, preservation snapshot, separate results/models/OOF/metrics,
+comparison report and labelled full-data demonstration tree PNG/SVG/text/node counts.
+Reuse frozen eligible dataset, six-feature allowlist, reference protocol and existing
+fold-audit memberships; import existing metric helper without modifying prior code/results.
+DecisionTreeClassifier max_depth=2/min_samples_leaf=10/class_weight=balanced/random_state=42,
+fold-fitted median imputation, threshold .5. No search/label tuning/model winner selection.
+Compare saved existing majority/LR/RF OOF results on identical rows; save four fold
+pipelines and distinctly labelled full-data refit. Verify predictions, fold medians,
+metrics/counts/tree node counts/reproducibility and prior/canonical/HEAD/index preservation.
+This append/outcome entry is the only tracked edit; no application integration.
+
+Tree extension outcomes: actual four-block OOF tree precision .0556, recall .2857,
+F1 .0930, balanced accuracy .5927, AP .0302; confusion [[305,34],[5,2]], 2/7 proxy
+positives detected and 34 proxy non-detections flagged. Lower than LR on all primary
+metrics; AP much lower than forest despite higher threshold-.5 recall/F1. No winner
+selection or forecasting claim. All 346 rows/186 wards evaluated; NW/SE positive-test
+metrics remain null. Four saved fold pipelines plus separate 346-row demonstration
+refit with feature/threshold/raw-count PNG/SVG, rules and exact node counts. First-run
+diagram annotation defect was caught by visual review; its outputs remain untouched
+in tree_extension/results/ as diagnostic-only. Corrected deliverables are exclusively
+tree_extension/results_verified/; independent reproduction matches all 15 files byte-for-byte.
+Verification checks exact model settings, train-only medians, fold identities, scalar
+leaf probabilities, independent pooled/fold/event metrics and branch-label/node-count
+diagram regression. All 163 frozen prior/canonical files and original 105-file snapshot,
+HEAD/index preserved. No source label/app/API changes, notifications, staging or push.
+
+## 2026-10-28 authorized isolated weak-label ML proof of concept — scope before edits
+
+User explicitly authorizes experimental construction/training, superseding earlier stop
+only for this experiment. New scripts/data/models/reports/tests/environment live exclusively
+in ignored data/raw/ml_proxy_experiment_20261028/. Preserve canonical data and every prior
+audit output; snapshot bytes plus HEAD/index before implementation. This scope/outcome
+append is the only tracked edit. No application scorer/API/service/dependency changes.
+Freeze reference protocol unchanged (.90 quality/.90 coverage/4-connected >=4 cells/.05
+fraction/250m boundary). Map only the two known candidate categories to new experimental_proxy_target;
+exclude unknowns and leave accepted_label unchanged. Join by internal ward_id with identity
+and crosswalk verification, never row order. Fixed six raw predictors: elevation_mean,
+slope_mean, impervious_frac, dist_to_water_m, road_density_km_per_sqkm, underpass_count.
+No identifiers, coordinates, event/block or target-construction variables as predictors.
+CPU seed42; Dummy majority; balanced LogisticRegression C=1/liblinear with median
+imputation and scaling; balanced-subsample RandomForest 100 trees/depth3/min_leaf5,
+max_features=1.0/n_jobs1 with median imputation. No search or label tuning. Threshold .5.
+Pool events, leave one existing geographic block out; preserve ward grouping; preflight
+class counts before any fit; infeasible folds retain missing predictions and explicit status.
+Save fold pipelines and clearly marked full-eligible refits, OOF predictions, strict-null
+metrics/per-fold/per-event confusion counts, results figure/model card/faculty note,
+environment and hashes, reproducible command and independent verification. No training
+winner selection or operational/dry-ground-truth claims; stop after results for review.
+
+Experiment outcomes: genuine fitted CPU LR/forest pipelines and majority baseline,
+346 rows (7 proxy positives/339 non-detections) across 186 wards, 54 unknown rows excluded.
+Four pooled geographic held-out folds all have both classes in training; NW/SE tests
+have no positives so positive recall/AP and related fold metrics are explicitly null.
+Pooled OOF LR precision .125, recall .7143, F1 .2128, balanced accuracy .8055, AP .2265;
+forest .0385/.1429/.0606/.5346/.2183; dummy recall/F1=0, balanced accuracy .5/AP .0202.
+Not a stable superiority/forecast/calibration claim; no winner selected. Saved fold and
+separately named full-eligible refit models, reproducible outputs, model card/faculty note.
+Six contract/arithmetic tests and fresh-process fitted-pipeline OOF/metric/preprocessing
+checks pass. Local optional full-refit LR inference matmul warnings are recorded; all
+probabilities finite and match independent scalar-dot/expit math at 1e-12. Second full
+training run reproduces results; canonical/previous audit bytes and HEAD/index preserved.
+No application change, notification, staging, commit or push. Stop for review.
+
+## 2026-10-28 reviewer amendment — scope before edits
+
+Continue ignored data/raw/research_audit_20261027/ audit without rewriting prior outputs.
+New files only in review_20261028/: source/method snapshots and manifest, predeclared
+protocol sensitivity scripts/tables, representative 2015 disagreement maps, terrain
+replacement provenance and REVIEW_AMENDMENT.md. This append is the only tracked scope
+change; preserve HEAD/index, canonical bytes and existing work. No training or accepted
+dataset/labels; target is satellite-mapped inundation under a defined observation protocol,
+never an inference that non-detected wards are actually dry. No large raster downloads.
+
+Amendment outcomes: publication tag and previously pinned MODIS method files match;
+per-image Terra/Aqua QA uses OR clearance in that code, but downloaded archives lack a
+generating-code/scene attestation. Terrain mask code uses GMTED2010 <=5 degree slopes;
+SRTMGL1 V003 identified as a source-verifiable replacement proposal, no terrain fetch.
+New full-raster pre-ward component sensitivity gives 1296 event-setting rows and 5184
+geographic-block rows. Reference 250m band counts A/B/unknown: 2005 5/161/34;
+2015 2/178/20, all accepted labels remain unknown; four-block validation gate fails.
+Fixed representative 2015 maps show strong disagreement, neither source treated as truth.
+REVIEW_AMENDMENT.md retains no-go for accepted construction/training pending review.
+
+## 2026-10-27 isolated supervised-data feasibility audit — scope before edits
+
+Verified clean main at 86967bc8468afd77e18e473f17d7b21852062300; no Git operations
+authorized beyond inspection. Local plan: data/raw/research_audit_20261027/AUDIT_PLAN.md.
+All downloads, audit scripts, baselines, source manifests, inventories, provisional
+intersection tables/maps and FEASIBILITY_REPORT.md/NEXT_STAGE_SCOPE.md remain in that
+already ignored folder. This scope entry is the only intended tracked edit. Read-only
+canonical/source inspection; no training, scoring changes, labels promotion, dependency
+manifest edits, notification services or publication. Verify frozen bytes/HEAD/index at end.
+
+Audit outcome: local ignored report/data diagnostics/intersection maps and source manifest
+created; no training or runtime edits. HF Chennai history pinned at 60074d53fc80d5b61e07494d4c52cebafe242198;
+extents lack observation coverage. GFD 2758/4309 actual archives provide coverage/water
+bands at native ~250m, CC BY-NC 4.0; protocol and historical features remain unapproved.
+All provisional ward outcomes remain unknown. NO-GO training now; conditional next-stage
+GFD protocol/feature review, requiring separate authorization. See isolated report for
+actual counts, source terms, canonical hashes and final verification; stop for Mit review.
+
 ## master_dev / main merge resolution (2026-10-23)
 
 Combined-branch verification: 664 Python tests passed (54 existing dependency warnings); 251 frontend tests passed; TypeScript and production build passed. Temporary test environment received already-declared integration dependencies; project manifests/locks were not changed for testing. Historical review bundles retain their original snapshot hashes and are not a current merged-source audit.
@@ -741,3 +887,10 @@ Integration verification: 499 Python tests passed (54 dependency deprecation war
 ## Completion branch — 2026-10-23
 
 Authorized scope: close remaining implementation/review work on mit-review-completion from main. Fix pipeline/build_features.py to reject missing/invalid required measurements and identities without zero imputation or input mutation. Fix pipeline/extract_wards_from_kml.py to produce explicit stable identity columns and crosswalk names, provide configurable input/output paths, and protect existing canonical outputs. Add isolated regressions for both. Do not regenerate canonical data. Create a read-only hashed artifact audit and update current model/geographic/historical/handoff documentation, preserving dated evidence limitations. Stage sourced IMD rainfall candidates and the newly inspected NRSC acquisition report without inventing labels, negatives or historical accuracy. Prepare a review guide and inspect the integrated app in a browser where tooling permits. Run affected/full tests and production build. Source provenance, legal vintage, flood mask coverage and event alignment remain evidence requirements rather than fields to fabricate.
+
+
+## Logistic-only publication cleanup — 2026-10-28
+
+Authorized: publish an isolated, reproducible logistic-regression experiment on mit-dev; preserve application behavior and canonical data. Add research/logistic_regression with frozen proxy dataset, fold results, portable fitted parameters, training/prediction commands and evidence limitations. Add a short README link. Preserve historical audit notes; archive the superseded multi-model local experiment outside the repository after verification. No other classifier is included in the published research package. Verify metrics, portable predictions, reproducibility and branch ancestry before commit/push.
+
+Cleanup verification: three logistic evidence tests pass; all 346 portable OOF scores match the original saved logistic predictions within 1e-12; a fresh training run produced byte-identical result files; standard-library inference smoke check passes. Other model experiments and original environments preserved outside the checkout at ../ward-level-flood-predictor-local-archive/ml_proxy_experiment_20261028. No application code or canonical data changed. Only logistic regression is included in the new tracked research package.
