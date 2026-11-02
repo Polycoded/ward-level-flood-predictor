@@ -36,3 +36,7 @@ learn.md
 *.db
 *.sqlite*
 
+
+# Sentinel-1 pilot products (do not commit large SAR data)
+data/interim/sentinel1/
+data/processed/sentinel1_pilot/

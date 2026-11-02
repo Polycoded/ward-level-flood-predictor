@@ -219,17 +219,30 @@ Legacy depth/timing outputs are display proxies, not physical predictions.
 ### Research experiment
 
 [`research/logistic_regression/`](research/logistic_regression/README.md) is a
-separate, reproducible CPU experiment (frozen proxy dataset, portable model,
-geographic held-out results): recall 71.43%, precision 12.50%, balanced accuracy
-80.55% against seven satellite-proxy positives. It does not validate future flood
-forecasting, and the application still uses the weighted-score engine.
+separate, reproducible CPU experiment on a frozen satellite-inundation proxy dataset.
+The original 0.5-threshold pooled view reported recall 71.43%, precision 12.50% and
+balanced accuracy 80.55% against seven proxy positives. A spatially blocked
+re-evaluation (leave-one-zone-out, with leave-one-quadrant-out as a sensitivity check)
+and a ward-level evaluation are now included. The results show that a simple elevation
+ranking is competitive with, and in the largest positive fold better than, the
+six-feature logistic model; there is no stable gain from hyperparameter tuning; and the
+current weighted application index has no demonstrated ranking skill on this proxy
+target. The ward-level detection-frequency target is not supported by the frozen data:
+frequency is 0/1 and identical to any-detection, and the complete-coverage subset has
+only one positive. The overlap audit also found that 104 of 291 substantial ward-pair
+overlaps cross zone folds, so no spatial buffer is enforced. These are exploratory
+results from seven proxy positives and six ward-level positives, not evidence of
+forecast accuracy, calibrated probabilities, model superiority or leakage-free features.
+The application still uses the weighted-score engine.
 
 ## Validation
 
 Historical validation is **pending**. `data/processed/validation_metrics.json`
 returns a schema-2 `unavailable` status until reviewed, ward-aligned labels are
 supplied; the API and UI refuse mock/legacy metrics. See
-[docs/validation.md](docs/validation.md).
+[docs/validation.md](docs/validation.md). A reconstruction plan for authoritative
+boundaries, Sentinel-1 evidence, ward-event labels and historical features is in
+[docs/geospatial_reconstruction_plan.md](docs/geospatial_reconstruction_plan.md).
 
 ## Deployment
 
