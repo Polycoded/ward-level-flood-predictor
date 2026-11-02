@@ -1,0 +1,34 @@
+{
+  "events": [
+    "2758",
+    "4309"
+  ],
+  "missing_by_feature": {
+    "dist_to_water_m": 0,
+    "elevation_mean": 0,
+    "impervious_frac": 0,
+    "road_density_km_per_sqkm": 0,
+    "slope_mean": 0,
+    "underpass_count": 0
+  },
+  "path": "J:\\Hackathons\\zero_shot_hack\\flood-predictor\\research\\logistic_regression\\dataset.csv",
+  "positive_wards": [
+    15,
+    16,
+    18,
+    27,
+    28,
+    61
+  ],
+  "positives": 7,
+  "prevalence": 0.02023121387283237,
+  "rows_eligible": 346,
+  "rows_in_file": 346,
+  "rows_per_ward": {
+    "1": 26,
+    "2": 160
+  },
+  "static_features_identical_per_ward": true,
+  "target": "experimental_proxy_target",
+  "wards": 186
+}

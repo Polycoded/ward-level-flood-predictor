@@ -1,0 +1,214 @@
+{
+  "accepted_label_values": [
+    "unknown"
+  ],
+  "events": [
+    "2758",
+    "4309"
+  ],
+  "feature_provenance": [
+    {
+      "available_for_use": true,
+      "coupling_risk": "GFD label generation used terrain masks; different DEM but conceptually coupled",
+      "dynamic": false,
+      "feature": "elevation_mean",
+      "resolution": "30 m",
+      "source": "Copernicus DEM 30 m",
+      "vintage": "static terrain (acquisition varies by tile)"
+    },
+    {
+      "available_for_use": true,
+      "coupling_risk": "same terrain-mask coupling as elevation",
+      "dynamic": false,
+      "feature": "slope_mean",
+      "resolution": "30 m",
+      "source": "Copernicus DEM 30 m via numpy.gradient",
+      "vintage": "static terrain"
+    },
+    {
+      "available_for_use": true,
+      "coupling_risk": "not as-of-event for 2005/2015 labels",
+      "dynamic": false,
+      "feature": "impervious_frac",
+      "resolution": "10 m",
+      "source": "ESA WorldCover 10 m v200 built-up fraction",
+      "vintage": "2021"
+    },
+    {
+      "available_for_use": true,
+      "coupling_risk": "label generator excludes permanent water; proximity is conceptually related",
+      "dynamic": false,
+      "feature": "dist_to_water_m",
+      "resolution": "vector, 2026-10-20 snapshot",
+      "source": "OSM/Geofabrik water, centroid distance",
+      "vintage": "current"
+    },
+    {
+      "available_for_use": true,
+      "coupling_risk": "not as-of-event; urban growth after 2005/2015",
+      "dynamic": false,
+      "feature": "road_density_km_per_sqkm",
+      "resolution": "vector, 2026-10-20 snapshot",
+      "source": "OSM/Geofabrik roads",
+      "vintage": "current"
+    },
+    {
+      "available_for_use": true,
+      "coupling_risk": "not as-of-event; sparse OSM completeness",
+      "dynamic": false,
+      "feature": "underpass_count",
+      "resolution": "vector, 2026-10-20 snapshot",
+      "source": "OSM/Geofabrik underpasses",
+      "vintage": "current"
+    }
+  ],
+  "per_block": [
+    {
+      "block": "NE",
+      "size": 144,
+      "sum": 1
+    },
+    {
+      "block": "NW",
+      "size": 87,
+      "sum": 0
+    },
+    {
+      "block": "SE",
+      "size": 40,
+      "sum": 0
+    },
+    {
+      "block": "SW",
+      "size": 75,
+      "sum": 6
+    }
+  ],
+  "per_event": [
+    {
+      "event_id": "2758",
+      "size": 166,
+      "sum": 5
+    },
+    {
+      "event_id": "4309",
+      "size": 180,
+      "sum": 2
+    }
+  ],
+  "per_zone": [
+    {
+      "size": 21,
+      "sum": 0,
+      "zone_number": "I"
+    },
+    {
+      "size": 10,
+      "sum": 1,
+      "zone_number": "II"
+    },
+    {
+      "size": 15,
+      "sum": 0,
+      "zone_number": "III"
+    },
+    {
+      "size": 36,
+      "sum": 0,
+      "zone_number": "IX"
+    },
+    {
+      "size": 27,
+      "sum": 0,
+      "zone_number": "V"
+    },
+    {
+      "size": 30,
+      "sum": 0,
+      "zone_number": "VI"
+    },
+    {
+      "size": 19,
+      "sum": 0,
+      "zone_number": "VII"
+    },
+    {
+      "size": 30,
+      "sum": 0,
+      "zone_number": "VIII"
+    },
+    {
+      "size": 32,
+      "sum": 0,
+      "zone_number": "X"
+    },
+    {
+      "size": 23,
+      "sum": 0,
+      "zone_number": "XI"
+    },
+    {
+      "size": 23,
+      "sum": 0,
+      "zone_number": "XII"
+    },
+    {
+      "size": 25,
+      "sum": 0,
+      "zone_number": "XIII"
+    },
+    {
+      "size": 16,
+      "sum": 2,
+      "zone_number": "XIV"
+    },
+    {
+      "size": 9,
+      "sum": 4,
+      "zone_number": "XV"
+    },
+    {
+      "size": 30,
+      "sum": 0,
+      "zone_number": "ZONE - IV"
+    }
+  ],
+  "positive_wards": [
+    15,
+    16,
+    18,
+    27,
+    28,
+    61
+  ],
+  "positives": 7,
+  "prevalence": 0.02023121387283237,
+  "provenance": {
+    "citation": "Tellman et al. (2021), doi:10.1038/s41586-021-03695-w",
+    "confirmed_ground_truth_available": false,
+    "confirmed_negatives_available": false,
+    "frozen_protocol": "quality >= .90, coverage >= .90, 4-connected components >= 4 native cells, fraction >= .05, 250 m boundary sensitivity",
+    "license": "GFD is CC BY-NC 4.0; derived proxy data are not unrestricted commercial data",
+    "source": "Global Flood Database events 2758 (2005) and 4309 (2015)",
+    "target_positive": "ward intersects at least one accepted satellite-mapped inundation component",
+    "target_unknown": "excluded upstream; never converted to a negative in this evaluation",
+    "target_zero": "protocol non-detection; NOT confirmed dry and NOT confirmed non-flooded"
+  },
+  "rows": 346,
+  "rows_per_ward": {
+    "1": 26,
+    "2": 160
+  },
+  "static_features_identical_across_events": true,
+  "unknown_excluded_upstream_inferred": 54,
+  "unknown_exclusion_note": "Inferred from unique wards x events minus frozen rows. The 54 unknown rows are not present in the frozen table and cannot be individually audited here.",
+  "wards": 186,
+  "wards_absent_entirely": 14,
+  "wards_in_boundary": 200,
+  "warnings": [
+    "Zeros are protocol non-detections, not confirmed dry wards.",
+    "Only seven proxy positives exist; model comparisons are exploratory.",
+    "Static predictors cannot distinguish 2005 from 2015 rainfall.",
+    "No probability calibration is claimed."
+  ]
+}

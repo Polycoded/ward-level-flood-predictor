@@ -1,0 +1,119 @@
+{
+  "A_complete_reason": "Complete-coverage population has only 1 positive ward(s); metrics there are descriptive only, not a comparison.",
+  "A_complete_supported": false,
+  "B_all_equals_A": true,
+  "B_complete_supported": false,
+  "B_support_reason": "Frequency is 0 or 1 for every ward and is identical to target A. Every detection occurs in a ward with only one available event, or in ward 16 where both events are positive; no ward has a 0.5 frequency. Target B is not separable from target A on this dataset.",
+  "absent_ward_count": 14,
+  "absent_wards": [
+    14,
+    26,
+    62,
+    68,
+    70,
+    74,
+    75,
+    115,
+    160,
+    161,
+    177,
+    178,
+    179,
+    199
+  ],
+  "complete_coverage_wards": 160,
+  "complete_target_A_positives": 1,
+  "coverage_counts": {
+    "complete": 160,
+    "partial": 26
+  },
+  "events_available_counts": {
+    "1": 26,
+    "2": 160
+  },
+  "frequency_distinct_values_all": [
+    0.0,
+    1.0
+  ],
+  "frequency_distinct_values_complete": [
+    0.0,
+    1.0
+  ],
+  "n_detections_distribution": {
+    "0": 180,
+    "1": 5,
+    "2": 1
+  },
+  "notes": [
+    "A ward with one available event is partial coverage, not a confirmed dry ward.",
+    "Target B is event-weighted; target A is ward-weighted.",
+    "No ward absent from the frozen table is assigned a label."
+  ],
+  "partial_wards": [
+    10,
+    15,
+    18,
+    19,
+    20,
+    23,
+    27,
+    28,
+    61,
+    64,
+    69,
+    71,
+    72,
+    91,
+    108,
+    118,
+    122,
+    126,
+    157,
+    162,
+    173,
+    175,
+    180,
+    185,
+    187,
+    200
+  ],
+  "positive_wards_A": [
+    15,
+    16,
+    18,
+    27,
+    28,
+    61
+  ],
+  "positive_wards_B": [
+    15,
+    16,
+    18,
+    27,
+    28,
+    61
+  ],
+  "target_A_positives": 6,
+  "target_A_prevalence": 0.03225806451612903,
+  "target_A_vs_B_spearman": 1.0,
+  "target_B_frequency_distribution": {
+    "0.0": 180,
+    "1.0": 6
+  },
+  "target_B_mean_frequency": 0.03225806451612903,
+  "target_definitions": {
+    "A_any_detection": {
+      "definition": "1 if at least one available event has a proxy detection; 0 if all available events are non-detections.",
+      "field": "any_detection",
+      "limitation": "Ignores recurrence; a one-event ward can be a negative with partial coverage; non-detection is not confirmed dryness.",
+      "population": "all wards with at least one available event"
+    },
+    "B_detection_frequency": {
+      "definition": "detections / available events (0, 0.5 or 1 for two events).",
+      "field": "detection_frequency",
+      "limitation": "Event-weighted, not ward-weighted; only two events; frequency 0 does not establish dryness; partial coverage is excluded.",
+      "population": "complete-coverage wards only (both events available) for primary; all wards as a sensitivity."
+    }
+  },
+  "ward_count": 186
+}

@@ -1,0 +1,38 @@
+{
+  "command": "research/logistic_regression/evaluate_spatial.py --output research/logistic_regression/results/spatial_eval --bootstrap 1000",
+  "common_sha256": "c05bf88d78195c66b1251bb73f4279903a5d043db630b19cfa4249962679e91b",
+  "dataset_sha256": "976b5ee00928a79451935ba13a5e7eb36b8a73278743fcdde56f0cc4e71e308b",
+  "dataset_used_sha256": "efa0041ab725b9148ddc0d670de52c349d7e20049ec58ef83aafb1f556b143ef",
+  "excluded_wards": [],
+  "geometry_audit_sha256": "417feefcf7e3d61e2877502239df37a795b1cb2f3477488c1a58850528c06626",
+  "geometry_summary": {
+    "intersection_errors": [],
+    "max_overlap_m2": 7894.628123805337,
+    "pairs_gt_1m2": 291,
+    "pairs_le_1m2": 157,
+    "positive_area_pairs": 448,
+    "sum_pairwise_overlap_m2": 107217.78952164519
+  },
+  "geopandas": "1.2.0",
+  "k_values": [
+    10,
+    20,
+    50
+  ],
+  "matplotlib": "3.11.2",
+  "n_boot": 1000,
+  "numpy": "2.2.6",
+  "pandas": "3.0.6",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "positives": 7,
+  "python": "3.11.14",
+  "rows": 346,
+  "schemes": [
+    "zone",
+    "quadrant"
+  ],
+  "scikit_learn": "1.6.1",
+  "script_sha256": "857bdf11036e9a5bc0509441cc2bfd50cf316b7a1c4967d35aa19603460fd2f4",
+  "seed": 42,
+  "wards": 186
+}

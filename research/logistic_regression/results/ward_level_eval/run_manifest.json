@@ -1,0 +1,21 @@
+{
+  "command": "research/logistic_regression/evaluate_ward_level.py --output research/logistic_regression/results/ward_level_eval --bootstrap 1000",
+  "dataset_sha256": "976b5ee00928a79451935ba13a5e7eb36b8a73278743fcdde56f0cc4e71e308b",
+  "geopandas": "1.2.0",
+  "k_values": [
+    10,
+    20,
+    50
+  ],
+  "n_boot": 1000,
+  "numpy": "2.2.6",
+  "pandas": "3.0.6",
+  "python": "3.11.14",
+  "rows": 186,
+  "scikit_learn": "1.6.1",
+  "script_sha256": "a8ca857b235410eb2f29cf2c8fdec134b43f603dd0a19f7d8f50c5d6213af05a",
+  "seed": 42,
+  "target_A_positives": 6,
+  "target_B_mean_frequency": 0.03225806451612903,
+  "wards": 186
+}
