@@ -1,5 +1,47 @@
 # Mit implementation plan
 
+## 2026-10-28 bounded logistic-only sensitivity — scope before edits
+
+User authorizes exactly two post-baseline hypotheses on mit-dev, without integration/push.
+Only this scope/outcome entry may change tracked files. All new scripts/tests/environment,
+snapshots/config/models/OOF/diagnostics/comparison/review/reproduction evidence go in new
+ignored data/raw/logistic_sensitivity_20261028/. Snapshot original tracked bytes/index/HEAD,
+canonical inputs and entire published research/logistic_regression package before fitting;
+preserve all prior source/artifacts. Threshold-review REPORT/provenance read and hashed.
+Use exact published 346-row dataset (SHA256 4cbefc87666f22727e4437e3444d9094986b74f89c8a54d4b4765bb9fbe03360),
+186 wards/7 proxy positives/339 non-detections, unchanged exclusions/targets/geographic folds.
+A: C=.1 with unchanged six predictors and median/scaler preprocessing. B: C=1 with log1p
+ONLY distance-to-water/road-density/underpass-count; raw elevation/slope/impervious unchanged.
+Order: validate/retain missing values, then B log1p, then training-fold median imputation,
+training-fold StandardScaler, balanced L2 LogisticRegression liblinear/seed42/max_iter2000.
+Reject finite negative log1p fields, never negative-to-missing; fixed threshold .5. Preflight
+all fold counts/ward identities and stop infeasible folds. No baseline retraining, tuning,
+new configurations/calibration/random splits/feature selection/region thresholds/nested CV.
+Save all eight fold pipelines and explicit transformation-aware portable state. New format
+must fail closed in unchanged baseline predictor; use extension-only inference. Record
+coefficients/preprocessing, score ranges, convergence iterations and unsuppressed warnings;
+independent finite scalar inference per fold, exact TP/FP changes, pooled/block/event null-aware
+metrics. Fresh-process reload, independent metrics, second identical training run and
+preservation checks. No optional full-data refit or automatic deployment selection. Reused
+folds are exploratory, not independent validation; if hypotheses fail, report and stop.
+
+Logistic sensitivity outcomes: all 346 rows/186 wards evaluated for both variants at .5.
+Published frozen baseline [[304,35],[2,5]] unchanged. A(C=.1 raw): [[286,53],[1,6]],
+deltaTP +1/deltaFP +18, precision .1017/recall .8571/F1 .1818/BA .8504/AP .2497.
+B(C=1 log1p): [[304,35],[6,1]], deltaTP -4/deltaFP 0, precision .0278/recall .1429/
+F1 .0465/BA .5198/AP .0932. Neither improves pooled precision/F1; A is a recall/AP
+trade-off, B fails pooled useful measures. No extra configuration or automatic choice.
+All eight fits converge in 6–8 iterations; no new fit/reload warnings captured. Finite
+scalar/batch probabilities match at 1e-12; prior full-refit BLAS issue not claimed fixed.
+Saved eight pipelines/transform-aware portable states that baseline loader rejects;
+training-only transform/median/scaler, metrics/deltas, identity and class gates verified.
+Seven new contract tests and three unchanged baseline tests pass. Twenty-seven artifacts
+match an independent second run byte-for-byte; only wall-clock timings differ. Preserved
+8,818 prior regular files/3 symlinks, 14 published logistic files, canonical/source and
+Codex-review bytes, prior plan entries, HEAD/index on mit-dev at35d6d20. Results/reproduction
+commands in ignored logistic_sensitivity_20261028/. No integration/notification/label
+promotion/commit/push; stop after these two reused-fold exploratory hypotheses.
+
 ## 2026-10-28 authorized fixed XGBoost/five-model extension — scope before edits
 
 Create new files only in ignored data/raw/ml_proxy_experiment_20261028/xgboost_extension/:
