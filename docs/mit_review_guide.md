@@ -161,7 +161,7 @@ unavailable; arithmetic tolerance is absolute 1e-12, not a way to repair bad met
 
 ## Verification and evidence
 
-See [mit_implementation_plan.md](mit_implementation_plan.md) for actual latest checks and
+See [validation.md](validation.md) for the validation evidence contract and
 [mit_artifact_audit.json](mit_artifact_audit.json) for the read-only artifact snapshot.
 Automated DOM tests/build are not live-browser acceptance. Visual verification remains
 pending when browser tooling is unavailable. No public-safety or historical-accuracy claim.

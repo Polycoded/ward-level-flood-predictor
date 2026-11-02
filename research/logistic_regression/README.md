@@ -24,6 +24,23 @@ Confusion matrix `[[304, 35], [2, 5]]`: five detected proxy positives, two misse
 97.98% accuracy while missing all seven positives. This table is retained for
 reproduction; it mixes fold-specific score scales and two positive-free folds.
 
+### Bounded sensitivity hypotheses (2026-10-28)
+
+Two post-baseline hypotheses were tested on the same 346-row/186-ward dataset, the
+same reused geographic folds and the fixed 0.5 threshold. Neither improves pooled
+precision or F1:
+
+| Variant | Confusion | Precision | Recall | F1 | BA | AP |
+|---|---:|---:|---:|---:|---:|---:|
+| baseline, C=1 raw | `[[304,35],[2,5]]` | .125 | .714 | .213 | .806 | .227 |
+| A: C=0.1 raw | `[[286,53],[1,6]]` | .102 | .857 | .182 | .850 | .250 |
+| B: C=1 log1p on water distance, road density and underpass count | `[[304,35],[6,1]]` | .028 | .143 | .047 | .520 | .093 |
+
+A trades 18 additional false positives for one extra true positive (a recall/AP
+trade-off); B collapses the pooled useful measures. These reused-fold results are
+exploratory, not independent validation, and are superseded by the spatially blocked
+evaluation below.
+
 ## Methodology audit (2026-10-30)
 
 ### Code paths

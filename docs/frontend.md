@@ -133,8 +133,8 @@ If the backend moves somewhere other than `*.onrender.com`, add its origin to `c
 
 ## Tests
 
-`npm test -- --run` runs the current suite; exact latest counts are recorded in
-`docs/mit_implementation_plan.md` rather than promised as a permanent inventory:
+`npm test -- --run` runs the current suite; exact latest counts are recorded in the
+test output rather than promised as a permanent inventory:
 
 | File | Covers |
 | --- | --- |

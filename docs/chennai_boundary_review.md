@@ -166,9 +166,9 @@ delivered in commit `40598b1` (pushed to `origin/main`):
 
 **Remaining for this review:**
 - Item 4 (per-feature provenance with source/version/date, units, CRS, extraction
-  method, nodata/coverage audit) is partially addressed in `MIT_HANDOFF.md` and
-  `SEND_TO_MIT.md`; formal evaluation-runner config with `feature_provenance`
-  remains for Mit to complete.
+  method, nodata/coverage audit) is partially addressed in
+  `docs/geospatial_reconstruction_plan.md` and the research reconstruction pack;
+  formal evaluation-runner config with `feature_provenance` remains to be completed.
 - Historical rainfall and ward-aligned observations remain pending (Mit's task).
 
 **Readiness CLI status**: Would now pass boundary checks (200 valid wards, crosswalk
