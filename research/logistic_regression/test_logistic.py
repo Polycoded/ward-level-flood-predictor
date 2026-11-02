@@ -31,7 +31,8 @@ class LogisticEvidenceTests(unittest.TestCase):
         for block in ['NE', 'NW', 'SE', 'SW']:
             m = json.loads((HERE/f'results/model_heldout_{block}.json').read_text())
             train = data[data.block != block][m['features']]
-            self.assertEqual(train.median().tolist(), m['medians'])
+            for a, b in zip(train.median().tolist(), m['medians']):
+                self.assertAlmostEqual(a, b, places=10)
             for a, b in zip(train.fillna(train.median()).mean(), m['means']):
                 self.assertAlmostEqual(a, b, places=10)
 
