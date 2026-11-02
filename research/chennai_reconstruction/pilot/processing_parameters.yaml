@@ -1,0 +1,110 @@
+﻿pilot:
+  name: chennai_sentinel1_2015_2021
+  study_area_name: Chennai pilot bounding box
+  bbox_wgs84: [80.10, 12.80, 80.35, 13.25]
+  bbox_crs: EPSG:4326
+  expected_acquisition_dates:
+    - 2015-12-06
+    - 2021-11-04
+    - 2021-11-16
+  boundary_policy:
+    2015:
+      boundary_version: gcc_2011
+      status: blocked_no_authoritative_gis
+      note: "2011 gazette/GIS not available locally; OpenCity 2011 KML is provisional and licence-unspecified."
+    2021:
+      boundary_version: gcc_2018
+      status: blocked_no_authoritative_gis
+      note: "2018 gazette PDF is the legal reference; no GIS geometry is available locally under confirmed terms."
+  scenes:
+    - scene_id: S1A_IW_GRDH_1SDV_20151206T003120_20151206T003149_008914_00CC1F_BEF9
+      event_date: 2015-12-06
+      role: single
+      expected_platform: Sentinel-1A
+      expected_direction: DESCENDING
+      expected_relative_orbit: 92
+      expected_polarization: VV+VH
+      expected_product_type: GRD_HD
+    - scene_id: S1A_IW_GRDH_1SDV_20211104T003147_20211104T003212_040414_04CA78_AD56
+      event_date: 2021-11-04
+      role: north
+      expected_platform: Sentinel-1A
+      expected_direction: DESCENDING
+      expected_relative_orbit: 92
+      expected_polarization: VV+VH
+      expected_product_type: GRD_HD
+    - scene_id: S1A_IW_GRDH_1SDV_20211104T003212_20211104T003237_040414_04CA78_20F6
+      event_date: 2021-11-04
+      role: south
+      expected_platform: Sentinel-1A
+      expected_direction: DESCENDING
+      expected_relative_orbit: 92
+      expected_polarization: VV+VH
+      expected_product_type: GRD_HD
+    - scene_id: S1A_IW_GRDH_1SDV_20211116T003147_20211116T003212_040589_04D094_DB41
+      event_date: 2021-11-16
+      role: north
+      expected_platform: Sentinel-1A
+      expected_direction: DESCENDING
+      expected_relative_orbit: 92
+      expected_polarization: VV+VH
+      expected_product_type: GRD_HD
+    - scene_id: S1A_IW_GRDH_1SDV_20211116T003212_20211116T003237_040589_04D094_B07B
+      event_date: 2021-11-16
+      role: south
+      expected_platform: Sentinel-1A
+      expected_direction: DESCENDING
+      expected_relative_orbit: 92
+      expected_polarization: VV+VH
+      expected_product_type: GRD_HD
+  acquisition:
+    primary_route: ASF_DAAC
+    search_api: https://api.daac.asf.alaska.edu/services/search/param
+    processing_level: GRD_HD
+    max_dates_per_event: 1
+    allow_additional_dates: false
+    storage:
+      raw: data/raw/sentinel1
+      interim: data/interim/sentinel1
+      processed: data/processed/sentinel1_pilot
+    credentials:
+      env_username: EARTHDATA_USERNAME
+      env_password: EARTHDATA_PASSWORD
+      netrc_host: urs.earthdata.nasa.gov
+      note: "Never store credentials in this file or source control."
+  processing:
+    status: blocked_not_executed
+    blocker: "No SNAP/pyroSAR toolchain installed and no Earthdata/CDSE credentials available in this environment."
+    toolchain_preference: ESA_SNAP_gpt
+    intended_workflow:
+      - read_product
+      - apply_orbit_file
+      - remove_border_noise
+      - thermal_noise_removal
+      - radiometric_calibration_sigma0
+      - terrain_correction_range_doppler
+      - convert_to_db
+      - extract_vv_vh
+      - generate_valid_nodata_masks
+      - co_register_and_mosaic_2021_frames
+    proposed_parameters:
+      status: proposed_not_executed
+      output_crs: EPSG:32644
+      output_pixel_size_m: 10
+      calibration: sigma0
+      backscatter_units: dB
+      terrain_correction: Range-Doppler
+      dem: Copernicus DEM 30 m
+      speckle_filter: none
+      speckle_rationale: "Do not smooth solely to make images look cleaner; test any filter separately."
+      border_noise: SNAP border-noise removal
+      thermal_noise: SNAP thermal-noise removal
+      incidence_angle_correction: not_selected
+    parameters_note: "No numeric thresholds, filters or resampling kernels are adopted until the toolchain and access are available."
+  outputs:
+    scene_metadata_csv: research/chennai_reconstruction/pilot/scene_metadata.csv
+    quality_csv: research/chennai_reconstruction/pilot/scene_quality_report.csv
+    coverage_csv: research/chennai_reconstruction/pilot/coverage_report.csv
+    preflight_report: research/chennai_reconstruction/pilot/preflight_report.md
+    temporal_report: research/chennai_reconstruction/pilot/temporal_comparison_report.md
+    figures_dir: research/chennai_reconstruction/pilot/figures
